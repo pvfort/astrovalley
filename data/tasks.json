@@ -2,7 +2,7 @@
   {
     "id": "observe",
     "allowed_phase": "night",
-    "duration": 60,
+    "duration": 7,
     "required_resource": "telescope"
   },
   {
