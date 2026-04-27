@@ -15,6 +15,7 @@ func _ready():
 	TaskManager.task_completed.connect(_on_task_completed)
 	NetworkManager.player_connected.connect(_on_player_connected)
 	NetworkManager.player_disconnected.connect(_on_player_disconnected)
+	NetworkManager.game_state_synced.connect(_on_game_state_synced)
 	telescope.player_nearby.connect(_on_player_nearby)
 
 	# Set initial UI state
@@ -87,6 +88,12 @@ func _on_player_disconnected(id: int):
 	var player = players_node.get_node_or_null("Player" + str(id))
 	if player:
 		player.queue_free()
+
+func _on_game_state_synced(state: Dictionary):
+	# Spawn already-connected players sent by the server on late join
+	for id in state["players"]:
+		if not players_node.has_node("Player" + str(id)):
+			spawn_player(id)
 
 func _on_phase_changed(phase: String):
 	phase_label.text = "Phase: " + phase
