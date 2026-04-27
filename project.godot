@@ -3,7 +3,7 @@
 config/name="AstroValley"
 config/description=""
 config/tags=PackedStringArray()
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.1")
 
 [autoload]
