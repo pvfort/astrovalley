@@ -1,0 +1,18 @@
+[
+  {
+    "id": "observe",
+    "allowed_phase": "night",
+    "duration": 60,
+    "required_resource": "telescope"
+  },
+  {
+    "id": "analyze",
+    "allowed_phase": "afternoon",
+    "duration": 120
+  },
+  {
+    "id": "meeting",
+    "allowed_phase": "morning",
+    "duration": 180
+  }
+]
