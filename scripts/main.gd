@@ -79,9 +79,7 @@ func spawn_player(id: int):
 	player.player_id = id
 	player.position = Vector2(100 + id * 50, 100)
 	players_node.add_child(player)
-
-	if id == multiplayer.get_unique_id():
-		player.set_multiplayer_authority(id)
+	player.set_multiplayer_authority(id)
 
 func _on_player_connected(id: int):
 	spawn_player(id)

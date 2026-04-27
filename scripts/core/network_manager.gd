@@ -20,6 +20,7 @@ func host_game(port: int = 4242) -> bool:
 		multiplayer.multiplayer_peer = peer
 		is_host = true
 		print("Hosting game on port ", port)
+		TimeManager.start_cycle()
 		# Register the server's own player so late-joiners can be told about it
 		var my_id = multiplayer.get_unique_id()
 		GameManager.add_player(my_id, "Player" + str(my_id))

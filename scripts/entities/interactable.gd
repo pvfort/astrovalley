@@ -38,6 +38,8 @@ func interact():
 
 @rpc("any_peer")
 func request_interact(player_id: int):
+	if not multiplayer.is_server():
+		return
 	var sender_id = multiplayer.get_remote_sender_id()
 	if sender_id == player_id and interacting_player == player_id and resource_name == "telescope":
 		ObservationSystem.start_observe(player_id)
