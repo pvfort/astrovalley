@@ -10,7 +10,6 @@ var player_name: String = "Player"
 @onready var label: Label = $Label
 
 func _ready():
-	player_id = multiplayer.get_unique_id()
 	player_name = "Player" + str(player_id)
 	label.text = player_name
 
@@ -31,17 +30,10 @@ func _physics_process(delta: float):
 	velocity = direction.normalized() * speed
 	move_and_slide()
 	
-	# Sync position
-	if multiplayer.is_server():
-		rpc("sync_position", position)
-	else:
-		rpc_id(1, "request_sync")
+	# Sync position to all remote peers (unreliable for smooth updates)
+	rpc("sync_position", position)
 
-@rpc("authority", "call_local")
+@rpc("authority", "unreliable")
 func sync_position(pos: Vector2):
-	position = pos
-
-@rpc("any_peer", "call_local")
-func request_sync():
-	if multiplayer.is_server():
-		rpc_id(multiplayer.get_remote_sender_id(), "sync_position", position)
+	if not is_multiplayer_authority():
+		position = pos
