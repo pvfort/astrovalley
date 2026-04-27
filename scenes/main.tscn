@@ -1,31 +1,24 @@
 [gd_scene load_steps=5 format=3 uid="uid://a1b2c3d4e5f6g7h8i9j0"]
 
-[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1"]
-[ext_resource type="Script" path="res://scripts/entities/interactable.gd" id="2"]
-[ext_resource type="Script" path="res://scripts/main.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/entities/interactable.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/pc.png" id="3"]
 
 [sub_resource type="RectangleShape2D" id="1"]
-size = Vector2(64, 64)
+size = Vector2(96, 96)
 
 [node name="Main" type="Node2D"]
-script = ExtResource("3")
+script = ExtResource("2")
 
 [node name="Players" type="Node" parent="."]
 
-[node name="Player" parent="Players" instance=ExtResource("1")]
-position = Vector2(100, 100)
-
 [node name="Telescope" type="Area2D" parent="."]
 position = Vector2(400, 300)
-script = ExtResource("2")
+script = ExtResource("1")
 resource_name = "telescope"
 
-[node name="ColorRect" type="ColorRect" parent="Telescope"]
-offset_left = -32
-offset_top = -32
-offset_right = 32
-offset_bottom = 32
-color = Color(0, 0, 1, 1)
+[node name="Sprite2D" type="Sprite2D" parent="Telescope"]
+texture = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Telescope"]
 shape = SubResource("1")
@@ -40,7 +33,7 @@ grow_vertical = 2
 layout_mode = 0
 offset_left = 10
 offset_top = 10
-offset_right = 110
+offset_right = 200
 offset_bottom = 26
 text = "Phase: morning"
 
@@ -48,7 +41,7 @@ text = "Phase: morning"
 layout_mode = 0
 offset_left = 10
 offset_top = 30
-offset_right = 110
+offset_right = 200
 offset_bottom = 46
 text = "Player: Player1"
 
@@ -56,6 +49,16 @@ text = "Player: Player1"
 layout_mode = 0
 offset_left = 10
 offset_top = 50
-offset_right = 110
+offset_right = 200
 offset_bottom = 66
 text = "Task: none"
+
+[node name="InteractionPrompt" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 490
+offset_top = 650
+offset_right = 790
+offset_bottom = 670
+text = "Press E to interact"
+horizontal_alignment = 1
+visible = false
