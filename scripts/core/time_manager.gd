@@ -20,9 +20,6 @@ func _ready():
 	var config = load_json("res://data/config.json")
 	if config and config.has("phase_duration"):
 		phase_duration = config["phase_duration"]
-	
-	if multiplayer.is_server():
-		start_cycle()
 
 func start_cycle():
 	timer.start(phase_duration)
@@ -33,10 +30,8 @@ func _on_phase_timeout():
 	
 	# Advance phase
 	current_phase = (current_phase + 1) % 3
-	var phase_name = get_phase_name(current_phase)
-	phase_changed.emit(phase_name)
 	
-	# Sync to clients
+	# Sync to clients (call_local ensures server also emits phase_changed)
 	rpc("sync_phase", current_phase)
 	
 	# Restart timer

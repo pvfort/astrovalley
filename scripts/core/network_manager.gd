@@ -19,6 +19,7 @@ func host_game(port: int = 4242) -> bool:
 		multiplayer.multiplayer_peer = peer
 		is_host = true
 		print("Hosting game on port ", port)
+		TimeManager.start_cycle()
 		return true
 	else:
 		print("Failed to host: ", error)
