@@ -3,6 +3,8 @@ extends Node
 # ObservationSystem: Handles observation tasks
 
 func start_observe(player_id: int):
+	if not multiplayer.is_server():
+		return
 	if TaskManager.start_task(player_id, "observe"):
 		print("Player ", player_id, " started observing")
 	else:
