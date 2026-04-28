@@ -1,5 +1,8 @@
 extends Node2D
 
+const MapSystem = preload("res://scripts/map_system.gd")
+var map_system = MapSystem.new()
+
 # Main scene script
 
 @onready var phase_label: Label = $UI/PhaseLabel
@@ -27,9 +30,15 @@ func _ready():
 	spawn_player(local_id)
 
 	# Build the TileMap room
-	_create_room()
+	_create_room("outside")
 
-func _create_room():
+func _create_room(room_id: String = "outside"):
+	# Remove old room elements
+	for child in get_children():
+		if child.name == "Room" or child.name.begins_with("DoorZone_"):
+			child.queue_free()
+
+	# Create TileSet
 	var tileset = TileSet.new()
 	tileset.tile_size = Vector2i(64, 64)
 
@@ -37,6 +46,8 @@ func _create_room():
 		load("res://assets/tilesets/floor_tile.png"),
 		load("res://assets/tilesets/wall.png"),
 		load("res://assets/tilesets/door.png"),
+		load("res://assets/tilesets/window.png"),
+		load("res://assets/tilesets/wood_floor.png")
 	]
 	for i in textures.size():
 		var src = TileSetAtlasSource.new()
@@ -49,14 +60,17 @@ func _create_room():
 	tilemap.name = "Room"
 	tilemap.tile_set = tileset
 
-	# Room: 12 columns × 9 rows of 64 px tiles (768 × 576 px)
-	const W = 12
-	const H = 9
+	var room_def = map_system.load_room(room_id)
+	var W = room_def["width"]
+	var H = room_def["height"]
+	var is_wood = room_def["wood_floor"]
+	
+	var floor_id = 4 if is_wood else 0
 
 	# Floor tiles (interior)
 	for x in range(1, W - 1):
 		for y in range(1, H - 1):
-			tilemap.set_cell(0, Vector2i(x, y), 0, Vector2i(0, 0))
+			tilemap.set_cell(0, Vector2i(x, y), floor_id, Vector2i(0, 0))
 
 	# Wall tiles (perimeter)
 	for x in range(W):
@@ -66,11 +80,43 @@ func _create_room():
 		tilemap.set_cell(0, Vector2i(0, y), 1, Vector2i(0, 0))
 		tilemap.set_cell(0, Vector2i(W - 1, y), 1, Vector2i(0, 0))
 
-	# Door tile (bottom wall, centre column) — use explicit integer division
-	tilemap.set_cell(0, Vector2i(W // 2, H - 1), 2, Vector2i(0, 0))
+	# Door tiles
+	for door in room_def["doors"]:
+		var pos = door["pos"]
+		tilemap.set_cell(0, pos, 2, Vector2i(0, 0))
+		# Create an area2D for the door trigger
+		var door_area = Area2D.new()
+		door_area.name = "DoorZone_" + door["dest"]
+		
+		# Allow player to collide with door area
+		door_area.collision_layer = 1
+		door_area.collision_mask = 1 
+		
+		var shape = CollisionShape2D.new()
+		var rect = RectangleShape2D.new()
+		rect.size = Vector2(60, 60)
+		shape.shape = rect
+		door_area.position = Vector2(pos.x * 64 + 32, pos.y * 64 + 32)
+		door_area.add_child(shape)
+		
+		door_area.body_entered.connect(_on_door_entered.bind(door["dest"]))
+		add_child(door_area)
 
 	add_child(tilemap)
 	move_child(tilemap, 0)
+
+func _on_door_entered(body: Node2D, dest: String):
+	if body is CharacterBody2D and body.is_multiplayer_authority():
+		rpc("change_room", dest)
+
+@rpc("call_local", "reliable")
+func change_room(dest: String):
+	_create_room(dest)
+	# Center players slightly
+	for player in players_node.get_children():
+		if player is CharacterBody2D:
+			player.position = Vector2(100 + player.player_id * 50, 100)
+
 
 func spawn_player(id: int):
 	var player_scene = load("res://scenes/player.tscn")
