@@ -127,6 +127,13 @@ func spawn_player(id: int):
 	players_node.add_child(player)
 	player.set_multiplayer_authority(id)
 
+	var camera := player.get_node_or_null("FollowCamera") as Camera2D
+	if camera != null:
+		if id == multiplayer.get_unique_id():
+			camera.make_current()
+		else:
+			camera.enabled = false
+
 func _on_player_connected(id: int):
 	spawn_player(id)
 

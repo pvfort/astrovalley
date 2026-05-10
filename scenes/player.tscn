@@ -148,6 +148,10 @@ shape = SubResource("RectangleShape2D_60kqq")
 sprite_frames = SubResource("SpriteFrames_72n5h")
 animation = &"walk_left"
 
+[node name="FollowCamera" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
 [node name="InventoryUI" type="Control" parent="." unique_id=323026189]
 layout_mode = 3
 anchors_preset = 0
