@@ -16,6 +16,10 @@ A modular multiplayer framework for 2D pixel-art games using Godot 4.x.
 - `/scripts/core`: Core managers (autoloads)
 - `/scripts/systems`: Gameplay systems
 - `/scripts/entities`: Game entities
+- `/scenes/player`: Modular player scene
+- `/scenes/ui`: Reusable inventory/hotbar UI scenes
+- `/scenes/world`: Reusable interactable world scenes
+- `/autoload`: Global gameplay state managers
 - `/assets`: Placeholder assets
 - `/data`: Configuration and task data
 
@@ -40,7 +44,8 @@ A modular multiplayer framework for 2D pixel-art games using Godot 4.x.
 ### Controls
 
 - Arrow keys or WASD: Move
-- Space: Interact with objects (e.g., telescope)
+- E: Interact
+- Tab / I: Toggle inventory
 
 ### MVP Features
 

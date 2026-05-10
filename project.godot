@@ -25,7 +25,8 @@ NetworkManager="*res://scripts/core/network_manager.gd"
 TimeManager="*res://scripts/core/time_manager.gd"
 TaskManager="*res://scripts/core/task_manager.gd"
 ObservationSystem="*res://scripts/systems/observation_system.gd"
-InventoryManager="*uid://deywmh2l7jdxm"
+InventoryManager="*res://autoload/InventoryManager.gd"
+PlayerData="*res://autoload/PlayerData.gd"
 
 [display]
 
@@ -107,6 +108,12 @@ ui_end={
 interact={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":69,"physical_keycode":69,"key_label":0,"unicode":101,"location":0,"echo":false,"script":null)
+]
+}
+inventory_toggle={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194308,"physical_keycode":4194308,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":73,"physical_keycode":73,"key_label":0,"unicode":105,"location":0,"echo":false,"script":null)
 ]
 }
 

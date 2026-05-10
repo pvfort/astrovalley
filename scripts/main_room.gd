@@ -1,10 +1,11 @@
 extends Node2D
 
 @export var room_path: String
+@export var player_scene: PackedScene = preload("res://scenes/player/Player.tscn")
 
 @onready var level0 = $Level0
 @onready var level1 = $Level1
-@onready var player = $Player
+@onready var player_spawn: Marker2D = get_node_or_null("PlayerSpawn")
 
 @onready var levels = [
 	$Level0,
@@ -13,6 +14,7 @@ extends Node2D
 
 var current_level: int = 0
 var is_transitioning: bool = false
+var player: CharacterBody2D = null
 
 func _ready():
 	add_to_group("main_room")
@@ -23,6 +25,7 @@ func _ready():
 
 	var data = load_room(room_path)
 	build_levels(data)
+	_spawn_player()
 
 	set_current_level(0)
 
@@ -78,7 +81,8 @@ func set_current_level(lvl: int) -> void:
 	current_level = lvl
 
 	if player != null:
-		player.current_level = lvl
+		if player.has_method("set_current_level"):
+			player.set_current_level(lvl)
 
 	for i in range(levels.size()):
 		var active = (i == lvl)
@@ -105,3 +109,24 @@ func change_level(to_level: int, target_pos: Vector2i) -> void:
 	await get_tree().create_timer(0.2).timeout
 
 	is_transitioning = false
+
+
+func _spawn_player() -> void:
+	if player != null:
+		return
+	if player_scene == null:
+		push_error("No player scene configured on MainRoom")
+		return
+
+	var spawned_player = player_scene.instantiate()
+	if not (spawned_player is CharacterBody2D):
+		push_error("Configured player scene must inherit CharacterBody2D")
+		spawned_player.queue_free()
+		return
+
+	player = spawned_player
+	player.name = "Player"
+	add_child(player)
+
+	if player_spawn != null:
+		player.global_position = player_spawn.global_position

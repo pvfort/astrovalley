@@ -20,6 +20,7 @@ const WALL_TOP_TERRAIN_ID    = 1   # <-- your mirrored tiles
 
 const DOOR_ATLAS_COORDS  = Vector2i(0, 2)
 const STAIR_ATLAS_COORDS = Vector2i(2, 7)
+const DOOR_INTERACTABLE_SCENE = preload("res://scenes/world/DoorInteractable.tscn")
 
 const TILE_SIZE = 32
 
@@ -43,6 +44,7 @@ func build_level(data: Dictionary) -> void:
 	print("Building level:", level_index)
 
 	tilemap.clear()
+	_clear_door_interactables()
 
 	var size = Vector2i(data["size"][0], data["size"][1])
 
@@ -128,6 +130,28 @@ func build_level(data: Dictionary) -> void:
 						0,
 						DOOR_ATLAS_COORDS + Vector2i(0, -1)
 					)
+					_create_door_interactable(pos)
+
+
+func _clear_door_interactables() -> void:
+	var container := get_node_or_null("Doors")
+	if container == null:
+		container = Node2D.new()
+		container.name = "Doors"
+		add_child(container)
+
+	for child in container.get_children():
+		child.queue_free()
+
+
+func _create_door_interactable(pos: Vector2i) -> void:
+	var container := get_node("Doors")
+	var door := DOOR_INTERACTABLE_SCENE.instantiate()
+	var world_pos := tilemap.to_global(tilemap.map_to_local(pos))
+	door.global_position = world_pos
+	door.door_tile_position = pos
+	door.door_id = "level_%d_%d_%d" % [level_index, pos.x, pos.y]
+	container.add_child(door)
 
 
 # --------------------------------------------------
