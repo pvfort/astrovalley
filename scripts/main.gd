@@ -131,8 +131,6 @@ func spawn_player(id: int):
 	if camera != null:
 		if id == multiplayer.get_unique_id():
 			camera.make_current()
-		else:
-			camera.enabled = false
 
 func _on_player_connected(id: int):
 	spawn_player(id)
