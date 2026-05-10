@@ -15,6 +15,8 @@ const OFFICES_PER_ROW := 9
 const INSTITUTE_DOOR_ROWS := 2
 const OFFICE_WIDTH := 10
 const OFFICE_HEIGHT := 8
+const INSTITUTE_DOOR_X_OFFSET := 3
+const INSTITUTE_DOOR_X_SPACING := 2
 
 func _init() -> void:
 	_build_room_defs()
@@ -30,6 +32,10 @@ func _build_room_defs() -> void:
 	for office_number in range(FIRST_OFFICE_NUMBER, LAST_OFFICE_NUMBER + 1):
 		office_numbers.append(office_number)
 
+	if INSTITUTE_DOOR_ROWS != 2:
+		push_error("INSTITUTE_DOOR_ROWS must be 2 (top and bottom walls)")
+		return
+
 	var max_offices_supported := OFFICES_PER_ROW * INSTITUTE_DOOR_ROWS
 	if office_numbers.size() > max_offices_supported:
 		push_error("Institute supports up to %d office doors, requested %d" % [max_offices_supported, office_numbers.size()])
@@ -38,7 +44,7 @@ func _build_room_defs() -> void:
 	for i in range(office_numbers.size()):
 		var office_number = office_numbers[i]
 		var office_id = "office_%d" % office_number
-		var door_x = 3 + (i % OFFICES_PER_ROW) * 2
+		var door_x = INSTITUTE_DOOR_X_OFFSET + (i % OFFICES_PER_ROW) * INSTITUTE_DOOR_X_SPACING
 		var door_y = 0 if i < OFFICES_PER_ROW else institute_height - 1
 
 		institute_doors.append({
@@ -51,7 +57,7 @@ func _build_room_defs() -> void:
 			"height": OFFICE_HEIGHT,
 			"wood_floor": true,
 			"doors": [{
-				"pos": Vector2i(OFFICE_WIDTH / 2, OFFICE_HEIGHT - 1),
+				"pos": Vector2i(floori(float(OFFICE_WIDTH) / 2.0), OFFICE_HEIGHT - 1),
 				"dest": INSTITUTE_ROOM_ID
 			}]
 		}
