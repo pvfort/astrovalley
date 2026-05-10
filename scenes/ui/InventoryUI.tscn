@@ -1,0 +1,183 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/inventory_ui.gd" id="1_inventory_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/Hotbar.tscn" id="2_hotbar"]
+
+[node name="InventoryUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_inventory_ui")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="TopBarPanel" type="PanelContainer" parent="MarginContainer/Layout"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Layout/TopBarPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="TopBar" type="HBoxContainer" parent="MarginContainer/Layout/TopBarPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="InventoryTabButton" type="Button" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+text = "Inventory"
+
+[node name="PlayerPortrait" type="TextureRect" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(40, 40)
+texture = preload("res://assets/sprites/character.png")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerName" type="Label" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+text = "Player"
+
+[node name="LevelTitle" type="Label" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+text = "Lv.1 Graduate Researcher"
+
+[node name="Spacer" type="Control" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FundsLabel" type="Label" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+text = "Funds: $0"
+
+[node name="ThesisButton" type="Button" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+text = "Thesis"
+
+[node name="SortButton" type="Button" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+text = "Sort"
+
+[node name="CloseButton" type="Button" parent="MarginContainer/Layout/TopBarPanel/MarginContainer/TopBar"]
+layout_mode = 2
+text = "Close"
+
+[node name="MainInventoryPanel" type="PanelContainer" parent="MarginContainer/Layout"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Layout/MainInventoryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="MainRow" type="HBoxContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="CharacterPanel" type="PanelContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn/CharacterPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn/CharacterPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Portrait" type="TextureRect" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn/CharacterPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(96, 96)
+texture = preload("res://assets/sprites/character.png")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TooltipLabel" type="Label" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn/CharacterPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Hover top bar title for details"
+
+[node name="EquipmentPanel" type="PanelContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn/EquipmentPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="EquipmentGrid" type="GridContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/LeftColumn/EquipmentPanel/MarginContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="RightColumn" type="VBoxContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="InventoryPanel" type="PanelContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/RightColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/RightColumn/InventoryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="InventoryGrid" type="GridContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/RightColumn/InventoryPanel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 6
+
+[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/RightColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TrashLabel" type="Label" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/RightColumn/BottomRow"]
+layout_mode = 2
+text = "Trash"
+
+[node name="TrashSlot" type="PanelContainer" parent="MarginContainer/Layout/MainInventoryPanel/MarginContainer/MainRow/RightColumn/BottomRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 80)
+
+[node name="Hotbar" parent="MarginContainer/Layout" instance=ExtResource("2_hotbar")]
+layout_mode = 2
