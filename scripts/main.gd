@@ -30,9 +30,9 @@ func _ready():
 	spawn_player(local_id)
 
 	# Build the TileMap room
-	_create_room("outside")
+	_create_room("institute")
 
-func _create_room(room_id: String = "outside"):
+func _create_room(room_id: String = "institute"):
 	# Remove old room elements
 	for child in get_children():
 		if child.name == "Room" or child.name.begins_with("DoorZone_"):
