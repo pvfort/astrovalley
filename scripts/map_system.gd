@@ -11,6 +11,7 @@ var room_defs: Dictionary = {}
 const INSTITUTE_ROOM_ID := "institute"
 const FIRST_OFFICE_NUMBER := 101
 const LAST_OFFICE_NUMBER := 118
+const OFFICES_PER_ROW := 9
 
 func _init() -> void:
 	_build_room_defs()
@@ -29,8 +30,8 @@ func _build_room_defs() -> void:
 	for i in range(office_numbers.size()):
 		var office_number = office_numbers[i]
 		var office_id = "office_%d" % office_number
-		var door_x = 3 + (i % 9) * 2
-		var door_y = 0 if i < 9 else institute_height - 1
+		var door_x = 3 + (i % OFFICES_PER_ROW) * 2
+		var door_y = 0 if i < OFFICES_PER_ROW else institute_height - 1
 
 		institute_doors.append({
 			"pos": Vector2i(door_x, door_y),
