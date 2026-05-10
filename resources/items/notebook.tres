@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_item")
 id = &"notebook"
-name = "Notebook"
+display_name = "Notebook"
 icon = ExtResource("2_icon")
-category = "research"
+item_category = "research"
 description = "Field notes, equations, and coffee stains from this semester's project."
 max_stack_size = 50

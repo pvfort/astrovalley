@@ -18,7 +18,7 @@ var current_interactable: Interactable = null
 func _ready() -> void:
     add_to_group("player")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
     if is_moving:
         _move_towards_target()
     else:
@@ -132,8 +132,8 @@ func _get_nearest_interactable() -> Interactable:
         return null
 
     var best: Interactable = null
-    var best_priority := -INF
-    var best_distance := INF
+    var best_priority: float = 0.0
+    var best_distance: float = 0.0
 
     for area in overlapping:
         if not (area is Interactable):
@@ -146,7 +146,13 @@ func _get_nearest_interactable() -> Interactable:
         var priority := float(interactable.interaction_priority)
         var distance := global_position.distance_squared_to(interactable.global_position)
 
-        if best == null or priority > best_priority or (is_equal_approx(priority, best_priority) and distance < best_distance):
+        if best == null:
+            best = interactable
+            best_priority = priority
+            best_distance = distance
+            continue
+
+        if priority > best_priority or (priority == best_priority and distance < best_distance):
             best = interactable
             best_priority = priority
             best_distance = distance
@@ -154,17 +160,13 @@ func _get_nearest_interactable() -> Interactable:
     return best
 
 func _handle_interaction_input() -> void:
-    var interactable := _get_nearest_interactable()
+    var interactable := current_interactable
     if interactable != null:
         interactable.interact(self)
         return
 
     if InventoryManager != null:
         InventoryManager.toggle_inventory()
-
-# Compatibility hooks for level/stair systems.
-func set_level(lvl: int) -> void:
-    set_current_level(lvl)
 
 func set_current_level(lvl: int) -> void:
     current_level = lvl

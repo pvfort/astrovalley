@@ -11,10 +11,10 @@ const EQUIPMENT_SLOT_ORDER: Array[StringName] = [&"head", &"body", &"accessory",
 var inventory: Array[Variant] = []
 var hotbar: Array[Variant] = []
 var equipped: Dictionary = {
-    "head": null,
-    "body": null,
-    "accessory": null,
-    "tool": null,
+    &"head": null,
+    &"body": null,
+    &"accessory": null,
+    &"tool": null,
 }
 
 var funds: int = 250:
@@ -40,10 +40,14 @@ func _load_placeholder_items() -> void:
         "res://resources/items/observatory_keycard.tres",
     ]
 
-    for i in range(min(starter_items.size(), hotbar.size())):
+    for i in range(min(starter_items.size(), inventory.size())):
         var item := load(starter_items[i])
         if item != null:
-            hotbar[i] = {"item": item, "count": 1}
+            inventory[i] = {"item": item, "count": 1}
+
+    # Mirror the first inventory slots into the hotbar at startup.
+    for i in range(hotbar.size()):
+        hotbar[i] = inventory[i].duplicate(true) if i < inventory.size() and inventory[i] != null else null
 
 func toggle_inventory() -> void:
     set_inventory_open(not inventory_open)
@@ -79,13 +83,15 @@ func sort_inventory() -> void:
             filled.append(slot)
 
     filled.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-        var item_a: ItemData = a.get("item")
-        var item_b: ItemData = b.get("item")
-        var category_a: String = item_a.category if item_a != null else ""
-        var category_b: String = item_b.category if item_b != null else ""
+        var raw_item_a: Variant = a.get("item")
+        var raw_item_b: Variant = b.get("item")
+        var item_a: ItemData = raw_item_a if raw_item_a is ItemData else null
+        var item_b: ItemData = raw_item_b if raw_item_b is ItemData else null
+        var category_a: String = item_a.item_category if item_a != null else ""
+        var category_b: String = item_b.item_category if item_b != null else ""
         if category_a == category_b:
-            var name_a: String = item_a.name if item_a != null else ""
-            var name_b: String = item_b.name if item_b != null else ""
+            var name_a: String = item_a.display_name if item_a != null else ""
+            var name_b: String = item_b.display_name if item_b != null else ""
             return name_a < name_b
         return category_a < category_b
     )

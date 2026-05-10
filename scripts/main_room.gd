@@ -112,12 +112,16 @@ func change_level(to_level: int, target_pos: Vector2i) -> void:
 
 
 func _spawn_player() -> void:
-	if player != null or player_scene == null:
+	if player != null:
+		return
+	if player_scene == null:
+		push_error("No player scene configured on MainRoom")
 		return
 
 	var spawned_player = player_scene.instantiate()
 	if not (spawned_player is CharacterBody2D):
 		push_error("Configured player scene must inherit CharacterBody2D")
+		spawned_player.queue_free()
 		return
 
 	player = spawned_player

@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_item")
 id = &"hard_drive"
-name = "Hard Drive"
+display_name = "Hard Drive"
 icon = ExtResource("2_icon")
-category = "equipment"
+item_category = "equipment"
 description = "Stores raw observatory captures and simulation outputs."
 max_stack_size = 5

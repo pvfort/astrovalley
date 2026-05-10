@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_item")
 id = &"coffee"
-name = "Coffee"
+display_name = "Coffee"
 icon = ExtResource("2_icon")
-category = "consumable"
+item_category = "consumable"
 description = "A strong campus brew that keeps your late-night observing run alive."
 max_stack_size = 20

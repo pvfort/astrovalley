@@ -13,5 +13,6 @@ func set_slot_data(slot_data: Variant) -> void:
         icon_rect.texture = null
         return
 
-    var item: ItemData = slot_data.get("item")
+    var raw_item: Variant = slot_data.get("item")
+    var item: ItemData = raw_item if raw_item is ItemData else null
     icon_rect.texture = item.icon if item != null else null

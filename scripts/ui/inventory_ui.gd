@@ -25,11 +25,6 @@ func _ready() -> void:
     _refresh_funds(InventoryManager.funds)
     _set_inventory_open(InventoryManager.inventory_open)
 
-func _unhandled_input(event: InputEvent) -> void:
-    if event.is_action_pressed("inventory_toggle"):
-        InventoryManager.toggle_inventory()
-        get_viewport().set_input_as_handled()
-
 func _bind_signals() -> void:
     inventory_tab_button.pressed.connect(func() -> void: InventoryManager.toggle_inventory())
     close_button.pressed.connect(func() -> void: InventoryManager.set_inventory_open(false))
@@ -39,8 +34,7 @@ func _bind_signals() -> void:
     InventoryManager.inventory_open_changed.connect(_set_inventory_open)
     InventoryManager.inventory_changed.connect(_refresh_inventory)
     InventoryManager.funds_changed.connect(_refresh_funds)
-    if PlayerData != null:
-        PlayerData.player_profile_changed.connect(_refresh_player_profile)
+    PlayerData.player_profile_changed.connect(_refresh_player_profile)
 
 func _build_inventory_grid() -> void:
     if inventory_grid.get_child_count() > 0:
@@ -59,8 +53,6 @@ func _build_equipment_grid() -> void:
         equipment_grid.add_child(slot)
 
 func _refresh_player_profile() -> void:
-    if PlayerData == null:
-        return
     player_name_label.text = PlayerData.player_name
     player_portrait.texture = PlayerData.portrait
     level_title_label.text = "Lv.%d %s" % [PlayerData.player_level, PlayerData.player_title]

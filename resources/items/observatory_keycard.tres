@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_item")
 id = &"observatory_keycard"
-name = "Observatory Keycard"
+display_name = "Observatory Keycard"
 icon = ExtResource("2_icon")
-category = "key_item"
+item_category = "key_item"
 description = "Access credential for restricted domes, labs, and equipment lockers."
 max_stack_size = 1

@@ -6,8 +6,7 @@ extends Control
 
 func _ready() -> void:
     _build_slots()
-    if InventoryManager != null:
-        InventoryManager.inventory_changed.connect(_refresh_hotbar)
+    InventoryManager.inventory_changed.connect(_refresh_hotbar)
     _refresh_hotbar()
 
 func _build_slots() -> void:
