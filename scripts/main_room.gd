@@ -104,6 +104,8 @@ func change_level(to_level: int, target_pos: Vector2i) -> void:
 		var tilemap = levels[to_level].tilemap
 		var world_pos = tilemap.to_global(tilemap.map_to_local(target_pos))
 		player.global_position = world_pos
+		player.target_position = world_pos
+		player.is_moving = false
 
 	# small delay before allowing next transition
 	await get_tree().create_timer(0.2).timeout
