@@ -1,17 +1,253 @@
 [gd_scene format=3 uid="uid://office"]
 
-[ext_resource type="TileSet" path="res://assets/tilesets/" id="1_7u3ga"]
+[ext_resource type="Texture2D" uid="uid://ctyqpvw516otm" path="res://assets/tilesets/tileset.png" id="1_7u3ga"]
+[ext_resource type="Texture2D" uid="uid://fwb88dd35oo7" path="res://assets/tilesets/door.png" id="1_xqdx7"]
+[ext_resource type="Texture2D" uid="uid://ca4d4c4fah4im" path="res://assets/tilesets/floor_tile.png" id="2_lo2sq"]
+[ext_resource type="Texture2D" uid="uid://cfyljh5buuw10" path="res://assets/sprites/chair3.png" id="3_tbuwq"]
+[ext_resource type="Texture2D" uid="uid://cm356do6tk6bo" path="res://assets/sprites/chair.png" id="4_5mkqp"]
+[ext_resource type="Texture2D" uid="uid://chunxd4fns534" path="res://assets/sprites/character.png" id="5_uqbs0"]
+[ext_resource type="Texture2D" uid="uid://cssve506iofex" path="res://assets/sprites/coffee.png" id="6_3ladl"]
+[ext_resource type="Texture2D" uid="uid://cipqja6tfhno4" path="res://assets/sprites/cupboard_sheet.png" id="7_s1sku"]
+[ext_resource type="Texture2D" uid="uid://cef256hw4xlg" path="res://assets/sprites/desk.png" id="8_rh7ua"]
+[ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="9_eonrt"]
+[ext_resource type="Texture2D" uid="uid://mrn6rmmpu54s" path="res://assets/sprites/pc_sheet.png" id="10_v6tx4"]
+[ext_resource type="Texture2D" uid="uid://ccpmig1ywv6is" path="res://assets/sprites/plant.png" id="11_7ws2u"]
+[ext_resource type="Texture2D" uid="uid://dh3roc04a22pl" path="res://assets/sprites/poster.png" id="12_gdy2p"]
+[ext_resource type="Texture2D" uid="uid://cy2vjm8ueuop1" path="res://assets/sprites/sofa.png" id="14_acku1"]
+[ext_resource type="Texture2D" uid="uid://b2dnxoj4q0ffm" path="res://assets/sprites/table-sheet.png" id="15_m8n2p"]
+[ext_resource type="Texture2D" uid="uid://bhus2gf61cyfa" path="res://assets/sprites/table.png" id="16_hijqm"]
+[ext_resource type="Texture2D" uid="uid://dc1tqu2i2gjnv" path="res://assets/tilesets/wall.png" id="17_owjit"]
+[ext_resource type="Texture2D" uid="uid://dgxcjjoqornpx" path="res://assets/tilesets/wall_outer.png" id="17_tbuwq"]
+[ext_resource type="Texture2D" uid="uid://cct76ecs3wo16" path="res://assets/tilesets/window copy.png" id="18_5mkqp"]
+[ext_resource type="Texture2D" uid="uid://dbjdtnlwxgq12" path="res://assets/tilesets/walls-sheet.png" id="18_qbui1"]
+[ext_resource type="Texture2D" uid="uid://bo31nbdnbidur" path="res://assets/tilesets/window.png" id="19_fdbsw"]
+[ext_resource type="Texture2D" uid="uid://bsk44e3jn5sho" path="res://assets/tilesets/wood_floor.png" id="20_dk4jr"]
+[ext_resource type="Texture2D" uid="uid://blk02wne5qwcg" path="res://assets/sprites/armchair.png" id="21_iha45"]
+[ext_resource type="Texture2D" uid="uid://l4pi3i0m1ek4" path="res://assets/sprites/bookshelf_sheet.png" id="22_sca1l"]
+[ext_resource type="Texture2D" uid="uid://bq1o1qo4tf07p" path="res://assets/sprites/chair2.png" id="23_x67aj"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_stp7f"]
+texture = ExtResource("1_xqdx7")
+texture_region_size = Vector2i(32, 32)
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0dtiq"]
+texture = ExtResource("2_lo2sq")
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ki55u"]
+texture = ExtResource("3_tbuwq")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xrm5t"]
+texture = ExtResource("4_5mkqp")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lds8i"]
+texture = ExtResource("5_uqbs0")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ams14"]
+texture = ExtResource("6_3ladl")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_atlvo"]
+texture = ExtResource("7_s1sku")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ygqa2"]
+texture = ExtResource("8_rh7ua")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w4egv"]
+texture = ExtResource("9_eonrt")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pq2ho"]
+texture = ExtResource("10_v6tx4")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f3gjn"]
+texture = ExtResource("11_7ws2u")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_khkvx"]
+texture = ExtResource("12_gdy2p")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k2vvm"]
+texture = ExtResource("1_7u3ga")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3euwq"]
+texture = ExtResource("14_acku1")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i26gq"]
+texture = ExtResource("15_m8n2p")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pf7b0"]
+texture = ExtResource("16_hijqm")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uqbs0"]
+texture = ExtResource("17_tbuwq")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3ladl"]
+texture = ExtResource("18_5mkqp")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eh07h"]
+texture = ExtResource("17_owjit")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gjy85"]
+texture = ExtResource("18_qbui1")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+5:0/0 = 0
+7:0/0 = 0
+9:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+5:1/0 = 0
+7:1/0 = 0
+9:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bq8ap"]
+texture = ExtResource("19_fdbsw")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qjpol"]
+texture = ExtResource("20_dk4jr")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p22m3"]
+texture = ExtResource("21_iha45")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nhybo"]
+texture = ExtResource("22_sca1l")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rrfyh"]
+texture = ExtResource("23_x67aj")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_5r0r5"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_stp7f")
+sources/1 = SubResource("TileSetAtlasSource_0dtiq")
+sources/2 = SubResource("TileSetAtlasSource_k2vvm")
+sources/3 = SubResource("TileSetAtlasSource_eh07h")
+sources/4 = SubResource("TileSetAtlasSource_gjy85")
+sources/5 = SubResource("TileSetAtlasSource_bq8ap")
+sources/6 = SubResource("TileSetAtlasSource_qjpol")
+sources/7 = SubResource("TileSetAtlasSource_p22m3")
+sources/8 = SubResource("TileSetAtlasSource_nhybo")
+sources/9 = SubResource("TileSetAtlasSource_rrfyh")
+sources/10 = SubResource("TileSetAtlasSource_ki55u")
+sources/11 = SubResource("TileSetAtlasSource_xrm5t")
+sources/12 = SubResource("TileSetAtlasSource_lds8i")
+sources/13 = SubResource("TileSetAtlasSource_ams14")
+sources/14 = SubResource("TileSetAtlasSource_atlvo")
+sources/15 = SubResource("TileSetAtlasSource_ygqa2")
+sources/16 = SubResource("TileSetAtlasSource_w4egv")
+sources/17 = SubResource("TileSetAtlasSource_pq2ho")
+sources/18 = SubResource("TileSetAtlasSource_f3gjn")
+sources/19 = SubResource("TileSetAtlasSource_khkvx")
+sources/20 = SubResource("TileSetAtlasSource_3euwq")
+sources/21 = SubResource("TileSetAtlasSource_i26gq")
+sources/22 = SubResource("TileSetAtlasSource_pf7b0")
+sources/23 = SubResource("TileSetAtlasSource_uqbs0")
+sources/24 = SubResource("TileSetAtlasSource_3ladl")
 
 [node name="Office" type="Node2D" unique_id=549017310]
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1858747510]
-tile_set = ExtResource("1_7u3ga")
+position = Vector2(-33, 0)
+tile_set = SubResource("TileSet_5r0r5")
+rendering_quadrant_size = 32
 format = 2
 layer_0/name = "Floor"
-layer_0/tile_data = PackedInt32Array(65537, 10, 0, 131073, 10, 0, 196609, 10, 0, 262145, 10, 0, 262146, 10, 0, 262147, 10, 0, 262148, 10, 0, 327681, 10, 0, 327682, 10, 0, 327683, 10, 0, 327684, 10, 0, 327685, 10, 0, 327686, 10, 0, 327687, 10, 0, 262151, 10, 0, 196615, 10, 0, 131079, 10, 0, 65543, 10, 0, 65542, 10, 0, 65541, 10, 0, 65540, 10, 0, 65538, 10, 0, 65539, 10, 0, 131075, 10, 0, 131074, 10, 0, 196610, 10, 0, 196611, 10, 0, 196612, 10, 0, 131076, 10, 0, 131077, 10, 0, 196613, 10, 0, 262150, 10, 0, 196614, 10, 0, 131078, 10, 0, 262149, 10, 0, 0, 8, 0, 65536, 8, 0, 131072, 8, 0, 196608, 8, 0, 262144, 8, 0, 327680, 8, 0, 393216, 8, 0, 1, 8, 0, 393217, 9, 0, 2, 6, 0, 393218, 9, 0, 3, 8, 0, 393219, 9, 0, 4, 8, 0, 393220, 9, 0, 5, 8, 0, 393221, 9, 0, 6, 8, 0, 393222, 9, 0, 7, 8, 0, 393223, 9, 0, 8, 8, 0, 65544, 8, 0, 131080, 8, 0, 196616, 8, 0, 262152, 8, 0, 327688, 8, 0, 393224, 8, 0)
+layer_0/tile_data = PackedInt32Array(196609, 6, 0, 262145, 6, 0, 262146, 6, 0, 262147, 6, 0, 262148, 6, 0, 327681, 6, 0, 327682, 6, 0, 327683, 6, 0, 327684, 6, 0, 327685, 6, 0, 327686, 6, 0, 327687, 6, 0, 262151, 6, 0, 196615, 6, 0, 131079, 6, 0, 65543, 6, 0, 65542, 6, 0, 65541, 6, 0, 65540, 6, 0, 65538, 6, 0, 65539, 6, 0, 131075, 6, 0, 131074, 6, 0, 196610, 6, 0, 196611, 6, 0, 196612, 6, 0, 131076, 6, 0, 131077, 6, 0, 196613, 6, 0, 262150, 6, 0, 196614, 6, 0, 131078, 6, 0, 262149, 6, 0, 131073, 6, 0, 65537, 6, 0, 0, 23, 0, 8, 23, 268435456)
 layer_1/name = "Furniture"
 layer_1/z_index = 1
-layer_1/tile_data = PackedInt32Array(65537, 16, 0, 131073, 16, 0, 196609, 16, 0, 262145, 16, 0, 327681, 16, 0, 327682, 16, 0, 327683, 16, 0, 327684, 16, 0, 327685, 16, 0, 327686, 16, 0, 327687, 16, 0, 262151, 16, 0, 196615, 16, 0, 131079, 16, 0, 65543, 16, 0, 65540, 16, 0, 65541, 16, 0, 65542, 16, 0, 262148, 13, 0, 262150, 12, 0, 131077, 14, 0, 262146, 12, 268435456, 131074, 12, 268435456)
+layer_1/tile_data = PackedInt32Array(65539, 65557, 0, 65540, 65557, 0, 65541, 65557, 0, 65542, 65557, 0, 65543, 131093, 0, 131079, 262165, 0, 196615, 262165, 0, 262151, 262165, 0, 327687, 196629, 0, 327686, 65557, 0, 327685, 65557, 0, 327684, 65557, 0, 327683, 65557, 0, 327682, 65557, 0, 327681, 196629, 268435456, 262145, 262165, 268435456, 196609, 262165, 268435456, 131073, 262165, 268435456, 65537, 262165, 268435456, 131076, 11, 0, 262150, 9, 0, 262147, 10, 0, 262146, 9, 268435456, 131074, 9, 268435456)
 layer_2/name = "Items"
-layer_2/z_index = 2
-layer_2/tile_data = PackedInt32Array(262145, 17, 0, 131073, 17, 0, 65541, 17, 0, 262151, 17, 0, 327684, 17, 0, 196609, 15, 0, 131079, 15, 0, 327685, 15, 0)
+layer_2/z_index = 4
+layer_2/tile_data = PackedInt32Array(327687, 18, 0, 262145, 65553, 0, 131073, 65553, 0, 327683, 131089, 0, 262151, 65553, 268435456, 4, 65550, 0, 196615, 14, 268435456, 327682, 131086, 0, 327681, 13, 0, 65540, 17, 0)
+layer_3/name = "Walls"
+layer_3/z_index = 4
+layer_3/tile_data = PackedInt32Array(6, 4, 0, 5, 4, 0, 4, 4, 0, 3, 4, 0, 1, 4, 0, 2, 0, 0, 7, 4, 0)
+layer_4/name = "Top Furniture"
+layer_4/z_index = 6
+layer_4/tile_data = PackedInt32Array(4, 65550, 0, 65536, 196612, 0, 131072, 196612, 0, 196608, 196612, 0, 262144, 196612, 0, 327688, 131076, 268435456, 262152, 196612, 268435456, 196616, 196612, 268435456, 131080, 196612, 268435456, 65544, 196612, 268435456, 327680, 131076, 0, 393217, 24, 0, 393218, 24, 0, 393219, 24, 0, 393220, 24, 0, 393223, 24, 0, 393221, 24, 0, 393222, 24, 0)

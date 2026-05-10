@@ -1,2 +1,14 @@
+PanelContainer
+GridContainer
+VBoxContainer
+HBoxContainer
+Button
+TextureButton
+Label
+Panel
+Control
+AnimatedSprite2D
+Sprite2D
+CollisionShape2D
 Node2D
-TileMap
+CharacterBody2D

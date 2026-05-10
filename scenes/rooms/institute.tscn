@@ -1,3 +1,199 @@
 [gd_scene format=3 uid="uid://t11tw1pixpe8"]
 
+[ext_resource type="Script" uid="uid://c7goljwjxd1v4" path="res://scripts/room.gd" id="1_34oaq"]
+[ext_resource type="Script" uid="uid://dyi15bfasv0r2" path="res://scripts/main_room.gd" id="1_cv054"]
+[ext_resource type="TileSet" uid="uid://beuny3wkdn2oc" path="res://assets/tilesets/wall.tres" id="3_60kqq"]
+[ext_resource type="Script" uid="uid://cgt7oah76egfb" path="res://scenes/rooms/stairs.gd" id="4_dcse5"]
+[ext_resource type="Script" uid="uid://bx8aikh3gqrd6" path="res://scenes/rooms/character.gd" id="5_dcse5"]
+[ext_resource type="Texture2D" uid="uid://chunxd4fns534" path="res://assets/sprites/character.png" id="6_60kqq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60kqq"]
+resource_local_to_scene = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60kqq"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_34oaq"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cv054"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mu7xs"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rohcf"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(64, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q0r8t"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ri58"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ctdx"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hor3o"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_327f2"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4waa"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5gul"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ucwl8"]
+atlas = ExtResource("6_60kqq")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_72n5h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60kqq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_34oaq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cv054")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_34oaq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mu7xs")
+}],
+"loop": true,
+"name": &"walk_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rohcf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q0r8t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rohcf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ri58")
+}],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ctdx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hor3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ctdx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_327f2")
+}],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4waa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c5gul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4waa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ucwl8")
+}],
+"loop": true,
+"name": &"walk_up",
+"speed": 5.0
+}]
+
 [node name="Institute" type="Node2D" unique_id=1435406207]
+script = ExtResource("1_cv054")
+room_path = "res://scenes/rooms/main_room.json"
+
+[node name="Level0" type="Node2D" parent="." unique_id=1662053788]
+script = ExtResource("1_34oaq")
+room_path = "res://scenes/rooms/main_room.json"
+
+[node name="Collisions" type="Node2D" parent="Level0" unique_id=1049018796]
+
+[node name="TileMap" type="TileMap" parent="Level0" unique_id=1447278839]
+tile_set = ExtResource("3_60kqq")
+rendering_quadrant_size = 32
+format = 2
+layer_0/name = "Floor"
+layer_1/name = "Wall"
+layer_1/z_index = 1
+layer_2/name = "Wall_top"
+layer_2/z_index = 2
+layer_3/name = "Door"
+layer_3/z_index = 3
+
+[node name="Level1" type="Node2D" parent="." unique_id=1643150549]
+script = ExtResource("1_34oaq")
+room_path = "res://scenes/rooms/main_room.json"
+
+[node name="Collisions" type="Node2D" parent="Level1" unique_id=1896439708]
+
+[node name="TileMap" type="TileMap" parent="Level1" unique_id=1745565870]
+tile_set = ExtResource("3_60kqq")
+rendering_quadrant_size = 32
+format = 2
+layer_0/name = "Floor"
+layer_1/name = "Wall"
+layer_1/z_index = 1
+layer_2/name = "Wall_top"
+layer_2/z_index = 2
+layer_3/name = "Door"
+layer_3/z_index = 3
+
+[node name="Stairs" type="Node2D" parent="." unique_id=1222630043]
+script = ExtResource("4_dcse5")
+
+[node name="StairArea" type="Area2D" parent="Stairs" unique_id=73724195]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stairs/StairArea" unique_id=1540785197]
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1672753944]
+script = ExtResource("5_dcse5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1311086678]
+shape = SubResource("RectangleShape2D_60kqq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=82146321]
+sprite_frames = SubResource("SpriteFrames_72n5h")
+animation = &"walk_left"

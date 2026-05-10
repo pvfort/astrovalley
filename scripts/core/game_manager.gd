@@ -9,6 +9,7 @@ func _ready():
 	# Initialize resources
 	resources["telescope"] = {"locked": false, "by": -1}
 
+@warning_ignore("shadowed_variable_base_class")
 func add_player(id: int, name: String):
 	players[id] = {"name": name, "current_task": ""}
 

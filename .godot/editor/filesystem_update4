@@ -1,1 +1,8 @@
-res://scenes/rooms/office.tscn
+res://assets/tilesets/wall.tres
+res://scenes/player.tscn
+res://scripts/InventoryManager.gd
+res://scripts/inventory/InventoryManager.gd
+res://scripts/items/ItemData.gd
+res://scripts/ui/InventoryUI.gd
+res://scripts/ui/InventorySlot.gd
+res://scripts/ui/EquipmentSlot.gd

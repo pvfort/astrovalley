@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://47pvg8fupr7d"]
+
+[ext_resource type="Script" uid="uid://c7goljwjxd1v4" path="res://scripts/room.gd" id="1_u3ngv"]
+[ext_resource type="TileSet" uid="uid://beuny3wkdn2oc" path="res://assets/tilesets/wall.tres" id="2_ftnr0"]
+
+[node name="Office118" type="Node2D" unique_id=1059137619]
+script = ExtResource("1_u3ngv")
+room_path = "res://scenes/rooms/office_118.json"
+
+[node name="TileMap" type="TileMap" parent="." unique_id=1836926448]
+tile_set = ExtResource("2_ftnr0")
+rendering_quadrant_size = 32
+format = 2
+layer_0/name = "Floor"
+layer_1/name = "Wall"
+layer_1/z_index = 1
+layer_2/name = "Wall_top"
+layer_2/z_index = 2
+layer_3/name = "Door"
+layer_3/z_index = 3
