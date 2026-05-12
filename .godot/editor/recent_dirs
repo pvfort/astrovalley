@@ -1,6 +1,9 @@
-res://scripts/inventory/
-res://scripts/
+res://scripts/items/
 res://assets/sprites/
+res://resources/items/
+res://scripts/inventory/
+res://scripts/ui/
+res://scripts/
 res://assets/tilesets/
 /Users/lucas/Desktop/astrovalley/scenes/rooms/
 /Users/lucas/Desktop/astrovalley/assets/sprites/

@@ -119,17 +119,25 @@ func change_room(dest: String):
 
 
 func spawn_player(id: int):
-	var player_scene = load("res://scenes/player.tscn")
+
+	var player_scene = preload(
+		"res://scenes/player/Player.tscn"
+	)
+
 	var player = player_scene.instantiate()
+
 	player.name = "Player" + str(id)
+
 	player.player_id = id
-	player.position = Vector2(100 + id * 50, 100)
-	players_node.add_child(player)
+
 	player.set_multiplayer_authority(id)
 
-	var camera := player.get_node_or_null("FollowCamera") as Camera2D
-	if camera != null and id == multiplayer.get_unique_id():
-		camera.make_current()
+	player.position = Vector2(
+		100 + id * 50,
+		100
+	)
+
+	players_node.add_child(player)
 
 func _on_player_connected(id: int):
 	spawn_player(id)
@@ -165,7 +173,24 @@ func _on_task_completed(player_id: int, _task_id: String):
 		if TaskManager.get_active_task(player_id) == "":
 			task_label.text = "Task: none"
 
-func _input(event):
-	if event.is_action_pressed("interact"):
-		if telescope.interacting_player == multiplayer.get_unique_id():
-			telescope.interact()
+func spawn_room_entities(room_id: String):
+	var room_data = {
+	"entities": [
+		{"scene": "coffee_machine", "pos": Vector2(400, 200)},
+		{"scene": "fridge", "pos": Vector2(500, 200)}
+		]
+	}
+	for e in room_data["entities"]:
+		var scene = load("res://scenes/entities/" + e["scene"] + ".tscn")
+		var instance = scene.instantiate()
+		instance.global_position = e["pos"]
+		add_child(instance)
+
+func spawn_item(item_data: ItemData, position: Vector2):
+	var scene = load("res://scenes/items/ItemEntity.tscn")
+	var item = scene.instantiate()
+
+	item.set_item_data(item_data)
+	item.global_position = position
+
+	add_child(item)

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://byqfngliawsko"]
+
+[ext_resource type="Texture2D" uid="uid://mrn6rmmpu54s" path="res://assets/sprites/pc_sheet.png" id="1_koi78"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_hxq42"]
+
+[resource]
+script = ExtResource("2_hxq42")
+id = &"computer"
+display_name = "Computer"
+icon = ExtResource("1_koi78")
+item_category = "equipment"
+description = "Use to work on your thesis, send emails and reduce data."
+max_stack_size = 5

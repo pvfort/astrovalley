@@ -1,8 +1,146 @@
-[gd_scene format=3 uid="uid://85ewkhis2mp"]
+[gd_scene format=3 uid="uid://bfuui5nonxncf"]
 
-[ext_resource type="Script" uid="uid://bx8aikh3gqrd6" path="res://scenes/rooms/character.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://chunxd4fns534" path="res://assets/sprites/character.png" id="2"]
-[ext_resource type="Script" uid="uid://deywmh2l7jdxm" path="res://scripts/inventory/InventoryManager.gd" id="3_qhqgy"]
+
+[sub_resource type="GDScript" id="GDScript_3vyb7"]
+script/source = "extends CharacterBody2D
+
+@export var tile_size: int = 32
+@export var move_speed: float = 200.0
+
+@onready var sprite = $AnimatedSprite2D
+var player_id: int = -1
+var current_level: int = 0
+
+var is_moving: bool = false
+var target_position: Vector2
+var input_direction: Vector2 = Vector2.ZERO
+var last_direction: Vector2 = Vector2.DOWN
+
+
+func _ready():
+	add_to_group(\"player\")
+
+
+func _physics_process(delta):
+	if is_moving:
+		move_towards_target(delta)
+		return
+
+	handle_input()
+
+
+# --------------------------------------------------
+# INPUT
+# --------------------------------------------------
+func handle_input():
+	var dir = get_input_direction()
+
+	if dir == Vector2.ZERO:
+		play_idle()
+		return
+
+	if not can_move(dir):
+		play_idle()
+		return
+
+	start_move(dir)
+
+func get_input_direction() -> Vector2:
+	var dir = Vector2(
+		Input.get_action_strength(\"ui_right\") - Input.get_action_strength(\"ui_left\"),
+		Input.get_action_strength(\"ui_down\")  - Input.get_action_strength(\"ui_up\")
+	)
+
+	if abs(dir.x) > 0:
+		dir.y = 0
+	elif abs(dir.y) > 0:
+		dir.x = 0
+
+	return dir
+# --------------------------------------------------
+# MOVEMENT
+# --------------------------------------------------
+func start_move(dir: Vector2):
+	is_moving = true
+	input_direction = dir
+	last_direction = dir
+
+	target_position = global_position + dir * tile_size
+
+	play_walk(dir)
+
+
+func move_towards_target(delta):
+	var to_target = target_position - global_position
+	var direction = to_target.normalized()
+
+	velocity = direction * move_speed
+	move_and_slide()
+
+	# --- FAIL SAFE: if velocity is near zero, we hit something ---
+	if velocity.length() < 1.0:
+		is_moving = false
+		velocity = Vector2.ZERO
+		play_idle()
+		return
+
+	if to_target.length() < 2.0:
+		global_position = target_position
+		velocity = Vector2.ZERO
+		is_moving = false
+
+		var dir = get_input_direction()
+
+		if dir == Vector2.ZERO or not can_move(dir):
+			play_idle()
+		else:
+			start_move(dir)
+
+
+
+func can_move(dir: Vector2) -> bool:
+	var space = get_world_2d().direct_space_state
+
+	var from = global_position
+	var to = global_position + dir * tile_size
+
+	var query = PhysicsRayQueryParameters2D.create(from, to)
+	query.collide_with_areas = false
+	query.collide_with_bodies = true
+
+	var result = space.intersect_ray(query)
+
+	return result.is_empty()
+
+# --------------------------------------------------
+# ANIMATION
+# --------------------------------------------------
+func play_walk(dir: Vector2):
+	if dir == Vector2.RIGHT:
+		sprite.play(\"walk_right\")
+	elif dir == Vector2.LEFT:
+		sprite.play(\"walk_left\")
+	elif dir == Vector2.UP:
+		sprite.play(\"walk_up\")
+	elif dir == Vector2.DOWN:
+		sprite.play(\"walk_down\")
+
+
+func play_idle():
+	sprite.play(\"idle\")
+
+
+# --------------------------------------------------
+# LEVEL SWITCHING (CRITICAL FOR STAIRS)
+# --------------------------------------------------
+func set_level(lvl: int):
+	current_level = lvl
+
+	var main = get_tree().get_first_node_in_group(\"main_room\")
+	if main:
+		main.set_current_level(lvl)
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_60kqq"]
 resource_local_to_scene = true
@@ -139,7 +277,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D" unique_id=1744150090]
-script = ExtResource("1_g2els")
+script = SubResource("GDScript_3vyb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=874588309]
 shape = SubResource("RectangleShape2D_60kqq")
@@ -148,64 +286,6 @@ shape = SubResource("RectangleShape2D_60kqq")
 sprite_frames = SubResource("SpriteFrames_72n5h")
 animation = &"walk_left"
 
-[node name="FollowCamera" type="Camera2D" parent="."]
+[node name="FollowCamera" type="Camera2D" parent="." unique_id=1629256941]
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
-
-[node name="InventoryUI" type="Control" parent="." unique_id=323026189]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("3_qhqgy")
-
-[node name="Background" type="Panel" parent="InventoryUI" unique_id=171565428]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="TopBar" type="HBoxContainer" parent="InventoryUI" unique_id=74695513]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="InventoryTabButton" type="Button" parent="InventoryUI/TopBar" unique_id=169480718]
-layout_mode = 2
-
-[node name="FundsLabel" type="Label" parent="InventoryUI/TopBar" unique_id=339825341]
-layout_mode = 2
-
-[node name="ThesisButton" type="TextureButton" parent="InventoryUI/TopBar" unique_id=626102678]
-layout_mode = 2
-
-[node name="SortButton" type="Button" parent="InventoryUI/TopBar" unique_id=1442804637]
-layout_mode = 2
-
-[node name="CloseButton" type="Button" parent="InventoryUI/TopBar" unique_id=1430099033]
-layout_mode = 2
-
-[node name="MainContent" type="HBoxContainer" parent="InventoryUI" unique_id=1260476397]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="LeftPanel" type="VBoxContainer" parent="InventoryUI/MainContent" unique_id=1530796842]
-layout_mode = 2
-
-[node name="CharacterPanel" type="PanelContainer" parent="InventoryUI/MainContent/LeftPanel" unique_id=1982157235]
-layout_mode = 2
-
-[node name="EquipmentPanel" type="GridContainer" parent="InventoryUI/MainContent/LeftPanel" unique_id=2106071943]
-layout_mode = 2
-
-[node name="RightPanel" type="VBoxContainer" parent="InventoryUI/MainContent" unique_id=1469565817]
-layout_mode = 2
-
-[node name="InventoryGrid" type="GridContainer" parent="InventoryUI/MainContent/RightPanel" unique_id=1573523511]
-layout_mode = 2
-
-[node name="Hotbar" type="GridContainer" parent="InventoryUI/MainContent/RightPanel" unique_id=1112237511]
-layout_mode = 2
-
-[node name="TrashSlot" type="PanelContainer" parent="InventoryUI/MainContent/RightPanel" unique_id=1945015142]
-layout_mode = 2

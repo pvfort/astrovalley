@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dls2oblinksb8"]
+
+[ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="1_vpeo4"]
+[ext_resource type="Script" uid="uid://d38j71xw76r6v" path="res://scripts/components/pickup_component.gd" id="2_ttcn3"]
+
+[node name="Entity" type="Node2D" unique_id=1391458251]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=12771216]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=38637396]
+
+[node name="InteractableComponent" type="Node" parent="." unique_id=577099226]
+script = ExtResource("1_vpeo4")
+metadata/_custom_type_script = "uid://dt6icuflg7wj0"
+
+[node name="ProducerComponent" type="Node" parent="." unique_id=1322012500]
+script = ExtResource("2_ttcn3")
+metadata/_custom_type_script = "uid://d38j71xw76r6v"

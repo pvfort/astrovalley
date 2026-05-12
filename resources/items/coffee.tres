@@ -1,13 +1,10 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://qm4eayag8lrn"]
 
-[ext_resource type="Script" path="res://scripts/items/item_data.gd" id="1_item"]
-[ext_resource type="Texture2D" path="res://assets/sprites/coffee.png" id="2_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="1_item"]
+[ext_resource type="Texture2D" uid="uid://cssve506iofex" path="res://assets/sprites/coffee.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_item")
-id = &"coffee"
 display_name = "Coffee"
 icon = ExtResource("2_icon")
-item_category = "consumable"
-description = "A strong campus brew that keeps your late-night observing run alive."
-max_stack_size = 20
+tags = Array[String](["consumable", "drink", "placeable", "pickupable", "item"])

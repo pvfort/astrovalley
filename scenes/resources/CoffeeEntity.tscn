@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dktm0j4vf8sq"]
+
+[ext_resource type="Script" uid="uid://bk44r4hc8rlty" path="res://scripts/items/coffee_entity.gd" id="1_7gt87"]
+[ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="1_yu6bq"]
+[ext_resource type="Script" uid="uid://d38j71xw76r6v" path="res://scripts/components/pickup_component.gd" id="2_8mniy"]
+[ext_resource type="Texture2D" uid="uid://cssve506iofex" path="res://assets/sprites/coffee.png" id="2_n11n3"]
+[ext_resource type="Script" uid="uid://by4dp4w3i2oub" path="res://scripts/components/consumable_component.gd" id="5_7k70u"]
+[ext_resource type="Script" uid="uid://dg30w6inkjpo3" path="res://scripts/components/status_effect_component.gd" id="6_m0dd3"]
+[ext_resource type="Resource" uid="uid://qm4eayag8lrn" path="res://resources/items/coffee.tres" id="7_m0dd3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7gt87"]
+size = Vector2(8, 6)
+
+[node name="CoffeeEntity" type="Area2D" unique_id=656288315]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_7gt87")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=272223599]
+texture = ExtResource("2_n11n3")
+
+[node name="InteractableComponent" type="Node" parent="." unique_id=577099226]
+script = ExtResource("1_yu6bq")
+metadata/_custom_type_script = "uid://dt6icuflg7wj0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=38637396]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_7gt87")
+one_way_collision = true
+
+[node name="ConsumableComponent" type="Node" parent="." unique_id=1746605630]
+script = ExtResource("5_7k70u")
+metadata/_custom_type_script = "uid://by4dp4w3i2oub"
+
+[node name="StatusEffectComponent" type="Node" parent="." unique_id=1972749196]
+script = ExtResource("6_m0dd3")
+metadata/_custom_type_script = "uid://dg30w6inkjpo3"
+
+[node name="PickupComponent" type="Node" parent="." unique_id=541824879]
+script = ExtResource("2_8mniy")
+item = ExtResource("7_m0dd3")
+metadata/_custom_type_script = "uid://d38j71xw76r6v"

@@ -1,64 +1,70 @@
-[gd_scene load_steps=5 format=3 uid="uid://a1b2c3d4e5f6g7h8i9j0"]
+[gd_scene format=3 uid="uid://cqbalcttt703x"]
 
-[ext_resource type="Script" path="res://scripts/entities/interactable.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/main.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/pc.png" id="3"]
+[ext_resource type="Script" uid="uid://tsw3ctmmghv8" path="res://scripts/entities/proximity_sensor.gd" id="1"]
+[ext_resource type="Script" uid="uid://6qh4ao33le5u" path="res://scripts/main.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="3"]
+[ext_resource type="PackedScene" uid="uid://blctf1qsa3ufe" path="res://scenes/ui/InventoryUI.tscn" id="4_jyhfs"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1677861352]
 script = ExtResource("2")
 
-[node name="Players" type="Node" parent="."]
-
-[node name="Telescope" type="Area2D" parent="."]
+[node name="Telescope" type="Area2D" parent="." unique_id=678417217]
 position = Vector2(400, 300)
 script = ExtResource("1")
 resource_name = "telescope"
 
-[node name="Sprite2D" type="Sprite2D" parent="Telescope"]
+[node name="Sprite2D" type="Sprite2D" parent="Telescope" unique_id=1621535991]
 texture = ExtResource("3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Telescope"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Telescope" unique_id=49984888]
 shape = SubResource("1")
 
-[node name="UI" type="Control" parent="."]
+[node name="UI" type="Control" parent="." unique_id=300123017]
 layout_mode = 3
 anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PhaseLabel" type="Label" parent="UI"]
+[node name="PhaseLabel" type="Label" parent="UI" unique_id=1824383763]
 layout_mode = 0
-offset_left = 10
-offset_top = 10
-offset_right = 200
-offset_bottom = 26
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 200.0
+offset_bottom = 26.0
 text = "Phase: morning"
 
-[node name="PlayerLabel" type="Label" parent="UI"]
+[node name="PlayerLabel" type="Label" parent="UI" unique_id=1729284151]
 layout_mode = 0
-offset_left = 10
-offset_top = 30
-offset_right = 200
-offset_bottom = 46
+offset_left = 10.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 46.0
 text = "Player: Player1"
 
-[node name="TaskLabel" type="Label" parent="UI"]
+[node name="TaskLabel" type="Label" parent="UI" unique_id=1343997142]
 layout_mode = 0
-offset_left = 10
-offset_top = 50
-offset_right = 200
-offset_bottom = 66
+offset_left = 10.0
+offset_top = 50.0
+offset_right = 200.0
+offset_bottom = 66.0
 text = "Task: none"
 
-[node name="InteractionPrompt" type="Label" parent="UI"]
+[node name="InteractionPrompt" type="Label" parent="UI" unique_id=1695647856]
 layout_mode = 0
-offset_left = 490
-offset_top = 650
-offset_right = 790
-offset_bottom = 670
+offset_left = 490.0
+offset_top = 650.0
+offset_right = 790.0
+offset_bottom = 670.0
 text = "Press E to interact"
 horizontal_alignment = 1
-visible = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1397689064]
+
+[node name="InventoryUi" parent="CanvasLayer" unique_id=48336469 instance=ExtResource("4_jyhfs")]
+
+[node name="Players" type="Node2D" parent="." unique_id=96690759]

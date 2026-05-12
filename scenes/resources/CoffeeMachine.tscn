@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://b21y80aekuplp"]
+
+[ext_resource type="Script" uid="uid://cvi4htsmb7dkc" path="res://scripts/items/coffee_machine.gd" id="1_fgdad"]
+[ext_resource type="Texture2D" uid="uid://dd2nq3ty6lm1r" path="res://assets/sprites/Coffee-Machine.png" id="2_optn5"]
+[ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="3_mx3ow"]
+[ext_resource type="Script" uid="uid://cyjr5g746nc8x" path="res://scripts/components/producer_component.gd" id="4_d52nx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7gt87"]
+size = Vector2(12, 14)
+
+[node name="CoffeeMachineEntity" type="Area2D" unique_id=656288315]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_fgdad")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=272223599]
+texture = ExtResource("2_optn5")
+
+[node name="InteractableComponent" type="Node" parent="." unique_id=577099226]
+script = ExtResource("3_mx3ow")
+metadata/_custom_type_script = "uid://dt6icuflg7wj0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=38637396]
+shape = SubResource("RectangleShape2D_7gt87")
+one_way_collision = true
+
+[node name="ProducerComponent" type="Node" parent="." unique_id=600711934]
+script = ExtResource("4_d52nx")
+metadata/_custom_type_script = "uid://cyjr5g746nc8x"
