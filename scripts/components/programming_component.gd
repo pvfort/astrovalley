@@ -43,7 +43,7 @@ func interact(player: PlayerCharacter) -> void:
             if is_inside_tree():
                 _set_computer_visual(false)
                 programming_completed.emit(player.player_id)
-            _is_interacting = false,
+            _is_interacting = false
         CONNECT_ONE_SHOT
     )
 

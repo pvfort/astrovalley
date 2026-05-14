@@ -159,7 +159,7 @@ func sync_clock(day: int, hour: int, minute: int, phase_name: String) -> void:
 
 func get_daily_summary_data() -> Dictionary:
     return {
-        "xp_gained_per_skill": (_daily_stats["xp_gained_per_skill"] as Dictionary).duplicate(true),
+        "xp_gained_per_skill": _daily_stats["xp_gained_per_skill"].duplicate(true),
         "money_earned": _daily_stats["money_earned"],
         "tasks_completed": _daily_stats["tasks_completed"],
         "observation_data_collected": _daily_stats["observation_data_collected"],
