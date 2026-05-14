@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cgm0x31rkiymc" path="res://scripts/items/mug_entity.gd" id="1_s18pf"]
 [ext_resource type="Resource" uid="uid://dc5v2frvsrp5p" path="res://resources/items/mug.tres" id="2_egtyq"]
-[ext_resource type="Texture2D" uid="uid://nb4f77ey30as" path="res://assets/sprites/mug.png" id="2_qrb7g"]
 [ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="3_fif7h"]
+[ext_resource type="Texture2D" uid="uid://bd7ijm8x72veq" path="res://assets/entities/items/mug.png" id="3_qrb7g"]
 [ext_resource type="Script" uid="uid://d38j71xw76r6v" path="res://scripts/components/pickup_component.gd" id="6_8svt1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7gt87"]
@@ -17,7 +17,7 @@ script = ExtResource("1_s18pf")
 item_data = ExtResource("2_egtyq")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=272223599]
-texture = ExtResource("2_qrb7g")
+texture = ExtResource("3_qrb7g")
 
 [node name="InteractableComponent" type="Node" parent="." unique_id=577099226]
 script = ExtResource("3_fif7h")

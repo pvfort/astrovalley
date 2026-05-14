@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b21y80aekuplp"]
 
 [ext_resource type="Script" uid="uid://cvi4htsmb7dkc" path="res://scripts/items/coffee_machine.gd" id="1_fgdad"]
-[ext_resource type="Texture2D" uid="uid://dd2nq3ty6lm1r" path="res://assets/sprites/Coffee-Machine.png" id="2_optn5"]
+[ext_resource type="Texture2D" uid="uid://ddjvx0piimfbj" path="res://assets/entities/furniture/Coffee-Machine.png" id="2_4ovy0"]
 [ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="3_mx3ow"]
 [ext_resource type="Script" uid="uid://cyjr5g746nc8x" path="res://scripts/components/producer_component.gd" id="4_d52nx"]
 [ext_resource type="Resource" uid="uid://dc5v2frvsrp5p" path="res://resources/items/mug.tres" id="5_4ovy0"]
@@ -17,7 +17,7 @@ monitoring = false
 script = ExtResource("1_fgdad")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=272223599]
-texture = ExtResource("2_optn5")
+texture = ExtResource("2_4ovy0")
 
 [node name="InteractableComponent" type="Node" parent="." unique_id=577099226]
 script = ExtResource("3_mx3ow")

@@ -19,7 +19,8 @@ func _ready():
 	NetworkManager.player_connected.connect(_on_player_connected)
 	NetworkManager.player_disconnected.connect(_on_player_disconnected)
 	NetworkManager.game_state_synced.connect(_on_game_state_synced)
-	telescope.player_nearby.connect(_on_player_nearby)
+	telescope.player_entered.connect(_on_player_entered)
+	telescope.player_exited.connect(_on_player_exited)
 
 	# Set initial UI state
 	_on_phase_changed(TimeManager.get_current_phase())
@@ -156,8 +157,11 @@ func _on_game_state_synced(state: Dictionary):
 func _on_phase_changed(phase: String):
 	phase_label.text = "Phase: " + phase
 
-func _on_player_nearby(is_near: bool):
-	interaction_prompt.visible = is_near
+func _on_player_entered(_player: PlayerCharacter):
+	interaction_prompt.visible = true
+
+func _on_player_exited(_player: PlayerCharacter):
+	interaction_prompt.visible = false
 
 func _on_task_started(player_id: int, task_id: String):
 	if player_id == multiplayer.get_unique_id():

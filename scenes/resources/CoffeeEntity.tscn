@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bk44r4hc8rlty" path="res://scripts/items/coffee_entity.gd" id="1_7gt87"]
 [ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="1_yu6bq"]
 [ext_resource type="Script" uid="uid://d38j71xw76r6v" path="res://scripts/components/pickup_component.gd" id="2_8mniy"]
-[ext_resource type="Texture2D" uid="uid://cssve506iofex" path="res://assets/sprites/coffee.png" id="2_n11n3"]
+[ext_resource type="Texture2D" uid="uid://d3gg7dj2ci7be" path="res://assets/entities/items/coffee.png" id="3_m0dd3"]
 [ext_resource type="Script" uid="uid://by4dp4w3i2oub" path="res://scripts/components/consumable_component.gd" id="5_7k70u"]
 [ext_resource type="Script" uid="uid://dg30w6inkjpo3" path="res://scripts/components/status_effect_component.gd" id="6_m0dd3"]
 [ext_resource type="Resource" uid="uid://qm4eayag8lrn" path="res://resources/items/coffee.tres" id="7_m0dd3"]
@@ -19,7 +19,7 @@ script = ExtResource("1_7gt87")
 item_data = ExtResource("7_m0dd3")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=272223599]
-texture = ExtResource("2_n11n3")
+texture = ExtResource("3_m0dd3")
 
 [node name="InteractableComponent" type="Node" parent="." unique_id=577099226]
 script = ExtResource("1_yu6bq")
