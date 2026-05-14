@@ -44,10 +44,17 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-
 	if not is_multiplayer_authority():
 		return
+	if Input.is_action_just_pressed("interact"):
+		print("[DEBUG] interact pressed")
+		_handle_interaction_input(InteractionMode.PRIMARY)
 
+	if Input.is_action_just_pressed("pick_up"):
+		print("[INPUT] PICKUP pressed")
+		_handle_interaction_input(InteractionMode.PICKUP)
+
+		
 	if Input.is_action_just_pressed("inventory_toggle"):
 
 		print("Pressed inventory")
@@ -73,19 +80,7 @@ func _physics_process(_delta: float) -> void:
 		_handle_movement_input()
 
 
-func _unhandled_input(event: InputEvent) -> void:
 
-	if not is_multiplayer_authority():
-		return
-
-	if event.is_action_pressed("interact"):
-		_handle_interaction_input(InteractionMode.PRIMARY)
-		get_viewport().set_input_as_handled()
-
-	if event.is_action_pressed("pick_up"):
-		print("[INPUT] PICKUP pressed")
-		_handle_interaction_input(InteractionMode.PICKUP)
-		get_viewport().set_input_as_handled()
 # ==================================================
 # MOVEMENT INPUT
 # ==================================================
@@ -161,7 +156,7 @@ func _move_towards_target() -> void:
 
 		return
 
-	velocity = to_target.normalized() * move_speed
+	velocity = to_target.normalized() * get_move_speed()
 
 	move_and_slide()
 
@@ -307,7 +302,12 @@ func _handle_interaction_input(mode: int = InteractionMode.PRIMARY) -> void:
 	print("[INTERACT] scanning entity:", entity.name)
 
 	for c in entity.get_children():
-
+		print(
+				"[SCAN]",
+				c.name,
+				" script=",
+				c.get_script()
+			)
 		if not c.has_method("interact"):
 			continue
 
@@ -344,3 +344,25 @@ func _handle_interaction_input(mode: int = InteractionMode.PRIMARY) -> void:
 func set_current_level(lvl: int) -> void:
 
 	current_level = lvl
+
+func get_status_effect_component() -> StatusEffectComponent:
+
+	for child in get_children():
+
+		if child is StatusEffectComponent:
+			return child
+
+	return null
+
+func get_move_speed() -> float:
+
+	var final_speed := move_speed
+
+	var status = get_status_effect_component()
+
+	if status != null:
+
+		if status.has_effect("coffee_speed"):
+			final_speed *= 1.5
+
+	return final_speed

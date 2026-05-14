@@ -4,7 +4,11 @@ extends PanelContainer
 @onready var item_name_label: Label = $MarginContainer/VBoxContainer/ItemName
 @onready var stack_label: Label = $MarginContainer/VBoxContainer/Stack
 
+var slot_index: int = -1
+
+
 func set_slot_data(slot_data: Variant) -> void:
+
 	if slot_data == null:
 		icon_rect.texture = null
 		item_name_label.text = ""
@@ -27,3 +31,23 @@ func set_slot_data(slot_data: Variant) -> void:
 	item_name_label.text = item.display_name
 	stack_label.text = str(count) if count > 1 else ""
 	tooltip_text = "%s\n%s" % [item.display_name, item.description]
+
+
+func _gui_input(event: InputEvent) -> void:
+
+	if not InventoryManager.is_inventory_open:
+		return
+
+	if event is InputEventMouseButton \
+	and event.pressed \
+	and event.button_index == MOUSE_BUTTON_LEFT:
+
+		print("[UI] clicked slot:", slot_index)
+
+		var player = get_tree().get_first_node_in_group("player")
+
+		if player == null:
+			print("[UI] no player found")
+			return
+
+		InventoryManager.use_item(slot_index, player)

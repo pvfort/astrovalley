@@ -3,21 +3,21 @@
 [ext_resource type="PackedScene" uid="uid://dktm0j4vf8sq" path="res://scenes/resources/CoffeeEntity.tscn" id="1_rcovt"]
 [ext_resource type="PackedScene" uid="uid://brs6wu0yexn1k" path="res://scenes/player/Player.tscn" id="2_7v3cm"]
 [ext_resource type="PackedScene" uid="uid://b21y80aekuplp" path="res://scenes/resources/CoffeeMachine.tscn" id="3_7v3cm"]
-[ext_resource type="PackedScene" uid="uid://ca36gdtckio4i" path="res://scenes/resources/Mug.tscn" id="4_ru2hl"]
+[ext_resource type="PackedScene" uid="uid://dkwttj2gmt7t2" path="res://scenes/resources/MugEntity.tscn" id="4_ru2hl"]
 
 [node name="Cafe" type="Node2D" unique_id=401336490]
 
-[node name="CoffeeEntity" parent="." unique_id=1391458251 instance=ExtResource("1_rcovt")]
-position = Vector2(327, 199)
-monitorable = true
-
 [node name="Player" parent="." unique_id=559979378 instance=ExtResource("2_7v3cm")]
-position = Vector2(295, 192)
-collision_layer = 3
-collision_mask = 5
+position = Vector2(383, 192)
 
-[node name="CoffeeMachine" parent="." unique_id=656288315 instance=ExtResource("3_7v3cm")]
-position = Vector2(298, 246)
+[node name="CoffeeEntity" parent="." unique_id=656288315 instance=ExtResource("1_rcovt")]
+position = Vector2(463, 195)
 
-[node name="Mug" parent="." unique_id=843679194 instance=ExtResource("4_ru2hl")]
-position = Vector2(327, 191)
+[node name="CoffeeMachineEntity" parent="." unique_id=882335650 instance=ExtResource("3_7v3cm")]
+position = Vector2(384, 267)
+
+[node name="MugEntity" parent="." unique_id=789740193 instance=ExtResource("4_ru2hl")]
+position = Vector2(304, 197)
+
+[node name="MugEntity2" parent="." unique_id=1989401914 instance=ExtResource("4_ru2hl")]
+position = Vector2(301, 225)

@@ -73,3 +73,70 @@ func toggle_inventory() -> void:
 	print("Inventory state:", is_inventory_open)
 
 	inventory_toggled.emit(is_inventory_open)
+
+func has_item(item_id: String) -> bool:
+
+	for slot in inventory:
+
+		if slot == null:
+			continue
+
+		var item: ItemData = slot["item"]
+
+		if item.item_id == item_id:
+			return true
+
+	return false
+
+
+func remove_item_by_id(item_id: String) -> bool:
+
+	for i in range(inventory.size()):
+
+		var slot = inventory[i]
+
+		if slot == null:
+			continue
+
+		var item: ItemData = slot["item"]
+
+		if item.item_id == item_id:
+
+			inventory[i] = null
+			inventory_changed.emit()
+
+			return true
+
+	return false
+
+
+func use_item(index: int, player: PlayerCharacter) -> void:
+
+	var slot = inventory[index]
+
+	if slot == null:
+		return
+
+	var item: ItemData = slot["item"]
+
+	if item == null:
+		return
+
+	if not item.consumable:
+		print("[ITEM USE] item not consumable")
+		return
+
+	print("[ITEM USE] consuming:", item.item_id)
+
+	var status = player.get_status_effect_component()
+
+	if status != null and item.status_effect_id != "":
+		status.apply(
+			item.status_effect_id,
+			item.status_effect_duration
+		)
+
+	remove_item(index)
+
+	if item.replacement_item != null:
+		add_item(item.replacement_item)

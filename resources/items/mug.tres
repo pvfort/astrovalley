@@ -7,6 +7,5 @@
 script = ExtResource("2_s4086")
 item_id = "mug"
 display_name = "Mug"
-description = "You can fill the mug with coffee."
 icon = ExtResource("1_unp2h")
 tags = Array[String](["placeable", "pickupable", "item"])

@@ -1,25 +1,31 @@
 class_name ProducerComponent
 extends Node
 
-@export var input_item_id: String
-@export var output_item: ItemData
+@export var required_item: ItemData
+@export var produced_item: ItemData
+@export var priority: int = 10
+@export var allowed_mode := PlayerCharacter.InteractionMode.PRIMARY
 
-func can_produce(item: ItemData) -> bool:
-	return item != null and item.item_id == input_item_id
 
-func produce(player: PlayerCharacter, inventory: Array) -> void:
-	for i in range(inventory.size()):
-		var slot = inventory[i]
-		if slot == null:
-			continue
+func can_interact(_player) -> bool:
+	return true
 
-		var item: ItemData = slot["item"]
 
-		if item.item_id == input_item_id:
+func interact(_player) -> void:
+	print("[PRODUCER] interact called")
+	if required_item == null:
+		return
 
-			print("[PRODUCER] converting", input_item_id, "→", output_item.item_id)
+	if produced_item == null:
+		return
 
-			slot["item"] = output_item
+	if not InventoryManager.has_item(required_item.item_id):
 
-			InventoryManager.inventory_changed.emit()
-			return
+		print("[PRODUCER] missing:", required_item.item_id)
+		return
+
+	InventoryManager.remove_item_by_id(required_item.item_id)
+
+	var ok := InventoryManager.add_item(produced_item)
+
+	print("[PRODUCER] produced:", produced_item.item_id, " success=", ok)

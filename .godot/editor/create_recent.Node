@@ -1,8 +1,8 @@
+StatusEffectComponent
 ProducerComponent
 PickupComponent
 Node2D
 Area2D
-StatusEffectComponent
 ConsumableComponent
 Sprite2D
 InteractableComponent

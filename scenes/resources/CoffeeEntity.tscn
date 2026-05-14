@@ -14,8 +14,9 @@ size = Vector2(8, 6)
 [node name="CoffeeEntity" type="Area2D" unique_id=656288315]
 collision_layer = 4
 collision_mask = 2
-monitorable = false
+monitoring = false
 script = ExtResource("1_7gt87")
+item_data = ExtResource("7_m0dd3")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=272223599]
 texture = ExtResource("2_n11n3")

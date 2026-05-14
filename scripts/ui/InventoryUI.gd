@@ -45,7 +45,7 @@ func _build_inventory() -> void:
 	for i in range(InventoryManager.INVENTORY_SIZE):
 
 		var slot = slot_scene.instantiate()
-
+		slot.slot_index = i
 		grid.add_child(slot)
 
 

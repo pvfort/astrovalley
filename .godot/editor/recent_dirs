@@ -1,6 +1,7 @@
-res://scripts/items/
-res://assets/sprites/
 res://resources/items/
+res://scripts/components/
+res://assets/sprites/
+res://scripts/items/
 res://scripts/inventory/
 res://scripts/ui/
 res://scripts/
