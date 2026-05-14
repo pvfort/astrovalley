@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://6qh4ao33le5u" path="res://scripts/main.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="3"]
 [ext_resource type="PackedScene" uid="uid://blctf1qsa3ufe" path="res://scenes/ui/InventoryUI.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" path="res://scenes/resources/ComputerEntity.tscn" id="5_computer"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -21,6 +22,9 @@ texture = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Telescope" unique_id=49984888]
 shape = SubResource("1")
+
+[node name="ComputerEntity" parent="." instance=ExtResource("5_computer")]
+position = Vector2(500, 300)
 
 [node name="UI" type="Control" parent="." unique_id=300123017]
 layout_mode = 3
