@@ -28,6 +28,7 @@ ObservationSystem="*res://scripts/systems/observation_system.gd"
 InventoryManager="*uid://deywmh2l7jdxm"
 PlayerData="*res://autoload/PlayerData.gd"
 SkillManager="*res://scripts/skills/skill_manager.gd"
+WorldClock="*res://scripts/time/world_clock.gd"
 
 [display]
 
