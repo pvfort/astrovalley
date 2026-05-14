@@ -27,6 +27,7 @@ TaskManager="*res://scripts/core/task_manager.gd"
 ObservationSystem="*res://scripts/systems/observation_system.gd"
 InventoryManager="*uid://deywmh2l7jdxm"
 PlayerData="*res://autoload/PlayerData.gd"
+SkillManager="*res://scripts/skills/skill_manager.gd"
 
 [display]
 
