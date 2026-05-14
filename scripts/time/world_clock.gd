@@ -80,8 +80,12 @@ func skip_to_next_morning(morning_hour: int = 8) -> void:
     if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
         return
 
+    var earliest_morning := clampi(morning_start_hour, 0, 23)
+    var latest_morning := clampi(maxi(earliest_morning, afternoon_start_hour - 1), 0, 23)
+    var target_hour := clampi(morning_hour, earliest_morning, latest_morning)
+
     current_day += 1
-    current_hour = clampi(morning_hour, 0, 23)
+    current_hour = target_hour
     current_minute = 0
     _phase_name = _resolve_phase_name(current_hour)
     _accumulator = 0.0
