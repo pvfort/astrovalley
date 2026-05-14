@@ -12,16 +12,19 @@ const PROGRAMMING_PRIORITY := 10
 @export var consume_energy: bool = false
 @export var energy_cost: float = 5.0
 @export var active_texture: Texture2D = preload("res://assets/entities/furniture/computer_on.png")
+@export var sprite_path: NodePath = NodePath("Sprite2D")
 
 var _original_texture: Texture2D
+var _is_interacting := false
 
 func _ready() -> void:
     priority = max(priority, PROGRAMMING_PRIORITY)
 
 func interact(player: PlayerCharacter) -> void:
-    if player == null:
+    if player == null or _is_interacting:
         return
 
+    _is_interacting = true
     programming_started.emit(player.player_id)
     _set_computer_visual(true)
 
@@ -33,9 +36,16 @@ func interact(player: PlayerCharacter) -> void:
     WorldClock.add_programming_progress(time_advance_minutes)
     _attempt_energy_spend(player)
 
-    await get_tree().create_timer(0.2).timeout
-    _set_computer_visual(false)
-    programming_completed.emit(player.player_id)
+    var tween := create_tween()
+    tween.tween_interval(0.2)
+    tween.finished.connect(
+        func() -> void:
+            if is_inside_tree():
+                _set_computer_visual(false)
+                programming_completed.emit(player.player_id)
+            _is_interacting = false,
+        CONNECT_ONE_SHOT
+    )
 
 func _attempt_energy_spend(player: PlayerCharacter) -> void:
     if not consume_energy:
@@ -50,7 +60,7 @@ func _attempt_energy_spend(player: PlayerCharacter) -> void:
         status.apply("programming_fatigue", energy_cost, {"temporary": true, "source": "programming"})
 
 func _set_computer_visual(active: bool) -> void:
-    var sprite := get_parent().get_node_or_null("Sprite2D") as Sprite2D
+    var sprite := get_parent().get_node_or_null(sprite_path) as Sprite2D
     if sprite == null:
         return
 

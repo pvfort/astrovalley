@@ -78,7 +78,6 @@ func add_minutes(minutes: int) -> void:
 
 func skip_to_next_morning(morning_hour: int = 8) -> void:
     if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
-        rpc_id(1, "server_skip_to_next_morning", morning_hour)
         return
 
     current_day += 1
@@ -153,12 +152,6 @@ func sync_clock(day: int, hour: int, minute: int, phase_name: String) -> void:
         day_changed.emit(current_day)
     if previous_phase != _phase_name:
         phase_changed.emit(_phase_name)
-
-@rpc("any_peer", "reliable")
-func server_skip_to_next_morning(morning_hour: int = 8) -> void:
-    if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
-        return
-    skip_to_next_morning(morning_hour)
 
 func get_daily_summary_data() -> Dictionary:
     return {

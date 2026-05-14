@@ -31,6 +31,7 @@ func _build_overlay(node_name: String, texture_value: Texture2D) -> TextureRect:
     node.stretch_mode = TextureRect.STRETCH_SCALE
     node.modulate = Color(1.0, 1.0, 1.0, 0.0)
     node.texture = texture_value
+    node.visible = texture_value != null
     add_child(node)
     return node
 
@@ -40,10 +41,6 @@ func _on_time_changed(hour: int, minute: int) -> void:
     var stars_alpha := _compute_stars_alpha(t)
     _night_overlay.modulate.a = night_alpha
     _stars_overlay.modulate.a = stars_alpha
-    if _rain_overlay.texture == null:
-        _rain_overlay.visible = false
-    if _cloud_overlay.texture == null:
-        _cloud_overlay.visible = false
 
 func _compute_night_alpha(time_value: float) -> float:
     if time_value >= 22.0 or time_value < 6.0:
