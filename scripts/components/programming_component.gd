@@ -4,6 +4,8 @@ extends InteractableComponent
 signal programming_started(player_id: int)
 signal programming_completed(player_id: int)
 
+const PROGRAMMING_PRIORITY := 10
+
 @export var skill_id: String = "programming"
 @export var xp_gain: int = 15
 @export var time_advance_minutes: int = 45
@@ -14,7 +16,7 @@ signal programming_completed(player_id: int)
 var _original_texture: Texture2D
 
 func _ready() -> void:
-    priority = max(priority, 10)
+    priority = max(priority, PROGRAMMING_PRIORITY)
 
 func interact(player: PlayerCharacter) -> void:
     if player == null:

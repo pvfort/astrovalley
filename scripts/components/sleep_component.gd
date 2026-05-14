@@ -4,13 +4,15 @@ extends InteractableComponent
 signal sleep_started(player_id: int)
 signal sleep_finished(player_id: int)
 
+const SLEEP_PRIORITY := 20
+
 @export var next_day_hour: int = 8
 @export var clear_temporary_effects: bool = true
 @export var fade_duration: float = 0.35
 @export var fade_texture: Texture2D = preload("res://assets/ui/time/sleep_fade.png")
 
 func _ready() -> void:
-    priority = max(priority, 20)
+    priority = max(priority, SLEEP_PRIORITY)
 
 func interact(player: PlayerCharacter) -> void:
     if player == null:

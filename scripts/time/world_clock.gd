@@ -29,10 +29,9 @@ var _daily_stats := {
 
 func _ready() -> void:
     set_process(true)
-    if multiplayer != null:
-        multiplayer.peer_connected.connect(_on_peer_connected)
-        if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
-            rpc_id(1, "request_clock_sync")
+    multiplayer.peer_connected.connect(_on_peer_connected)
+    if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
+        rpc_id(1, "request_clock_sync")
     _emit_all_signals(true, true, true)
 
 func _process(delta: float) -> void:
