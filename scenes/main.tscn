@@ -5,6 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="3"]
 [ext_resource type="PackedScene" uid="uid://blctf1qsa3ufe" path="res://scenes/ui/InventoryUI.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" path="res://scenes/resources/ComputerEntity.tscn" id="5_computer"]
+[ext_resource type="PackedScene" path="res://scenes/resources/BedEntity.tscn" id="6_bed"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ClockUI.tscn" id="7_clock"]
+[ext_resource type="PackedScene" path="res://scenes/ui/DailySummaryUI.tscn" id="8_summary"]
+[ext_resource type="Script" path="res://scripts/time/day_night_controller.gd" id="9_day_night"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -25,6 +29,9 @@ shape = SubResource("1")
 
 [node name="ComputerEntity" parent="." instance=ExtResource("5_computer")]
 position = Vector2(500, 300)
+
+[node name="BedEntity" parent="." instance=ExtResource("6_bed")]
+position = Vector2(620, 300)
 
 [node name="UI" type="Control" parent="." unique_id=300123017]
 layout_mode = 3
@@ -70,5 +77,11 @@ horizontal_alignment = 1
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1397689064]
 
 [node name="InventoryUi" parent="CanvasLayer" unique_id=48336469 instance=ExtResource("4_jyhfs")]
+
+[node name="ClockUI" parent="CanvasLayer" instance=ExtResource("7_clock")]
+
+[node name="DailySummaryUI" parent="CanvasLayer" instance=ExtResource("8_summary")]
+
+[node name="DayNightController" type="CanvasLayer" parent="." script=ExtResource("9_day_night")]
 
 [node name="Players" type="Node2D" parent="." unique_id=96690759]

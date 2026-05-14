@@ -1,63 +1,47 @@
 extends Node
 
-# TimeManager: Manages global synchronized day cycle
-# Server authoritative
-
+# Compatibility wrapper for legacy systems that still depend on TimeManager.
 signal phase_changed(new_phase: String)
 
 enum Phase { MORNING, AFTERNOON, NIGHT }
 
 var current_phase: Phase = Phase.MORNING
-var phase_duration: float = 180.0  # seconds
-var timer: Timer
 
-func _ready():
-	timer = Timer.new()
-	add_child(timer)
-	timer.timeout.connect(_on_phase_timeout)
-	
-	# Load config
-	var config = load_json("res://data/config.json")
-	if config and config.has("phase_duration"):
-		phase_duration = config["phase_duration"]
+func _ready() -> void:
+    if WorldClock != null:
+        WorldClock.phase_changed.connect(_on_world_phase_changed)
+        _on_world_phase_changed(WorldClock.get_phase_name())
 
-func start_cycle():
-	timer.start(phase_duration)
+func start_cycle() -> void:
+    # WorldClock handles progression automatically.
+    pass
 
-func _on_phase_timeout():
-	if not multiplayer.is_server():
-		return
-	
-	# Advance phase
-	current_phase = (current_phase + 1) % 3
-	
-	# Sync to clients (call_local ensures server also emits phase_changed)
-	rpc("sync_phase", current_phase)
-	
-	# Restart timer
-	timer.start(phase_duration)
+func _on_world_phase_changed(phase_name: String) -> void:
+    match phase_name:
+        "Morning":
+            current_phase = Phase.MORNING
+        "Afternoon":
+            current_phase = Phase.AFTERNOON
+        "Evening":
+            current_phase = Phase.NIGHT
+        _:
+            current_phase = Phase.NIGHT
+
+    phase_changed.emit(get_phase_name(current_phase))
 
 func get_phase_name(phase: Phase) -> String:
-	match phase:
-		Phase.MORNING: return "morning"
-		Phase.AFTERNOON: return "afternoon"
-		Phase.NIGHT: return "night"
-	return "unknown"
+    match phase:
+        Phase.MORNING:
+            return "morning"
+        Phase.AFTERNOON:
+            return "afternoon"
+        Phase.NIGHT:
+            return "night"
+    return "night"
 
-@rpc("authority", "call_local")
-func sync_phase(phase: int):
-	current_phase = phase
-	var phase_name = get_phase_name(current_phase)
-	phase_changed.emit(phase_name)
+func sync_phase(phase: int) -> void:
+    current_phase = phase
+    phase_changed.emit(get_phase_name(current_phase))
 
 func get_current_phase() -> String:
-	return get_phase_name(current_phase)
-
-func load_json(path: String) -> Dictionary:
-	var file = FileAccess.open(path, FileAccess.READ)
-	if file:
-		var json = JSON.new()
-		var error = json.parse(file.get_as_text())
-		if error == OK:
-			return json.data
-	return {}
+    return get_phase_name(current_phase)
