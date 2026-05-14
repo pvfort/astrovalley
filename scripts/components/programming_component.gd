@@ -36,7 +36,7 @@ func interact(player: PlayerCharacter) -> void:
     WorldClock.add_programming_progress(time_advance_minutes)
     _attempt_energy_spend(player)
 
-    var tween := create_tween()
+    var tween := get_tree().root.create_tween()
     tween.tween_interval(0.2)
     tween.finished.connect(
         func() -> void:

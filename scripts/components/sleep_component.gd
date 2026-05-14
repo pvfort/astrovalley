@@ -85,7 +85,7 @@ func _apply_sleep_fade(player: PlayerCharacter) -> void:
     fade.modulate = Color(1.0, 1.0, 1.0, 0.0)
     layer.add_child(fade)
 
-    var tween := player.create_tween()
+    var tween := scene_root.create_tween()
     tween.tween_property(fade, "modulate:a", 1.0, fade_duration)
     tween.tween_property(fade, "modulate:a", 0.0, fade_duration)
     tween.finished.connect(func(): layer.queue_free())
