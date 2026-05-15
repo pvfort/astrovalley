@@ -82,7 +82,7 @@ func _on_character_selector_item_selected(index: int) -> void:
 	status_label.text = "Selected character: %s" % selected_profile.character_name
 	_update_network_buttons()
 
-func _reload_character_selector(selected_character_id: String = "") -> void:
+func _reload_character_selector(preferred_character_id: String = "") -> void:
 	_character_ids.clear()
 	character_selector.clear()
 
@@ -92,7 +92,7 @@ func _reload_character_selector(selected_character_id: String = "") -> void:
 			continue
 		var label := profile.character_name
 		if label.is_empty():
-			label = profile.character_id
+			label = "ID: %s" % profile.character_id
 		if not profile.office_number.is_empty():
 			label += " (Office %s)" % profile.office_number
 
@@ -105,7 +105,7 @@ func _reload_character_selector(selected_character_id: String = "") -> void:
 		_update_network_buttons()
 		return
 
-	var preferred_id := selected_character_id
+	var preferred_id := preferred_character_id
 	if preferred_id.is_empty():
 		var active_profile := CharacterSaveManager.get_active_character()
 		if active_profile != null:
