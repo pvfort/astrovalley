@@ -9,9 +9,11 @@ const ACTIVE_CHARACTER_KEY := "id"
 const CharacterProfile = preload("res://scripts/player/character_profile.gd")
 
 var _active_character: CharacterProfile = null
+var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
+	_rng.randomize()
 	_ensure_characters_root()
 
 
@@ -75,15 +77,12 @@ func get_all_characters() -> Array:
 	if dir == null:
 		return characters
 
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	while entry != "":
-		if dir.current_is_dir() and not entry.begins_with("."):
-			var profile := load_character(entry)
-			if profile != null:
-				characters.append(profile)
-		entry = dir.get_next()
-	dir.list_dir_end()
+	for folder_name in dir.get_directories():
+		if folder_name.begins_with("."):
+			continue
+		var profile := load_character(folder_name)
+		if profile != null:
+			characters.append(profile)
 
 	return characters
 
@@ -133,7 +132,7 @@ func _ensure_characters_root() -> void:
 func _generate_character_id() -> String:
 	return "character_%s_%s" % [
 		str(Time.get_ticks_usec()),
-		str(randi())
+		str(_rng.randi())
 	]
 
 
@@ -186,28 +185,19 @@ func _delete_directory_recursive(path: String) -> bool:
 		push_error("[CharacterSaveManager] Failed to open directory: %s" % path)
 		return false
 
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	while entry != "":
-		if entry == "." or entry == "..":
-			entry = dir.get_next()
+	for subdirectory in dir.get_directories():
+		if subdirectory.begins_with("."):
 			continue
+		var subdirectory_path := "%s/%s" % [path, subdirectory]
+		if not _delete_directory_recursive(subdirectory_path):
+			return false
 
-		var entry_path := "%s/%s" % [path, entry]
-
-		if dir.current_is_dir():
-			if not _delete_directory_recursive(entry_path):
-				dir.list_dir_end()
-				return false
-		else:
-			var remove_file_result := DirAccess.remove_absolute(entry_path)
-			if remove_file_result != OK:
-				push_error("[CharacterSaveManager] Failed to remove file: %s (%s)" % [entry_path, error_string(remove_file_result)])
-				dir.list_dir_end()
-				return false
-
-		entry = dir.get_next()
-	dir.list_dir_end()
+	for file_name in dir.get_files():
+		var file_path := "%s/%s" % [path, file_name]
+		var remove_file_result := DirAccess.remove_absolute(file_path)
+		if remove_file_result != OK:
+			push_error("[CharacterSaveManager] Failed to remove file: %s (%s)" % [file_path, error_string(remove_file_result)])
+			return false
 
 	var remove_dir_result := DirAccess.remove_absolute(path)
 	if remove_dir_result != OK:
