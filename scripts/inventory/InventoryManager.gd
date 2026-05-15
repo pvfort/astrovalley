@@ -39,6 +39,22 @@ func add_item(item: ItemData) -> bool:
 	print("[INVENTORY] FAILED: inventory full")
 	return false
 
+
+func purchase_item(item: ItemData, cost: int) -> bool:
+	if item == null:
+		return false
+
+	var final_cost := max(cost, 0)
+	if funds < final_cost:
+		return false
+
+	var added := add_item(item)
+	if not added:
+		return false
+
+	funds -= final_cost
+	return true
+
 func remove_item(index: int):
 
 	inventory[index] = null
