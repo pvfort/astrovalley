@@ -1,6 +1,9 @@
 extends Node
 
 const TILE_SIZE: int = 32
+const ROTATION_INCREMENT: float = PI * 0.5
+const COLLISION_MARGIN: float = 2.0
+const MAX_COLLISION_CHECKS: int = 16
 const WALKABLE_FLOOR_SOURCE_IDS: Array[int] = [0, 4]
 
 signal build_mode_started
@@ -75,7 +78,7 @@ func cancel_placement() -> void:
 func rotate_preview() -> void:
 	if _preview == null:
 		return
-	_current_rotation += PI * 0.5
+	_current_rotation += ROTATION_INCREMENT
 	_preview.rotation = _current_rotation
 	preview_updated.emit(_last_preview_position, _last_preview_valid)
 
@@ -258,7 +261,10 @@ func _has_collision_overlap(world_position: Vector2, footprint: Vector2i) -> boo
 
 	var space_state: PhysicsDirectSpaceState2D = (scene as Node2D).get_world_2d().direct_space_state
 	var shape := RectangleShape2D.new()
-	shape.size = Vector2(float(max(footprint.x, 1) * TILE_SIZE) - 2.0, float(max(footprint.y, 1) * TILE_SIZE) - 2.0)
+	shape.size = Vector2(
+		float(max(footprint.x, 1) * TILE_SIZE) - COLLISION_MARGIN,
+		float(max(footprint.y, 1) * TILE_SIZE) - COLLISION_MARGIN
+	)
 
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
@@ -266,7 +272,7 @@ func _has_collision_overlap(world_position: Vector2, footprint: Vector2i) -> boo
 	query.collide_with_bodies = true
 	query.collide_with_areas = true
 
-	var results: Array[Dictionary] = space_state.intersect_shape(query, 16)
+	var results: Array[Dictionary] = space_state.intersect_shape(query, MAX_COLLISION_CHECKS)
 	return not results.is_empty()
 
 
