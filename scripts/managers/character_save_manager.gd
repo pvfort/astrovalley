@@ -12,7 +12,6 @@ var _active_character: CharacterProfile = null
 
 
 func _ready() -> void:
-	randomize()
 	_ensure_characters_root()
 
 
@@ -22,13 +21,6 @@ func create_character(character_name: String, office_number: String = "") -> Cha
 	profile.character_name = character_name
 	profile.office_number = office_number
 	profile.creation_date = Time.get_datetime_string_from_system()
-	profile.inventory_data = []
-	profile.equipped_data = {}
-	profile.skill_data = {}
-	profile.funds = 0
-	profile.world_time_stats = {}
-	profile.player_stats = {}
-	profile.current_level = 1
 
 	if save_character(profile):
 		return profile
@@ -139,8 +131,7 @@ func _ensure_characters_root() -> void:
 
 
 func _generate_character_id() -> String:
-	return "character_%s_%s_%s" % [
-		str(int(Time.get_unix_time_from_system())),
+	return "character_%s_%s" % [
 		str(Time.get_ticks_usec()),
 		str(randi())
 	]
