@@ -199,6 +199,8 @@ func _collect_system_states() -> Dictionary:
 		states["world_clock"] = _dictionary(WorldClock.save_state())
 	if WeatherManager != null and WeatherManager.has_method("save_state"):
 		states["weather"] = _dictionary(WeatherManager.save_state())
+	if EnergyManager != null and EnergyManager.has_method("save_state"):
+		states["energy"] = _dictionary(EnergyManager.save_state())
 
 	return states
 
@@ -212,6 +214,8 @@ func _apply_system_states(states: Dictionary) -> void:
 		WorldClock.load_state(_dictionary(states.get("world_clock", {})))
 	if WeatherManager != null and WeatherManager.has_method("load_state"):
 		WeatherManager.load_state(_dictionary(states.get("weather", {})))
+	if EnergyManager != null and EnergyManager.has_method("load_state"):
+		EnergyManager.load_state(_dictionary(states.get("energy", {})))
 
 
 func _collect_entity_states() -> Array[Dictionary]:

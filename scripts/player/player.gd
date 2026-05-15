@@ -42,6 +42,8 @@ func _ready() -> void:
 		if camera:
 			camera.make_current()
 
+	_register_energy_state()
+
 
 func _physics_process(_delta: float) -> void:
 	if not is_multiplayer_authority():
@@ -357,6 +359,7 @@ func get_status_effect_component() -> StatusEffectComponent:
 func get_move_speed() -> float:
 
 	var final_speed := move_speed
+	var energy_player_id := _resolve_energy_player_id()
 
 	var status = get_status_effect_component()
 
@@ -365,7 +368,47 @@ func get_move_speed() -> float:
 		if status.has_effect("coffee_speed"):
 			final_speed *= 1.5
 
+	if EnergyManager != null and energy_player_id >= 0:
+		final_speed *= EnergyManager.get_movement_speed_multiplier(energy_player_id)
+
 	return final_speed
+
+
+func consume_energy(amount: float) -> bool:
+	if EnergyManager == null:
+		return true
+	var energy_player_id := _resolve_energy_player_id()
+	if energy_player_id < 0:
+		return true
+	return EnergyManager.consume_energy(energy_player_id, amount)
+
+
+func recover_energy(amount: float) -> void:
+	if EnergyManager == null:
+		return
+	var energy_player_id := _resolve_energy_player_id()
+	if energy_player_id < 0:
+		return
+	EnergyManager.recover_energy(energy_player_id, amount)
+
+
+func _register_energy_state() -> void:
+	if EnergyManager == null:
+		return
+	var energy_player_id := _resolve_energy_player_id()
+	if energy_player_id < 0:
+		return
+	if not EnergyManager.has_player(energy_player_id):
+		EnergyManager.register_player(energy_player_id)
+
+
+func _resolve_energy_player_id() -> int:
+	if player_id >= 0:
+		return player_id
+	var authority := get_multiplayer_authority()
+	if authority > 0:
+		return authority
+	return -1
 
 
 func get_saveable_id() -> String:

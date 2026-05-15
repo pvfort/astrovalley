@@ -34,6 +34,7 @@ FurnitureSaveManager="*res://scripts/managers/furniture_save_manager.gd"
 PlacementManager="*res://scripts/managers/placement_manager.gd"
 PersistenceRegistry="*res://scripts/persistence/PersistenceRegistry.gd"
 WeatherManager="*res://scripts/managers/weather_manager.gd"
+EnergyManager="*res://scripts/managers/EnergyManager.gd"
 SaveManager="*res://scripts/managers/SaveManager.gd"
 
 [display]
