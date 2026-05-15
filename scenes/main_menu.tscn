@@ -32,6 +32,35 @@ theme_override_font_sizes/font_size = 32
 text = "AstroValley"
 horizontal_alignment = 1
 
+[node name="CharacterCreatorRow" type="HBoxContainer" parent="VBoxContainer" unique_id=194190557]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CharacterNameField" type="LineEdit" parent="VBoxContainer/CharacterCreatorRow" unique_id=201847156]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Character name"
+
+[node name="OfficeNumberField" type="LineEdit" parent="VBoxContainer/CharacterCreatorRow" unique_id=934802118]
+layout_mode = 2
+placeholder_text = "Office # (optional)"
+
+[node name="CreateCharacterButton" type="Button" parent="VBoxContainer/CharacterCreatorRow" unique_id=1237649918]
+layout_mode = 2
+text = "Create Save"
+
+[node name="CharacterSelectorRow" type="HBoxContainer" parent="VBoxContainer" unique_id=611263208]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CharacterSelectorLabel" type="Label" parent="VBoxContainer/CharacterSelectorRow" unique_id=1343288164]
+layout_mode = 2
+text = "Character Save:"
+
+[node name="CharacterSelector" type="OptionButton" parent="VBoxContainer/CharacterSelectorRow" unique_id=130117408]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="PortField" type="LineEdit" parent="VBoxContainer" unique_id=1375361720]
 layout_mode = 2
 placeholder_text = "Port (default 4242)"
@@ -65,3 +94,5 @@ text = "Quit"
 [connection signal="pressed" from="VBoxContainer/HostButton" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="VBoxContainer/JoinRow/JoinButton" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="VBoxContainer/CharacterCreatorRow/CreateCharacterButton" to="." method="_on_create_character_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/CharacterSelectorRow/CharacterSelector" to="." method="_on_character_selector_item_selected"]
