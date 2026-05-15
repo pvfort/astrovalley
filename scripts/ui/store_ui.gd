@@ -53,10 +53,22 @@ func _purchase_item(item: ItemData, cost: int) -> void:
 		_set_status("Item missing.")
 		return
 
+	if cost < 0:
+		_set_status("Invalid item price.")
+		return
+
+	if InventoryManager.funds < cost:
+		_set_status("Not enough funds.")
+		return
+
+	if not _has_free_inventory_slot():
+		_set_status("Inventory is full.")
+		return
+
 	if InventoryManager.purchase_item(item, cost):
-		_set_status("Purchased %s for $%d." % [item.display_name, max(cost, 0)])
+		_set_status("Purchased %s for $%d." % [item.display_name, cost])
 	else:
-		_set_status("Not enough funds or inventory full.")
+		_set_status("Purchase failed.")
 
 	_refresh_funds()
 
@@ -69,3 +81,10 @@ func _refresh_funds() -> void:
 
 func _set_status(message: String) -> void:
 	status_label.text = message
+
+func _has_free_inventory_slot() -> bool:
+	for slot in InventoryManager.inventory:
+		if slot == null:
+			return true
+
+	return false
