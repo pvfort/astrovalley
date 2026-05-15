@@ -15,10 +15,13 @@ extends Resource
 
 @export var replacement_item: ItemData
 
+# Legacy placement fields retained for compatibility with existing systems/resources.
 @export var placeable: bool = false
 @export var placed_scene: PackedScene
 @export var placement_size: Vector2i = Vector2i.ONE
 @export var furniture_category: String = ""
+
+# Preferred extensible placement fields for build mode and future placeable systems.
 @export var placeable_scene: PackedScene
 @export var placeable_category: String = ""
 @export var footprint_size: Vector2i = Vector2i.ONE

@@ -262,7 +262,7 @@ func _has_collision_overlap(world_position: Vector2, footprint: Vector2i) -> boo
 
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
-	query.transform = Transform2D(0.0, world_position + _selected_item.placement_offset)
+	query.transform = Transform2D.IDENTITY.translated(world_position + _selected_item.placement_offset)
 	query.collide_with_bodies = true
 	query.collide_with_areas = true
 
