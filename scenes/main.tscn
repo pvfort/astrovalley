@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://6qh4ao33le5u" path="res://scripts/main.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="3"]
 [ext_resource type="PackedScene" uid="uid://blctf1qsa3ufe" path="res://scenes/ui/InventoryUI.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HotbarUI.tscn" id="5_hotbar"]
 [ext_resource type="PackedScene" path="res://scenes/resources/ComputerEntity.tscn" id="5_computer"]
 [ext_resource type="PackedScene" path="res://scenes/resources/BedEntity.tscn" id="6_bed"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ClockUI.tscn" id="7_clock"]
@@ -90,6 +91,8 @@ horizontal_alignment = 1
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1397689064]
 
 [node name="InventoryUi" parent="CanvasLayer" unique_id=48336469 instance=ExtResource("4_jyhfs")]
+
+[node name="HotbarUI" parent="CanvasLayer" instance=ExtResource("5_hotbar")]
 
 [node name="ClockUI" parent="CanvasLayer" unique_id=1583854537 instance=ExtResource("7_clock")]
 layout_mode = 3
