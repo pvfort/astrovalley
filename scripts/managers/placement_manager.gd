@@ -120,9 +120,13 @@ func _confirm_placement() -> void:
 		else:
 			InventoryManager.remove_item_by_id(_active_item.item_id)
 
-	if FurnitureSaveManager != null:
-		var scene_path := _active_item.placed_scene.resource_path
-		var room_id := _current_room_id()
+	var scene_path := _active_item.placed_scene.resource_path
+	var room_id := _current_room_id()
+	_attach_saveable_component(furniture, scene_path, room_id)
+
+	if SaveManager != null:
+		SaveManager.save_world()
+	elif FurnitureSaveManager != null:
 		FurnitureSaveManager.add_furniture(scene_path, _snapped_position, furniture.rotation, room_id)
 
 	cancel_placement()
@@ -224,3 +228,16 @@ func _current_room_id() -> String:
 	if scene != null and scene.has_method("get_current_room_id"):
 		return str(scene.get_current_room_id())
 	return ""
+
+
+func _attach_saveable_component(node: Node2D, scene_path: String, room_id: String) -> void:
+	var saveable := node.get_node_or_null("SaveableComponent")
+	if not (saveable is SaveableComponent):
+		saveable = SaveableComponent.new()
+		saveable.name = "SaveableComponent"
+		node.add_child(saveable)
+
+	var component := saveable as SaveableComponent
+	component.category = "placed_furniture"
+	component.scene_path_override = scene_path
+	component.set_component_state_value("room_id", room_id)

@@ -366,3 +366,42 @@ func get_move_speed() -> float:
 			final_speed *= 1.5
 
 	return final_speed
+
+
+func get_saveable_id() -> String:
+	return "player_%s" % str(player_id)
+
+
+func save_state() -> Dictionary:
+	var status_effects: Dictionary = {}
+	var status := get_status_effect_component()
+	if status != null and status.has_method("save_state"):
+		status_effects = status.save_state()
+
+	return {
+		"player_id": player_id,
+		"current_level": current_level,
+		"position": {
+			"x": global_position.x,
+			"y": global_position.y,
+		},
+		"status_effects": status_effects,
+	}
+
+
+func load_state(data: Dictionary) -> void:
+	player_id = int(data.get("player_id", player_id))
+	current_level = int(data.get("current_level", current_level))
+
+	var position_data := data.get("position", {})
+	if position_data is Dictionary:
+		var pos_dict := position_data as Dictionary
+		var loaded_position := Vector2(float(pos_dict.get("x", global_position.x)), float(pos_dict.get("y", global_position.y)))
+		global_position = loaded_position
+		target_position = loaded_position
+		is_moving = false
+
+	var status := get_status_effect_component()
+	var saved_status := data.get("status_effects", {})
+	if status != null and status.has_method("load_state") and saved_status is Dictionary:
+		status.load_state(saved_status)

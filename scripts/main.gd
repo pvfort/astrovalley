@@ -114,7 +114,9 @@ func _create_room(room_id: String = "institute"):
 	move_child(tilemap, 0)
 	_ensure_furniture_container()
 
-	if FurnitureSaveManager != null:
+	if SaveManager != null:
+		SaveManager.restore_room_furniture(current_room_id, furniture_container)
+	elif FurnitureSaveManager != null:
 		FurnitureSaveManager.load_room_furniture(furniture_container, current_room_id)
 
 
@@ -234,3 +236,16 @@ func spawn_item(item_data: ItemData, position: Vector2):
 	item.global_position = position
 
 	add_child(item)
+
+
+func save_state() -> Dictionary:
+	return {
+		"current_room_id": current_room_id,
+	}
+
+
+func load_state(data: Dictionary) -> void:
+	var room_id := str(data.get("current_room_id", current_room_id))
+	if room_id.is_empty() or room_id == current_room_id:
+		return
+	_create_room(room_id)

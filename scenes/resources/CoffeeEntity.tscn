@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://by4dp4w3i2oub" path="res://scripts/components/consumable_component.gd" id="5_7k70u"]
 [ext_resource type="Script" uid="uid://dg30w6inkjpo3" path="res://scripts/components/status_effect_component.gd" id="6_m0dd3"]
 [ext_resource type="Resource" uid="uid://qm4eayag8lrn" path="res://resources/items/coffee.tres" id="7_m0dd3"]
+[ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="8_saveable"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7gt87"]
 size = Vector2(8, 6)
@@ -42,3 +43,7 @@ metadata/_custom_type_script = "uid://dg30w6inkjpo3"
 script = ExtResource("2_8mniy")
 item = ExtResource("7_m0dd3")
 metadata/_custom_type_script = "uid://d38j71xw76r6v"
+
+[node name="SaveableComponent" type="Node" parent="." unique_id=205691833]
+script = ExtResource("8_saveable")
+category = "dropped_items"

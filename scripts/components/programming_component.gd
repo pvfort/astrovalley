@@ -72,3 +72,14 @@ func _set_computer_visual(active: bool) -> void:
 		sprite.texture = active_texture
 	else:
 		sprite.texture = _original_texture
+
+
+func save_state() -> Dictionary:
+	return {
+		"is_interacting": _is_interacting,
+	}
+
+
+func load_state(data: Dictionary) -> void:
+	_is_interacting = bool(data.get("is_interacting", false))
+	_set_computer_visual(_is_interacting)

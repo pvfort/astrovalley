@@ -203,3 +203,42 @@ func add_programming_progress(amount: int) -> void:
 func _on_peer_connected(id: int) -> void:
     if multiplayer.is_server():
         rpc_id(id, "sync_clock", current_day, current_hour, current_minute, _phase_name)
+
+
+func save_state() -> Dictionary:
+	return {
+		"day": current_day,
+		"hour": current_hour,
+		"minute": current_minute,
+		"phase": _phase_name,
+		"daily_stats": _daily_stats.duplicate(true),
+	}
+
+
+func load_state(data: Dictionary) -> void:
+	set_time(
+		int(data.get("day", current_day)),
+		int(data.get("hour", current_hour)),
+		int(data.get("minute", current_minute))
+	)
+	_daily_stats = _as_daily_stats(data.get("daily_stats", {}))
+
+
+func _as_daily_stats(value: Variant) -> Dictionary:
+	var defaults := {
+		"xp_gained_per_skill": {},
+		"money_earned": 0,
+		"tasks_completed": 0,
+		"observation_data_collected": 0,
+		"programming_progress": 0,
+	}
+	if not (value is Dictionary):
+		return defaults
+
+	var source := value as Dictionary
+	defaults["xp_gained_per_skill"] = source.get("xp_gained_per_skill", {})
+	defaults["money_earned"] = int(source.get("money_earned", 0))
+	defaults["tasks_completed"] = int(source.get("tasks_completed", 0))
+	defaults["observation_data_collected"] = int(source.get("observation_data_collected", 0))
+	defaults["programming_progress"] = int(source.get("programming_progress", 0))
+	return defaults
