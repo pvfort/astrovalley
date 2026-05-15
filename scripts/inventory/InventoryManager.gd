@@ -27,21 +27,53 @@ func _ready():
 	_rebuild_item_cache()
 
 func add_item(item: ItemData) -> bool:
-	print("[INVENTORY] add_item called:", item.item_id)
+	if item == null:
+		return false
+	return add_item_stack(item, 1) == 0
+
+
+func add_item_stack(item: ItemData, count: int) -> int:
+	if item == null:
+		return max(count, 0)
+	var remaining := max(count, 0)
+	if remaining == 0:
+		return 0
+
+	var changed := false
+	var max_stack := get_max_stack_for_item(item)
+	for i in range(inventory.size()):
+		if remaining == 0:
+			break
+		var slot_data := inventory[i]
+		if slot_data == null:
+			continue
+		var slot_item := slot_data.get("item", null) as ItemData
+		if slot_item == null or slot_item.item_id != item.item_id:
+			continue
+		var slot_count := int(slot_data.get("count", 1))
+		if slot_count >= max_stack:
+			continue
+		var can_add := min(max_stack - slot_count, remaining)
+		slot_data["count"] = slot_count + can_add
+		remaining -= can_add
+		changed = true
 
 	for i in range(inventory.size()):
-		if inventory[i] == null:
-			inventory[i] = {
-				"item": item,
-				"count": 1
-			}
+		if remaining == 0:
+			break
+		if inventory[i] != null:
+			continue
+		var add_count := min(max_stack, remaining)
+		inventory[i] = {
+			"item": item,
+			"count": add_count
+		}
+		remaining -= add_count
+		changed = true
 
-			print("[INVENTORY] inserted at slot:", i)
-			inventory_changed.emit()
-			return true
-
-	print("[INVENTORY] FAILED: inventory full")
-	return false
+	if changed:
+		inventory_changed.emit()
+	return remaining
 
 
 func purchase_item(item: ItemData, cost: int) -> bool:
@@ -63,7 +95,8 @@ func purchase_item(item: ItemData, cost: int) -> bool:
 	return true
 
 func remove_item(index: int):
-
+	if not _is_valid_inventory_index(index):
+		return
 	inventory[index] = null
 
 	inventory_changed.emit()
@@ -80,7 +113,97 @@ func sort_items(a, b):
 	return a.category < b.category
 
 func get_inventory_slot(index: int):
+	if not _is_valid_inventory_index(index):
+		return null
 	return inventory[index]
+
+
+func get_inventory_size() -> int:
+	return INVENTORY_SIZE
+
+
+func get_max_stack_for_item(item: ItemData) -> int:
+	if item == null:
+		return 1
+	return max(1, item.stack_size)
+
+
+func set_inventory_slot(index: int, slot_data: Variant) -> void:
+	if not _is_valid_inventory_index(index):
+		return
+	if slot_data == null:
+		inventory[index] = null
+		inventory_changed.emit()
+		return
+	if not (slot_data is Dictionary):
+		return
+
+	var slot_dict := slot_data as Dictionary
+	var item := slot_dict.get("item", null) as ItemData
+	if item == null:
+		return
+	var count := clampi(int(slot_dict.get("count", 1)), 1, get_max_stack_for_item(item))
+	inventory[index] = {
+		"item": item,
+		"count": count
+	}
+	inventory_changed.emit()
+
+
+func remove_from_slot(index: int, count: int = 1) -> Dictionary:
+	if not _is_valid_inventory_index(index):
+		return {}
+	var slot_data := inventory[index]
+	if slot_data == null:
+		return {}
+	var item := slot_data.get("item", null) as ItemData
+	if item == null:
+		return {}
+	var slot_count := int(slot_data.get("count", 1))
+	var remove_count := clampi(count, 1, slot_count)
+	slot_count -= remove_count
+	if slot_count <= 0:
+		inventory[index] = null
+	else:
+		slot_data["count"] = slot_count
+	inventory_changed.emit()
+	return {
+		"item": item,
+		"count": remove_count
+	}
+
+
+func try_insert_into_slot(index: int, item: ItemData, count: int) -> int:
+	if not _is_valid_inventory_index(index):
+		return max(count, 0)
+	if item == null:
+		return max(count, 0)
+	var remaining := max(count, 0)
+	if remaining == 0:
+		return 0
+
+	var slot_data := inventory[index]
+	var max_stack := get_max_stack_for_item(item)
+	if slot_data == null:
+		var put_count := min(remaining, max_stack)
+		inventory[index] = {
+			"item": item,
+			"count": put_count
+		}
+		inventory_changed.emit()
+		return remaining - put_count
+
+	var slot_item := slot_data.get("item", null) as ItemData
+	if slot_item == null or slot_item.item_id != item.item_id:
+		return remaining
+
+	var slot_count := int(slot_data.get("count", 1))
+	var can_add := min(max_stack - slot_count, remaining)
+	if can_add <= 0:
+		return remaining
+	slot_data["count"] = slot_count + can_add
+	inventory_changed.emit()
+	return remaining - can_add
 
 func get_hotbar_slot(index: int):
 
@@ -272,3 +395,7 @@ func _rebuild_item_cache() -> void:
 			var item := loaded as ItemData
 			if not item.item_id.is_empty():
 				_item_cache[item.item_id] = item
+
+
+func _is_valid_inventory_index(index: int) -> bool:
+	return index >= 0 and index < inventory.size()
