@@ -86,7 +86,7 @@ func _reload_character_selector(selected_character_id: String = "") -> void:
 	_character_ids.clear()
 	character_selector.clear()
 
-	var characters: Array = CharacterSaveManager.get_all_characters()
+	var characters: Array[CharacterProfile] = CharacterSaveManager.get_all_characters()
 	for profile in characters:
 		if profile == null:
 			continue
