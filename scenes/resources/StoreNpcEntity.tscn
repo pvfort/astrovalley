@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/entities/characters/character.png" id="1_character"]
 [ext_resource type="Script" path="res://scripts/components/store_npc_component.gd" id="2_store_npc"]
+[ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="3_persistent"]
 
 [sub_resource type="AtlasTexture" id="1_npc_frame"]
 atlas = ExtResource("1_character")
@@ -24,3 +25,6 @@ shape = SubResource("2_npc_shape")
 [node name="StoreNpcComponent" type="Node" parent="."]
 script = ExtResource("2_store_npc")
 store_ui_path = NodePath("../../CanvasLayer/StoreUI")
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("3_persistent")

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cyjr5g746nc8x" path="res://scripts/components/producer_component.gd" id="4_d52nx"]
 [ext_resource type="Resource" uid="uid://dc5v2frvsrp5p" path="res://resources/items/mug.tres" id="5_4ovy0"]
 [ext_resource type="Resource" uid="uid://qm4eayag8lrn" path="res://resources/items/coffee.tres" id="6_weds6"]
+[ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="7_persistent"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7gt87"]
 size = Vector2(12, 14)
@@ -32,3 +33,6 @@ script = ExtResource("4_d52nx")
 required_item = ExtResource("5_4ovy0")
 produced_item = ExtResource("6_weds6")
 metadata/_custom_type_script = "uid://cyjr5g746nc8x"
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("7_persistent")

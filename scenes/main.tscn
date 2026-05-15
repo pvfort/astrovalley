@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/DailySummaryUI.tscn" id="8_summary"]
 [ext_resource type="PackedScene" path="res://scenes/resources/StoreNpcEntity.tscn" id="10_store_npc"]
 [ext_resource type="PackedScene" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
+[ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="12_persistent"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -26,6 +27,9 @@ texture = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Telescope" unique_id=49984888]
 shape = SubResource("1")
+
+[node name="PersistentObject" type="Node" parent="Telescope"]
+script = ExtResource("12_persistent")
 
 [node name="ComputerEntity" parent="." unique_id=1955995544 instance=ExtResource("5_computer")]
 position = Vector2(500, 300)

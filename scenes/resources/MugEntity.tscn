@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="3_fif7h"]
 [ext_resource type="Texture2D" uid="uid://bd7ijm8x72veq" path="res://assets/entities/items/mug.png" id="3_qrb7g"]
 [ext_resource type="Script" uid="uid://d38j71xw76r6v" path="res://scripts/components/pickup_component.gd" id="6_8svt1"]
+[ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="8_persistent"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7gt87"]
 size = Vector2(8, 6)
@@ -32,3 +33,6 @@ one_way_collision = true
 script = ExtResource("6_8svt1")
 item = ExtResource("2_egtyq")
 metadata/_custom_type_script = "uid://d38j71xw76r6v"
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("8_persistent")
