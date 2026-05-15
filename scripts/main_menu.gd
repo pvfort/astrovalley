@@ -21,7 +21,7 @@ func _ready() -> void:
 	_update_network_buttons()
 
 func _on_host_pressed() -> void:
-	if not _has_selected_character():
+	if not _ensure_character_selected():
 		return
 
 	var port = int(port_field.text) if port_field.text.is_valid_int() else DEFAULT_PORT
@@ -32,7 +32,7 @@ func _on_host_pressed() -> void:
 		status_label.text = "Failed to host on port %d" % port
 
 func _on_join_pressed() -> void:
-	if not _has_selected_character():
+	if not _ensure_character_selected():
 		return
 
 	var ip = ip_field.text.strip_edges()
@@ -118,7 +118,7 @@ func _reload_character_selector(selected_character_id: String = "") -> void:
 	character_selector.select(preferred_index)
 	_on_character_selector_item_selected(preferred_index)
 
-func _has_selected_character() -> bool:
+func _ensure_character_selected() -> bool:
 	var active_profile := CharacterSaveManager.get_active_character()
 	if active_profile != null:
 		return true
