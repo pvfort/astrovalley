@@ -50,4 +50,13 @@ func _gui_input(event: InputEvent) -> void:
 			print("[UI] no player found")
 			return
 
+		var slot_data: Variant = InventoryManager.get_inventory_slot(slot_index)
+		if slot_data != null:
+			var raw_item: Variant = slot_data.get("item")
+			var item: ItemData = raw_item if raw_item is ItemData else null
+			if item != null and item.placeable and PlacementManager != null:
+				var started := PlacementManager.begin_placement(item, slot_index)
+				if started:
+					return
+
 		InventoryManager.use_item(slot_index, player)

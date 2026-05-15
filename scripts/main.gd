@@ -12,6 +12,9 @@ var map_system = MapSystem.new()
 @onready var players_node: Node = $Players
 @onready var telescope: Area2D = $Telescope
 
+var current_room_id: String = "institute"
+var furniture_container: Node2D = null
+
 func _ready():
 	TimeManager.phase_changed.connect(_on_phase_changed)
 	TaskManager.task_started.connect(_on_task_started)
@@ -30,10 +33,14 @@ func _ready():
 	# Spawn local player
 	spawn_player(local_id)
 
+	_ensure_furniture_container()
+
 	# Build the TileMap room
 	_create_room("institute")
 
 func _create_room(room_id: String = "institute"):
+	current_room_id = room_id
+
 	# Remove old room elements
 	for child in get_children():
 		if child.name == "Room" or child.name.begins_with("DoorZone_"):
@@ -105,6 +112,35 @@ func _create_room(room_id: String = "institute"):
 
 	add_child(tilemap)
 	move_child(tilemap, 0)
+	_ensure_furniture_container()
+
+	if FurnitureSaveManager != null:
+		FurnitureSaveManager.load_room_furniture(furniture_container, current_room_id)
+
+
+func _ensure_furniture_container() -> void:
+	if furniture_container == null or not is_instance_valid(furniture_container):
+		furniture_container = Node2D.new()
+		furniture_container.name = "Furniture"
+		add_child(furniture_container)
+
+	if furniture_container.get_parent() == null:
+		add_child(furniture_container)
+
+	move_child(furniture_container, get_child_count() - 1)
+
+
+func get_current_room_id() -> String:
+	return current_room_id
+
+
+func get_room_tilemap() -> TileMap:
+	return get_node_or_null("Room")
+
+
+func get_furniture_container() -> Node2D:
+	_ensure_furniture_container()
+	return furniture_container
 
 func _on_door_entered(body: Node2D, dest: String):
 	if body is CharacterBody2D and body.is_multiplayer_authority():
