@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Texture2D" path="res://assets/furniture/desk.png" id="1_desk"]
+[ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="2_persistent"]
 
 [sub_resource type="RectangleShape2D" id="1_shape"]
 size = Vector2(30, 30)
@@ -17,3 +18,6 @@ monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SolidArea"]
 shape = SubResource("1_shape")
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("2_persistent")

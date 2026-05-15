@@ -3,7 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://cm2cfagb80qtu" path="res://assets/entities/furniture/computer_off.png" id="1_pc_off"]
 [ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="2_interactable"]
 [ext_resource type="Script" uid="uid://m06xvt5kbjwn" path="res://scripts/components/programming_component.gd" id="3_programming"]
-[ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="4_saveable"]
+[ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="4_persistent"]
+[ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="5_saveable"]
 
 [sub_resource type="RectangleShape2D" id="1_shape"]
 size = Vector2(28, 20)
@@ -26,6 +27,8 @@ one_way_collision = true
 [node name="ProgrammingComponent" type="Node" parent="." unique_id=696018731]
 script = ExtResource("3_programming")
 
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("4_persistent")
 [node name="SaveableComponent" type="Node" parent="." unique_id=709420221]
 script = ExtResource("4_saveable")
 unique_id = "computer_entity_main"

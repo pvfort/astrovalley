@@ -4,6 +4,7 @@ const TILE_SIZE := 32
 const VALID_PREVIEW_COLOR := Color(1.0, 1.0, 1.0, 0.65)
 const INVALID_PREVIEW_COLOR := Color(1.0, 0.35, 0.35, 0.75)
 const FLOOR_TILE_SOURCE_IDS := [0, 4]
+const PERSISTENT_OBJECT_SCRIPT := preload("res://scripts/persistence/PersistentObject.gd")
 
 var _active_item: ItemData = null
 var _source_slot_index: int = -1
@@ -108,6 +109,16 @@ func _confirm_placement() -> void:
 		cancel_placement()
 		return
 
+	var scene_path := _active_item.placed_scene.resource_path
+	var persistent_object := _ensure_persistent_object(instance)
+	persistent_object.scene_path = scene_path
+	if persistent_object.owner_character_id.is_empty():
+		persistent_object.owner_character_id = _active_character_id()
+	if persistent_object.creation_timestamp.is_empty():
+		persistent_object.creation_timestamp = Time.get_datetime_string_from_system(true)
+	if persistent_object.persistent_id.is_empty() and PersistenceRegistry != null:
+		persistent_object.persistent_id = PersistenceRegistry.create_runtime_id(persistent_object.owner_character_id)
+
 	var parent := _resolve_furniture_parent()
 	parent.add_child(instance)
 
@@ -120,6 +131,17 @@ func _confirm_placement() -> void:
 		else:
 			InventoryManager.remove_item_by_id(_active_item.item_id)
 
+	if FurnitureSaveManager != null:
+		var room_id := _current_room_id()
+		FurnitureSaveManager.add_furniture(
+			scene_path,
+			_snapped_position,
+			furniture.rotation,
+			room_id,
+			persistent_object.persistent_id,
+			persistent_object.owner_character_id,
+			persistent_object.creation_timestamp
+		)
 	var scene_path := _active_item.placed_scene.resource_path
 	var room_id := _current_room_id()
 	_attach_saveable_component(furniture, scene_path, room_id)
@@ -233,6 +255,26 @@ func _current_room_id() -> String:
 	return ""
 
 
+func _active_character_id() -> String:
+	if CharacterSaveManager == null:
+		return ""
+
+	var profile := CharacterSaveManager.get_active_character()
+	if profile == null:
+		return ""
+
+	return str(profile.character_id)
+
+
+func _ensure_persistent_object(instance: Node) -> PersistentObject:
+	var existing := instance.find_child("PersistentObject", true, false)
+	if existing is PersistentObject:
+		return existing as PersistentObject
+
+	var persistent_object := PERSISTENT_OBJECT_SCRIPT.new() as PersistentObject
+	persistent_object.name = "PersistentObject"
+	instance.add_child(persistent_object)
+	return persistent_object
 func _attach_saveable_component(node: Node2D, scene_path: String, room_id: String) -> void:
 	var saveable := node.get_node_or_null("SaveableComponent")
 	if not (saveable is SaveableComponent):
