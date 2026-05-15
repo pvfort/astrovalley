@@ -211,7 +211,7 @@ func save_state() -> Dictionary:
 		"hour": current_hour,
 		"minute": current_minute,
 		"phase": _phase_name,
-		"daily_stats": _daily_stats.duplicate(true),
+		"daily_stats": _as_daily_stats(_daily_stats),
 	}
 
 

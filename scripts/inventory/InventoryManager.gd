@@ -199,13 +199,13 @@ func save_state() -> Dictionary:
 
 func load_state(data: Dictionary) -> void:
 	var saved_inventory := data.get("inventory", [])
+	var inventory_entries: Array = []
+	if saved_inventory is Array:
+		inventory_entries = saved_inventory as Array
 	inventory.resize(INVENTORY_SIZE)
 
 	for i in range(INVENTORY_SIZE):
 		inventory[i] = null
-		if not (saved_inventory is Array):
-			continue
-		var inventory_entries := saved_inventory as Array
 		if i >= inventory_entries.size():
 			continue
 

@@ -5,6 +5,8 @@ const SAVE_FILE_NAME: String = "world.json"
 const FURNITURE_CATEGORY: String = "placed_furniture"
 const MACHINE_CATEGORY: String = "machine_states"
 const ROOM_CATEGORY: String = "room_states"
+const INVALID_PATH_CHARS: Array[String] = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|", " "]
+const REQUEST_AUTOSAVE_DELAY: float = 0.75
 
 var _saveables: Dictionary = {}
 var _loaded_world_data: WorldSaveData = WorldSaveData.new()
@@ -12,6 +14,7 @@ var _world_name: String = ""
 var _world_seed: int = 0
 var _loaded: bool = false
 var _is_loading: bool = false
+var _autosave_queued: bool = false
 
 
 func _ready() -> void:
@@ -65,6 +68,14 @@ func save_world() -> bool:
 	return true
 
 
+func request_autosave() -> void:
+	if _autosave_queued:
+		return
+	_autosave_queued = true
+	var timer := get_tree().create_timer(REQUEST_AUTOSAVE_DELAY)
+	timer.timeout.connect(_flush_requested_autosave, CONNECT_ONE_SHOT)
+
+
 func load_world() -> bool:
 	if not _is_world_authority():
 		return false
@@ -99,7 +110,13 @@ func restore_room_furniture(room_id: String, parent: Node) -> void:
 		return
 
 	for child in parent.get_children():
-		child.queue_free()
+		var saveable: SaveableComponent = null
+		for nested in child.get_children():
+			if nested is SaveableComponent:
+				saveable = nested as SaveableComponent
+				break
+		if saveable != null and saveable.category == FURNITURE_CATEGORY:
+			child.queue_free()
 
 	for entry in _loaded_world_data.placed_furniture:
 		var state := _dictionary(entry.get("state", {}))
@@ -140,6 +157,11 @@ func _on_node_added(node: Node) -> void:
 
 
 func _on_sleep_finished(_player_id: int) -> void:
+	save_world()
+
+
+func _flush_requested_autosave() -> void:
+	_autosave_queued = false
 	save_world()
 
 
@@ -334,8 +356,7 @@ func _sanitize_path_segment(value: String) -> String:
 	if sanitized.is_empty():
 		return "default_world"
 
-	var invalid_chars := ["/", "\\", ":", "*", "?", "\"", "<", ">", "|", " "]
-	for ch in invalid_chars:
+	for ch in INVALID_PATH_CHARS:
 		sanitized = sanitized.replace(ch, "_")
 
 	return sanitized

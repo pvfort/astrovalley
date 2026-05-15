@@ -125,7 +125,10 @@ func _confirm_placement() -> void:
 	_attach_saveable_component(furniture, scene_path, room_id)
 
 	if SaveManager != null:
-		SaveManager.save_world()
+		if SaveManager.has_method("request_autosave"):
+			SaveManager.request_autosave()
+		else:
+			SaveManager.save_world()
 	elif FurnitureSaveManager != null:
 		FurnitureSaveManager.add_furniture(scene_path, _snapped_position, furniture.rotation, room_id)
 

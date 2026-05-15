@@ -134,9 +134,17 @@ func _apply_transform(target: Node, transform_data: Dictionary) -> void:
 		var node2d := target as Node2D
 		var position_data := _as_dictionary(transform_data.get("position", {}))
 		var scale_data := _as_dictionary(transform_data.get("scale", {}))
-		node2d.global_position = Vector2(float(position_data.get("x", node2d.global_position.x)), float(position_data.get("y", node2d.global_position.y)))
+		var loaded_position := Vector2(
+			float(position_data.get("x", node2d.global_position.x)),
+			float(position_data.get("y", node2d.global_position.y))
+		)
+		var loaded_scale := Vector2(
+			float(scale_data.get("x", node2d.scale.x)),
+			float(scale_data.get("y", node2d.scale.y))
+		)
+		node2d.global_position = loaded_position
 		node2d.rotation = float(transform_data.get("rotation", node2d.rotation))
-		node2d.scale = Vector2(float(scale_data.get("x", node2d.scale.x)), float(scale_data.get("y", node2d.scale.y)))
+		node2d.scale = loaded_scale
 
 
 func _generate_default_id() -> String:
