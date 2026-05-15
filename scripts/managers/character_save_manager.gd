@@ -6,8 +6,6 @@ const ACTIVE_CHARACTER_FILE := "user://characters/active_character.cfg"
 const ACTIVE_CHARACTER_SECTION := "character"
 const ACTIVE_CHARACTER_KEY := "id"
 
-const CharacterProfile = preload("res://scripts/player/character_profile.gd")
-
 var _active_character: CharacterProfile = null
 var _rng := RandomNumberGenerator.new()
 
@@ -130,9 +128,9 @@ func _ensure_characters_root() -> void:
 
 
 func _generate_character_id() -> String:
-	return "character_%s_%s" % [
-		str(Time.get_ticks_usec()),
-		str(_rng.randi())
+	return "char_%x_%x" % [
+		Time.get_ticks_usec(),
+		_rng.randi()
 	]
 
 
