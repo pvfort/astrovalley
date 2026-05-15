@@ -104,6 +104,13 @@ func has_item(item_id: String) -> bool:
 
 	return false
 
+func has_free_slot() -> bool:
+	for slot in inventory:
+		if slot == null:
+			return true
+
+	return false
+
 
 func remove_item_by_id(item_id: String) -> bool:
 

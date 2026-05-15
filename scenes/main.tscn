@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/ClockUI.tscn" id="7_clock"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DailySummaryUI.tscn" id="8_summary"]
 [ext_resource type="Script" path="res://scripts/time/day_night_controller.gd" id="9_day_night"]
+[ext_resource type="PackedScene" path="res://scenes/resources/StoreNpcEntity.tscn" id="10_store_npc"]
+[ext_resource type="PackedScene" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -32,6 +34,9 @@ position = Vector2(500, 300)
 
 [node name="BedEntity" parent="." instance=ExtResource("6_bed")]
 position = Vector2(620, 300)
+
+[node name="StoreNpcEntity" parent="." instance=ExtResource("10_store_npc")]
+position = Vector2(360, 300)
 
 [node name="UI" type="Control" parent="." unique_id=300123017]
 layout_mode = 3
@@ -81,6 +86,8 @@ horizontal_alignment = 1
 [node name="ClockUI" parent="CanvasLayer" instance=ExtResource("7_clock")]
 
 [node name="DailySummaryUI" parent="CanvasLayer" instance=ExtResource("8_summary")]
+
+[node name="StoreUI" parent="CanvasLayer" instance=ExtResource("11_store_ui")]
 
 [node name="DayNightController" type="CanvasLayer" parent="." script=ExtResource("9_day_night")]
 

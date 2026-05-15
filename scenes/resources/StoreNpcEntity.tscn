@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/entities/characters/character.png" id="1_character"]
+[ext_resource type="Script" path="res://scripts/components/store_npc_component.gd" id="2_store_npc"]
+
+[sub_resource type="AtlasTexture" id="1_npc_frame"]
+atlas = ExtResource("1_character")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="RectangleShape2D" id="2_npc_shape"]
+size = Vector2(24, 24)
+
+[node name="StoreNpcEntity" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("1_npc_frame")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("2_npc_shape")
+
+[node name="StoreNpcComponent" type="Node" parent="."]
+script = ExtResource("2_store_npc")
+store_ui_path = NodePath("../../CanvasLayer/StoreUI")
