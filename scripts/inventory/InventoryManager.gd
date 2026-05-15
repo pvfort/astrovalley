@@ -2,6 +2,7 @@ extends Node
 
 const INVENTORY_SIZE = 24
 const HOTBAR_SIZE = 8
+const ITEM_RESOURCES_ROOT := "res://resources/items"
 
 var inventory: Array = []
 var equipped := {
@@ -16,11 +17,14 @@ signal inventory_changed
 signal inventory_toggled(is_open: bool)
 
 var is_inventory_open: bool = false
+var _item_cache: Dictionary = {}
+var _item_cache_built: bool = false
 
 
 	
 func _ready():
 	inventory.resize(INVENTORY_SIZE)
+	_rebuild_item_cache()
 
 func add_item(item: ItemData) -> bool:
 	print("[INVENTORY] add_item called:", item.item_id)
@@ -166,3 +170,105 @@ func use_item(index: int, player: PlayerCharacter) -> void:
 
 	if item.replacement_item != null:
 		add_item(item.replacement_item)
+
+
+func save_state() -> Dictionary:
+	var serialized_inventory: Array[Dictionary] = []
+	for slot_variant in inventory:
+		if slot_variant == null:
+			serialized_inventory.append({})
+			continue
+
+		var slot := slot_variant as Dictionary
+		var item := slot.get("item", null) as ItemData
+		serialized_inventory.append({
+			"item_id": item.item_id if item != null else "",
+			"count": int(slot.get("count", 1)),
+		})
+
+	var equipped_state: Dictionary = {}
+	for key_variant in equipped.keys():
+		var key := str(key_variant)
+		var equipped_item := equipped.get(key_variant, null) as ItemData
+		equipped_state[key] = equipped_item.item_id if equipped_item != null else ""
+
+	return {
+		"inventory": serialized_inventory,
+		"equipped": equipped_state,
+		"funds": funds,
+	}
+
+
+func load_state(data: Dictionary) -> void:
+	var saved_inventory := data.get("inventory", [])
+	var inventory_entries: Array = []
+	if saved_inventory is Array:
+		inventory_entries = saved_inventory as Array
+	inventory.resize(INVENTORY_SIZE)
+
+	for i in range(INVENTORY_SIZE):
+		inventory[i] = null
+		if i >= inventory_entries.size():
+			continue
+
+		var entry_variant := inventory_entries[i]
+		if not (entry_variant is Dictionary):
+			continue
+		var entry := entry_variant as Dictionary
+		var item_id := str(entry.get("item_id", ""))
+		var item := _item_by_id(item_id)
+		if item == null:
+			continue
+
+		inventory[i] = {
+			"item": item,
+			"count": int(entry.get("count", 1)),
+		}
+
+	var saved_equipped := data.get("equipped", {})
+	if saved_equipped is Dictionary:
+		var equipped_dict := saved_equipped as Dictionary
+		for key_variant in equipped.keys():
+			var key := str(key_variant)
+			var item_id := str(equipped_dict.get(key, ""))
+			equipped[key_variant] = _item_by_id(item_id)
+
+	funds = int(data.get("funds", funds))
+	inventory_changed.emit()
+
+
+func _item_by_id(item_id: String) -> ItemData:
+	if item_id.is_empty():
+		return null
+
+	if _item_cache.has(item_id):
+		return _item_cache[item_id] as ItemData
+
+	if not _item_cache_built:
+		_rebuild_item_cache()
+	if _item_cache.has(item_id):
+		return _item_cache[item_id] as ItemData
+
+	push_warning("[InventoryManager] Could not resolve saved item_id: %s" % item_id)
+	return null
+
+
+func _rebuild_item_cache() -> void:
+	_item_cache.clear()
+	_item_cache_built = true
+	if not DirAccess.dir_exists_absolute(ITEM_RESOURCES_ROOT):
+		return
+
+	var dir := DirAccess.open(ITEM_RESOURCES_ROOT)
+	if dir == null:
+		return
+
+	for file_name in dir.get_files():
+		if not file_name.ends_with(".tres"):
+			continue
+		var resource_path := "%s/%s" % [ITEM_RESOURCES_ROOT, file_name]
+		var loaded := load(resource_path)
+		if loaded is ItemData:
+			var item := loaded as ItemData
+			if not item.item_id.is_empty():
+				_item_cache[item.item_id] = item

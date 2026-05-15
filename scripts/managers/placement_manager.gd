@@ -142,6 +142,17 @@ func _confirm_placement() -> void:
 			persistent_object.owner_character_id,
 			persistent_object.creation_timestamp
 		)
+	var scene_path := _active_item.placed_scene.resource_path
+	var room_id := _current_room_id()
+	_attach_saveable_component(furniture, scene_path, room_id)
+
+	if SaveManager != null:
+		if SaveManager.has_method("request_autosave"):
+			SaveManager.request_autosave()
+		else:
+			SaveManager.save_world()
+	elif FurnitureSaveManager != null:
+		FurnitureSaveManager.add_furniture(scene_path, _snapped_position, furniture.rotation, room_id)
 
 	cancel_placement()
 
@@ -264,3 +275,14 @@ func _ensure_persistent_object(instance: Node) -> PersistentObject:
 	persistent_object.name = "PersistentObject"
 	instance.add_child(persistent_object)
 	return persistent_object
+func _attach_saveable_component(node: Node2D, scene_path: String, room_id: String) -> void:
+	var saveable := node.get_node_or_null("SaveableComponent")
+	if not (saveable is SaveableComponent):
+		saveable = SaveableComponent.new()
+		saveable.name = "SaveableComponent"
+		node.add_child(saveable)
+
+	var component := saveable as SaveableComponent
+	component.category = "placed_furniture"
+	component.scene_path_override = scene_path
+	component.set_component_state_value("room_id", room_id)

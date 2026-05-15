@@ -16,3 +16,4 @@ res://resources/items/trash_can.tres
 res://scenes/rooms/cafe.tscn
 res://resources/items/coffee_machine.tres
 res://assets/tilesets/wall.tres
+res://scripts/ui/clock_ui.gd
