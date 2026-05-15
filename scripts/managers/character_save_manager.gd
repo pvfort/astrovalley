@@ -128,9 +128,9 @@ func _ensure_characters_root() -> void:
 
 
 func _generate_character_id() -> String:
-	return "char_%x_%x" % [
-		Time.get_ticks_usec(),
-		_rng.randi()
+	return "char_%s_%s" % [
+		str(Time.get_ticks_usec()),
+		str(_rng.randi())
 	]
 
 
