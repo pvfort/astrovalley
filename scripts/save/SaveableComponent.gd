@@ -157,7 +157,11 @@ func _generate_default_id() -> String:
 		if not target_id.is_empty():
 			return target_id
 
-	return "%s_%s" % [str(target.name).to_snake_case(), str(target.get_instance_id())]
+	var stable_path := str(target.get_path())
+	if not stable_path.is_empty():
+		return "%s::%s" % [str(target.name).to_snake_case(), stable_path]
+
+	return "%s::unknown" % str(target.name).to_snake_case()
 
 
 func _as_dictionary(value: Variant) -> Dictionary:

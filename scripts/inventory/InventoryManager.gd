@@ -18,11 +18,13 @@ signal inventory_toggled(is_open: bool)
 
 var is_inventory_open: bool = false
 var _item_cache: Dictionary = {}
+var _item_cache_built: bool = false
 
 
 	
 func _ready():
 	inventory.resize(INVENTORY_SIZE)
+	_rebuild_item_cache()
 
 func add_item(item: ItemData) -> bool:
 	print("[INVENTORY] add_item called:", item.item_id)
@@ -242,15 +244,18 @@ func _item_by_id(item_id: String) -> ItemData:
 	if _item_cache.has(item_id):
 		return _item_cache[item_id] as ItemData
 
-	_rebuild_item_cache()
+	if not _item_cache_built:
+		_rebuild_item_cache()
 	if _item_cache.has(item_id):
 		return _item_cache[item_id] as ItemData
 
+	push_warning("[InventoryManager] Could not resolve saved item_id: %s" % item_id)
 	return null
 
 
 func _rebuild_item_cache() -> void:
 	_item_cache.clear()
+	_item_cache_built = true
 	if not DirAccess.dir_exists_absolute(ITEM_RESOURCES_ROOT):
 		return
 
