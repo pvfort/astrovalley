@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/furniture/desk_entity.gd" id="1_desk_entity"]
+[ext_resource type="Texture2D" path="res://assets/entities/furniture/desk.png" id="2_desk_texture"]
+
+[sub_resource type="RectangleShape2D" id="1_shape"]
+size = Vector2(30, 30)
+
+[node name="DeskEntity" type="Node2D"]
+script = ExtResource("1_desk_entity")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_desk_texture")
+
+[node name="SolidArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidArea"]
+shape = SubResource("1_shape")

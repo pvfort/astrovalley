@@ -4,11 +4,14 @@ extends Control
 @export var mug_price: int = 25
 @export var coffee_item: ItemData = preload("res://resources/items/coffee.tres")
 @export var coffee_price: int = 40
+@export var desk_item: ItemData = preload("res://resources/items/furniture/desk.tres")
+@export var desk_price: int = 120
 
 @onready var funds_label: Label = $Panel/MarginContainer/VBoxContainer/FundsLabel
 @onready var status_label: Label = $Panel/MarginContainer/VBoxContainer/StatusLabel
 @onready var buy_mug_button: Button = $Panel/MarginContainer/VBoxContainer/BuyMugButton
 @onready var buy_coffee_button: Button = $Panel/MarginContainer/VBoxContainer/BuyCoffeeButton
+@onready var buy_desk_button: Button = $Panel/MarginContainer/VBoxContainer/BuyDeskButton
 @onready var close_button: Button = $Panel/MarginContainer/VBoxContainer/CloseButton
 
 func _ready() -> void:
@@ -16,6 +19,7 @@ func _ready() -> void:
 
 	buy_mug_button.pressed.connect(_on_buy_mug_pressed)
 	buy_coffee_button.pressed.connect(_on_buy_coffee_pressed)
+	buy_desk_button.pressed.connect(_on_buy_desk_pressed)
 	close_button.pressed.connect(close_store)
 
 	_refresh_funds()
@@ -43,6 +47,9 @@ func _on_buy_mug_pressed() -> void:
 
 func _on_buy_coffee_pressed() -> void:
 	_purchase_item(coffee_item, coffee_price)
+
+func _on_buy_desk_pressed() -> void:
+	_purchase_item(desk_item, desk_price)
 
 func _purchase_item(item: ItemData, cost: int) -> void:
 	if InventoryManager == null:

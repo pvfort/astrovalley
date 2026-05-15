@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/entities/furniture/desk.png" id="1_desk_texture"]
+[ext_resource type="PackedScene" path="res://scenes/entities/furniture/DeskEntity.tscn" id="2_desk_scene"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="3_item_data"]
+
+[resource]
+script = ExtResource("3_item_data")
+item_id = "desk"
+display_name = "Desk"
+icon = ExtResource("1_desk_texture")
+placeable = true
+placed_scene = ExtResource("2_desk_scene")
+placement_size = Vector2i(1, 1)
+furniture_category = "furniture"
+placeable_scene = ExtResource("2_desk_scene")
+placeable_category = "workstation"
+footprint_size = Vector2i(1, 1)
+placement_offset = Vector2(0, 0)

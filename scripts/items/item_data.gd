@@ -19,3 +19,19 @@ extends Resource
 @export var placed_scene: PackedScene
 @export var placement_size: Vector2i = Vector2i.ONE
 @export var furniture_category: String = ""
+@export var placeable_scene: PackedScene
+@export var placeable_category: String = ""
+@export var footprint_size: Vector2i = Vector2i.ONE
+@export var placement_offset: Vector2 = Vector2.ZERO
+
+
+func get_active_placeable_scene() -> PackedScene:
+	if placeable_scene != null:
+		return placeable_scene
+	return placed_scene
+
+
+func get_active_footprint_size() -> Vector2i:
+	if footprint_size != Vector2i.ZERO:
+		return Vector2i(max(footprint_size.x, 1), max(footprint_size.y, 1))
+	return Vector2i(max(placement_size.x, 1), max(placement_size.y, 1))

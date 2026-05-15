@@ -46,11 +46,16 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
-	if Input.is_action_just_pressed("interact"):
+	if Input.is_action_just_pressed("build_mode") and BuildModeManager != null:
+		BuildModeManager.toggle_build_mode()
+
+	var in_build_mode: bool = BuildModeManager != null and BuildModeManager.is_build_mode_active()
+
+	if not in_build_mode and Input.is_action_just_pressed("interact"):
 		print("[DEBUG] interact pressed")
 		_handle_interaction_input(InteractionMode.PRIMARY)
 
-	if Input.is_action_just_pressed("pick_up"):
+	if not in_build_mode and Input.is_action_just_pressed("pick_up"):
 		print("[INPUT] PICKUP pressed")
 		_handle_interaction_input(InteractionMode.PICKUP)
 

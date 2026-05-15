@@ -54,9 +54,10 @@ func _gui_input(event: InputEvent) -> void:
 		if slot_data != null:
 			var raw_item: Variant = slot_data.get("item")
 			var item: ItemData = raw_item if raw_item is ItemData else null
-			if item != null and item.placeable and PlacementManager != null:
-				var started := PlacementManager.begin_placement(item, slot_index)
-				if started:
+			if item != null and item.placeable and BuildModeManager != null:
+				BuildModeManager.set_selected_item(item, slot_index)
+				if BuildModeManager.is_build_mode_active():
 					return
+				return
 
 		InventoryManager.use_item(slot_index, player)
