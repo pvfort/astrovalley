@@ -100,18 +100,9 @@ func delete_character(character_id: String) -> bool:
 	if character_id.is_empty():
 		return false
 
-	var profile_path := _profile_path(character_id)
-	if FileAccess.file_exists(profile_path):
-		var remove_file_result := DirAccess.remove_absolute(profile_path)
-		if remove_file_result != OK:
-			push_error("[CharacterSaveManager] Failed to remove profile: %s (%s)" % [profile_path, error_string(remove_file_result)])
-			return false
-
 	var dir_path := _character_directory(character_id)
 	if DirAccess.dir_exists_absolute(dir_path):
-		var remove_dir_result := DirAccess.remove_absolute(dir_path)
-		if remove_dir_result != OK:
-			push_error("[CharacterSaveManager] Failed to remove character directory: %s (%s)" % [dir_path, error_string(remove_dir_result)])
+		if not _delete_directory_recursive(dir_path):
 			return false
 
 	if _active_character != null and _active_character.character_id == character_id:
@@ -148,8 +139,11 @@ func _ensure_characters_root() -> void:
 
 
 func _generate_character_id() -> String:
-	var unix_time := int(Time.get_unix_time_from_system())
-	return "character_%s_%s" % [str(unix_time), str(randi())]
+	return "character_%s_%s_%s" % [
+		str(int(Time.get_unix_time_from_system())),
+		str(Time.get_ticks_usec()),
+		str(randi())
+	]
 
 
 func _character_directory(character_id: String) -> String:
@@ -186,3 +180,40 @@ func _clear_active_character_id() -> void:
 		var err := DirAccess.remove_absolute(ACTIVE_CHARACTER_FILE)
 		if err != OK:
 			push_error("[CharacterSaveManager] Failed to clear active character file (%s)" % error_string(err))
+
+
+func _delete_directory_recursive(path: String) -> bool:
+	var dir := DirAccess.open(path)
+	if dir == null:
+		push_error("[CharacterSaveManager] Failed to open directory: %s" % path)
+		return false
+
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if entry == "." or entry == "..":
+			entry = dir.get_next()
+			continue
+
+		var entry_path := "%s/%s" % [path, entry]
+
+		if dir.current_is_dir():
+			if not _delete_directory_recursive(entry_path):
+				dir.list_dir_end()
+				return false
+		else:
+			var remove_file_result := DirAccess.remove_absolute(entry_path)
+			if remove_file_result != OK:
+				push_error("[CharacterSaveManager] Failed to remove file: %s (%s)" % [entry_path, error_string(remove_file_result)])
+				dir.list_dir_end()
+				return false
+
+		entry = dir.get_next()
+	dir.list_dir_end()
+
+	var remove_dir_result := DirAccess.remove_absolute(path)
+	if remove_dir_result != OK:
+		push_error("[CharacterSaveManager] Failed to remove directory: %s (%s)" % [path, error_string(remove_dir_result)])
+		return false
+
+	return true
