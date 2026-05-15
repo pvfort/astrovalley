@@ -117,6 +117,11 @@ func _refresh_preview() -> void:
 		_clear_preview()
 		return
 
+	var selected_item: ItemData = _selected_item
+	if selected_item == null:
+		_clear_preview()
+		return
+
 	if _preview == null or not is_instance_valid(_preview):
 		_preview = BuildPreview.new()
 		_preview.grid_size = TILE_SIZE
@@ -124,8 +129,8 @@ func _refresh_preview() -> void:
 		if scene != null:
 			scene.add_child(_preview)
 
-	var preview_texture: Texture2D = _resolve_preview_texture(_selected_item)
-	_preview.configure(preview_texture, _selected_item.placement_offset)
+	var preview_texture: Texture2D = _resolve_preview_texture(selected_item)
+	_preview.configure(preview_texture, selected_item.placement_offset)
 	_preview.rotation = _current_rotation
 	_update_preview_state()
 
@@ -204,10 +209,9 @@ func _resolve_preview_texture(item_data: ItemData) -> Texture2D:
 	if scene != null:
 		var instance: Node = scene.instantiate()
 		var texture: Texture2D = _find_sprite_texture(instance)
-		if texture != null:
-			instance.queue_free()
-			return texture
 		instance.queue_free()
+		if texture != null:
+			return texture
 
 	return item_data.icon
 
