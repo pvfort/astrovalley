@@ -1,25 +1,11 @@
-extends Control
+extends Node
 
-@export var slot_scene: PackedScene = preload("res://scenes/ui/InventorySlot.tscn")
 
-@onready var slots_container: HBoxContainer = $PanelContainer/MarginContainer/Slots
-
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	_build_slots()
-	InventoryManager.inventory_changed.connect(_refresh_hotbar)
-	_refresh_hotbar()
+	pass # Replace with function body.
 
-func _build_slots() -> void:
-	if slots_container.get_child_count() > 0:
-		return
 
-	for _i in range(InventoryManager.HOTBAR_SIZE):
-		var slot = slot_scene.instantiate()
-		slot.custom_minimum_size = Vector2(72, 92)
-		slots_container.add_child(slot)
-
-func _refresh_hotbar() -> void:
-	for i in range(slots_container.get_child_count()):
-		var slot = slots_container.get_child(i)
-		if slot.has_method("set_slot_data"):
-			slot.set_slot_data(InventoryManager.get_hotbar_slot(i))
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass

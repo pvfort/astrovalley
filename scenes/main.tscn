@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" path="res://scenes/resources/BedEntity.tscn" id="6_bed"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ClockUI.tscn" id="7_clock"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DailySummaryUI.tscn" id="8_summary"]
-[ext_resource type="Script" path="res://scripts/time/day_night_controller.gd" id="9_day_night"]
 [ext_resource type="PackedScene" path="res://scenes/resources/StoreNpcEntity.tscn" id="10_store_npc"]
 [ext_resource type="PackedScene" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
 
@@ -21,7 +20,6 @@ script = ExtResource("2")
 [node name="Telescope" type="Area2D" parent="." unique_id=678417217]
 position = Vector2(400, 300)
 script = ExtResource("1")
-resource_name = "telescope"
 
 [node name="Sprite2D" type="Sprite2D" parent="Telescope" unique_id=1621535991]
 texture = ExtResource("3")
@@ -29,13 +27,13 @@ texture = ExtResource("3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Telescope" unique_id=49984888]
 shape = SubResource("1")
 
-[node name="ComputerEntity" parent="." instance=ExtResource("5_computer")]
+[node name="ComputerEntity" parent="." unique_id=1955995544 instance=ExtResource("5_computer")]
 position = Vector2(500, 300)
 
-[node name="BedEntity" parent="." instance=ExtResource("6_bed")]
+[node name="BedEntity" parent="." unique_id=1694464236 instance=ExtResource("6_bed")]
 position = Vector2(620, 300)
 
-[node name="StoreNpcEntity" parent="." instance=ExtResource("10_store_npc")]
+[node name="StoreNpcEntity" parent="." unique_id=1360177238 instance=ExtResource("10_store_npc")]
 position = Vector2(360, 300)
 
 [node name="UI" type="Control" parent="." unique_id=300123017]
@@ -83,12 +81,14 @@ horizontal_alignment = 1
 
 [node name="InventoryUi" parent="CanvasLayer" unique_id=48336469 instance=ExtResource("4_jyhfs")]
 
-[node name="ClockUI" parent="CanvasLayer" instance=ExtResource("7_clock")]
+[node name="ClockUI" parent="CanvasLayer" unique_id=1583854537 instance=ExtResource("7_clock")]
+layout_mode = 3
+grow_horizontal = 0
 
-[node name="DailySummaryUI" parent="CanvasLayer" instance=ExtResource("8_summary")]
+[node name="DailySummaryUI" parent="CanvasLayer" unique_id=1342081110 instance=ExtResource("8_summary")]
 
-[node name="StoreUI" parent="CanvasLayer" instance=ExtResource("11_store_ui")]
+[node name="StoreUI" parent="CanvasLayer" unique_id=1164901527 instance=ExtResource("11_store_ui")]
 
-[node name="DayNightController" type="CanvasLayer" parent="." script=ExtResource("9_day_night")]
+[node name="DayNightController" type="CanvasLayer" parent="." unique_id=1917497699]
 
 [node name="Players" type="Node2D" parent="." unique_id=96690759]

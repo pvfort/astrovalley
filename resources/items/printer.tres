@@ -1,13 +1,10 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cpttu2fxrlypx"]
 
-[ext_resource type="Texture2D" uid="uid://btc177dxrill0" path="res://assets/sprites/Printer.png" id="1_hrffx"]
+[ext_resource type="Texture2D" uid="uid://tc5ioghs8hi0" path="res://assets/entities/furniture/Printer.png" id="1_hrffx"]
 [ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="1_item"]
 
 [resource]
 script = ExtResource("1_item")
-id = &"printer"
 display_name = "Printer"
-icon = ExtResource("1_hrffx")
-item_category = "equipment"
 description = "Printer. Needs paper to work."
-max_stack_size = 1
+icon = ExtResource("1_hrffx")

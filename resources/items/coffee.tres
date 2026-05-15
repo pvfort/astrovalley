@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://qm4eayag8lrn"]
 
+[ext_resource type="Texture2D" uid="uid://d3gg7dj2ci7be" path="res://assets/entities/items/coffee.png" id="1_cl7mq"]
 [ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="1_item"]
 [ext_resource type="Resource" uid="uid://dc5v2frvsrp5p" path="res://resources/items/mug.tres" id="2_cl7mq"]
-[ext_resource type="Texture2D" uid="uid://cssve506iofex" path="res://assets/sprites/coffee.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_item")
 item_id = "coffee"
 display_name = "Coffee"
-icon = ExtResource("2_icon")
+icon = ExtResource("1_cl7mq")
 tags = Array[String](["consumable", "drink", "placeable", "pickupable", "item"])
 consumable = true
 status_effect_id = "coffee_speed"

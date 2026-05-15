@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://brs6wu0yexn1k" path="res://scenes/player/Player.tscn" id="2_7v3cm"]
 [ext_resource type="PackedScene" uid="uid://b21y80aekuplp" path="res://scenes/resources/CoffeeMachine.tscn" id="3_7v3cm"]
 [ext_resource type="PackedScene" uid="uid://dkwttj2gmt7t2" path="res://scenes/resources/MugEntity.tscn" id="4_ru2hl"]
-[ext_resource type="PackedScene" path="res://scenes/resources/ComputerEntity.tscn" id="5_4yfie"]
+[ext_resource type="PackedScene" uid="uid://clgl8qe4cxqq7" path="res://scenes/resources/ComputerEntity.tscn" id="5_4yfie"]
 
 [node name="Cafe" type="Node2D" unique_id=401336490]
 

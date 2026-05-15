@@ -67,10 +67,10 @@ func load_character(character_id: String) -> CharacterProfile:
 	return null
 
 
-func get_all_characters() -> Array:
+func get_all_characters() -> Array[CharacterProfile]:
 	_ensure_characters_root()
 
-	var characters: Array = []
+	var characters: Array[CharacterProfile] = []
 	var dir := DirAccess.open(CHARACTERS_ROOT)
 	if dir == null:
 		return characters

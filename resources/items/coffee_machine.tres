@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://2khk63bivmdn"]
 
-[ext_resource type="Texture2D" uid="uid://dd2nq3ty6lm1r" path="res://assets/sprites/Coffee-Machine.png" id="1_u0u8e"]
+[ext_resource type="Texture2D" uid="uid://ddjvx0piimfbj" path="res://assets/entities/furniture/Coffee-Machine.png" id="1_u0u8e"]
 [ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_axgot"]
 
 [resource]
