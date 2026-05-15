@@ -61,7 +61,7 @@ func _purchase_item(item: ItemData, cost: int) -> void:
 		_set_status("Not enough funds.")
 		return
 
-	if not _has_free_inventory_slot():
+	if not InventoryManager.has_free_slot():
 		_set_status("Inventory is full.")
 		return
 
@@ -81,10 +81,3 @@ func _refresh_funds() -> void:
 
 func _set_status(message: String) -> void:
 	status_label.text = message
-
-func _has_free_inventory_slot() -> bool:
-	for slot in InventoryManager.inventory:
-		if slot == null:
-			return true
-
-	return false
