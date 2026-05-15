@@ -29,6 +29,7 @@ InventoryManager="*uid://deywmh2l7jdxm"
 PlayerData="*res://autoload/PlayerData.gd"
 SkillManager="*res://scripts/skills/skill_manager.gd"
 WorldClock="*res://scripts/time/world_clock.gd"
+CharacterSaveManager="*res://scripts/managers/character_save_manager.gd"
 
 [display]
 
