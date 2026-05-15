@@ -169,7 +169,7 @@ func _place_selected_item() -> void:
 	parent.add_child(instance)
 
 	var furniture: Node2D = instance as Node2D
-	furniture.global_position = _last_preview_position + _selected_item.placement_offset
+	furniture.global_position = _last_preview_position + _rotated_placement_offset()
 	furniture.rotation = _current_rotation
 
 	if FurnitureSaveManager != null:
@@ -204,9 +204,10 @@ func _resolve_preview_texture(item_data: ItemData) -> Texture2D:
 	if scene != null:
 		var instance: Node = scene.instantiate()
 		var texture: Texture2D = _find_sprite_texture(instance)
-		instance.queue_free()
 		if texture != null:
+			instance.queue_free()
 			return texture
+		instance.queue_free()
 
 	return item_data.icon
 
@@ -268,7 +269,7 @@ func _has_collision_overlap(world_position: Vector2, footprint: Vector2i) -> boo
 
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
-	query.transform = Transform2D.IDENTITY.translated(world_position + _selected_item.placement_offset)
+	query.transform = Transform2D.IDENTITY.translated(world_position + _rotated_placement_offset())
 	query.collide_with_bodies = true
 	query.collide_with_areas = true
 
@@ -294,6 +295,12 @@ func _mouse_world_position() -> Vector2:
 		return camera.get_global_mouse_position()
 
 	return viewport.get_mouse_position()
+
+
+func _rotated_placement_offset() -> Vector2:
+	if _selected_item == null:
+		return Vector2.ZERO
+	return _selected_item.placement_offset.rotated(_current_rotation)
 
 
 func _room_tilemap() -> TileMap:

@@ -35,6 +35,6 @@ func get_active_placeable_scene() -> PackedScene:
 
 
 func get_active_footprint_size() -> Vector2i:
-	if footprint_size != Vector2i.ZERO:
+	if footprint_size.x > 0 and footprint_size.y > 0:
 		return Vector2i(max(footprint_size.x, 1), max(footprint_size.y, 1))
 	return Vector2i(max(placement_size.x, 1), max(placement_size.y, 1))
