@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func create_character(character_name: String, office_number: String = "") -> CharacterProfile:
 	var profile := CharacterProfile.new()
-	profile.character_id = _generate_character_id()
+	profile.character_id = _generate_unique_character_id()
 	profile.character_name = character_name
 	profile.office_number = office_number
 	profile.creation_date = Time.get_datetime_string_from_system()
@@ -34,7 +34,7 @@ func save_character(profile: CharacterProfile) -> bool:
 		return false
 
 	if profile.character_id.is_empty():
-		profile.character_id = _generate_character_id()
+		profile.character_id = _generate_unique_character_id()
 
 	var character_dir := _character_directory(profile.character_id)
 	var profile_path := _profile_path(profile.character_id)
@@ -135,6 +135,13 @@ func _generate_character_id() -> String:
 		str(Time.get_ticks_usec()),
 		str(randi())
 	]
+
+
+func _generate_unique_character_id() -> String:
+	var character_id := _generate_character_id()
+	while DirAccess.dir_exists_absolute(_character_directory(character_id)):
+		character_id = _generate_character_id()
+	return character_id
 
 
 func _character_directory(character_id: String) -> String:
