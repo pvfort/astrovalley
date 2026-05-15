@@ -10,12 +10,18 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/DailySummaryUI.tscn" id="8_summary"]
 [ext_resource type="PackedScene" path="res://scenes/resources/StoreNpcEntity.tscn" id="10_store_npc"]
 [ext_resource type="PackedScene" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
+[ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="12_saveable"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
 
 [node name="Main" type="Node2D" unique_id=1677861352]
 script = ExtResource("2")
+
+[node name="SaveableComponent" type="Node" parent="." unique_id=186740572]
+script = ExtResource("12_saveable")
+unique_id = "main_world_state"
+category = "room_states"
 
 [node name="Telescope" type="Area2D" parent="." unique_id=678417217]
 position = Vector2(400, 300)

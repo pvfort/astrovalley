@@ -49,3 +49,17 @@ func _process(delta: float) -> void:
 	for effect_id in expired:
 		active_effects.erase(effect_id)
 		effect_expired.emit(effect_id)
+
+
+func save_state() -> Dictionary:
+	return {
+		"active_effects": active_effects.duplicate(true),
+	}
+
+
+func load_state(data: Dictionary) -> void:
+	var saved_effects := data.get("active_effects", {})
+	if saved_effects is Dictionary:
+		active_effects = (saved_effects as Dictionary).duplicate(true)
+	else:
+		active_effects = {}
