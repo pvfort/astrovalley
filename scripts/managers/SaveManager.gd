@@ -324,11 +324,12 @@ func _resolve_saved_weather(states: Dictionary) -> String:
 
 
 func _default_world_name() -> String:
-	var mp := _get_mp()
-
-	if mp != null and mp.has_multiplayer_peer():
-		if mp.is_server():
-			return "host_%s" % str(mp.get_unique_id())
+	var tree: SceneTree = get_tree()
+	if _tree_has_network_peer(tree):
+		if tree.is_network_server():
+			var peer: NetworkedMultiplayerPeer = tree.network_peer
+			if peer != null:
+				return "host_%s" % str(peer.get_unique_id())
 		return "host_1"
 
 	return "local_world"
@@ -345,21 +346,19 @@ func _save_file_path() -> String:
 	return "%s/%s" % [world_dir, SAVE_FILE_NAME]
 
 
-func _get_mp() -> MultiplayerAPI:
-	var tree := get_tree()
-	if tree == null:
-		return null
-	return tree.multiplayer
-
 func _is_world_authority() -> bool:
-	var mp := _get_mp()
-	if mp == null:
+	var tree: SceneTree = get_tree()
+	if tree == null:
 		return true
 
-	if mp.has_multiplayer_peer():
-		return mp.is_server()
+	if _tree_has_network_peer(tree):
+		return tree.is_network_server()
 
 	return true
+
+
+func _tree_has_network_peer(tree: SceneTree) -> bool:
+	return tree != null and tree.has_network_peer()
 
 func _sanitize_path_segment(value: String) -> String:
 	var sanitized: String = value.strip_edges().to_lower()
