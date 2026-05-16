@@ -133,16 +133,13 @@ func _load_world_after_boot() -> void:
 	load_world()
 
 
+
 func _connect_autosave_triggers() -> void:
-	get_tree().tree_exiting.connect(_on_tree_exiting)
 	get_tree().node_added.connect(_on_node_added)
 
 	if WorldClock != null:
 		WorldClock.hour_changed.connect(_on_world_hour_changed)
 
-
-func _on_tree_exiting() -> void:
-	save_world()
 
 
 func _on_world_hour_changed(_hour: int) -> void:
@@ -327,10 +324,13 @@ func _resolve_saved_weather(states: Dictionary) -> String:
 
 
 func _default_world_name() -> String:
-	if multiplayer.has_multiplayer_peer():
-		if multiplayer.is_server():
-			return "host_%s" % str(multiplayer.get_unique_id())
+	var mp := _get_mp()
+
+	if mp != null and mp.has_multiplayer_peer():
+		if mp.is_server():
+			return "host_%s" % str(mp.get_unique_id())
 		return "host_1"
+
 	return "local_world"
 
 
@@ -345,11 +345,21 @@ func _save_file_path() -> String:
 	return "%s/%s" % [world_dir, SAVE_FILE_NAME]
 
 
-func _is_world_authority() -> bool:
-	if multiplayer.has_multiplayer_peer():
-		return multiplayer.is_server()
-	return true
+func _get_mp() -> MultiplayerAPI:
+	var tree := get_tree()
+	if tree == null:
+		return null
+	return tree.multiplayer
 
+func _is_world_authority() -> bool:
+	var mp := _get_mp()
+	if mp == null:
+		return true
+
+	if mp.has_multiplayer_peer():
+		return mp.is_server()
+
+	return true
 
 func _sanitize_path_segment(value: String) -> String:
 	var sanitized: String = value.strip_edges().to_lower()

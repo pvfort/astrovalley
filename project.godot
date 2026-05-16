@@ -33,6 +33,9 @@ CharacterSaveManager="*res://scripts/managers/character_save_manager.gd"
 FurnitureSaveManager="*res://scripts/managers/furniture_save_manager.gd"
 PlacementManager="*res://scripts/managers/placement_manager.gd"
 ThemeManager="*uid://df54nph25lmev"
+PersistenceRegistry="*uid://x0nknemlqftd"
+SaveManager="*uid://mwnib2g8fq2o"
+WeatherManager="*uid://c7lefm5bxmlxy"
 
 [display]
 
