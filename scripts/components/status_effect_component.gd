@@ -27,7 +27,7 @@ func has_effect(effect_id: String) -> bool:
 func clear_temporary_effects() -> void:
 	var to_remove: Array[String] = []
 	for effect_id in active_effects.keys():
-		var entry := active_effects[effect_id] as Dictionary
+		var entry: Dictionary = active_effects[effect_id] as Dictionary
 		if bool(entry.get("temporary", false)):
 			to_remove.append(effect_id)
 
@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 	var expired: Array[String] = []
 
 	for effect_id in active_effects.keys():
-		var entry := active_effects[effect_id] as Dictionary
+		var entry: Dictionary = active_effects[effect_id] as Dictionary
 		entry["duration"] = maxf(0.0, float(entry.get("duration", 0.0)) - delta)
 		active_effects[effect_id] = entry
 
@@ -58,7 +58,7 @@ func save_state() -> Dictionary:
 
 
 func load_state(data: Dictionary) -> void:
-	var saved_effects := data.get("active_effects", {})
+	var saved_effects: Variant = data.get("active_effects", {})
 	if saved_effects is Dictionary:
 		active_effects = (saved_effects as Dictionary).duplicate(true)
 	else:

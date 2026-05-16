@@ -181,7 +181,7 @@ func request_daily_summary() -> void:
 func add_daily_skill_xp(skill_id: String, amount: int) -> void:
     if skill_id == "" or amount <= 0:
         return
-    var skill_xp := _daily_stats["xp_gained_per_skill"] as Dictionary
+    var skill_xp: Dictionary = _daily_stats["xp_gained_per_skill"] as Dictionary
     skill_xp[skill_id] = int(skill_xp.get(skill_id, 0)) + amount
 
 func add_daily_money(amount: int) -> void:
@@ -225,7 +225,7 @@ func load_state(data: Dictionary) -> void:
 
 
 func _as_daily_stats(value: Variant) -> Dictionary:
-	var defaults := {
+	var defaults: Dictionary = {
 		"xp_gained_per_skill": {},
 		"money_earned": 0,
 		"tasks_completed": 0,
@@ -235,7 +235,7 @@ func _as_daily_stats(value: Variant) -> Dictionary:
 	if not (value is Dictionary):
 		return defaults
 
-	var source := value as Dictionary
+	var source: Dictionary = value as Dictionary
 	defaults["xp_gained_per_skill"] = source.get("xp_gained_per_skill", {})
 	defaults["money_earned"] = int(source.get("money_earned", 0))
 	defaults["tasks_completed"] = int(source.get("tasks_completed", 0))

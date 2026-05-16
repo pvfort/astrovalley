@@ -89,7 +89,7 @@ func _on_character_selector_item_selected(index: int) -> void:
 	if index < 0 or index >= _character_ids.size():
 		return
 
-	var selected_profile := CharacterSaveManager.load_character(_character_ids[index])
+	var selected_profile: CharacterProfile = CharacterSaveManager.load_character(_character_ids[index])
 	if selected_profile == null:
 		status_label.text = "Failed to load selected character save."
 		_update_network_buttons()
