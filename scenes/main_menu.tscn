@@ -11,88 +11,105 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=101517360]
+[node name="Panel" type="Panel" parent="." unique_id=882709880]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 472.0
+offset_top = 192.0
+offset_right = 808.0
+offset_bottom = 528.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=101517360]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -130.0
-offset_right = 150.0
-offset_bottom = 130.0
+offset_left = -152.5
+offset_top = -161.5
+offset_right = 147.5
+offset_bottom = 117.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1850893917]
+[node name="TitleLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1850893917]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "AstroValley"
 horizontal_alignment = 1
 
-[node name="CharacterCreatorRow" type="HBoxContainer" parent="VBoxContainer" unique_id=194190557]
+[node name="CharacterCreatorRow" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=194190557]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="CharacterNameField" type="LineEdit" parent="VBoxContainer/CharacterCreatorRow" unique_id=201847156]
+[node name="CharacterNameField" type="LineEdit" parent="Panel/VBoxContainer/CharacterCreatorRow" unique_id=201847156]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Character name"
 
-[node name="OfficeNumberField" type="LineEdit" parent="VBoxContainer/CharacterCreatorRow" unique_id=934802118]
+[node name="OfficeNumberField" type="LineEdit" parent="Panel/VBoxContainer/CharacterCreatorRow" unique_id=934802118]
 layout_mode = 2
 placeholder_text = "Office # (optional)"
 
-[node name="CreateCharacterButton" type="Button" parent="VBoxContainer/CharacterCreatorRow" unique_id=1237649918]
+[node name="CreateCharacterButton" type="Button" parent="Panel/VBoxContainer/CharacterCreatorRow" unique_id=1237649918]
 layout_mode = 2
 text = "Create Save"
 
-[node name="CharacterSelectorRow" type="HBoxContainer" parent="VBoxContainer" unique_id=611263208]
+[node name="CharacterSelectorRow" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=611263208]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="CharacterSelectorLabel" type="Label" parent="VBoxContainer/CharacterSelectorRow" unique_id=1343288164]
+[node name="CharacterSelectorLabel" type="Label" parent="Panel/VBoxContainer/CharacterSelectorRow" unique_id=1343288164]
 layout_mode = 2
 text = "Character Save:"
 
-[node name="CharacterSelector" type="OptionButton" parent="VBoxContainer/CharacterSelectorRow" unique_id=130117408]
+[node name="CharacterSelector" type="OptionButton" parent="Panel/VBoxContainer/CharacterSelectorRow" unique_id=130117408]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PortField" type="LineEdit" parent="VBoxContainer" unique_id=1375361720]
+[node name="PortField" type="LineEdit" parent="Panel/VBoxContainer" unique_id=1375361720]
 layout_mode = 2
 placeholder_text = "Port (default 4242)"
 
-[node name="HostButton" type="Button" parent="VBoxContainer" unique_id=2043840308]
+[node name="HostButton" type="Button" parent="Panel/VBoxContainer" unique_id=2043840308]
 layout_mode = 2
 text = "Host Game"
 
-[node name="JoinRow" type="HBoxContainer" parent="VBoxContainer" unique_id=1104681404]
+[node name="JoinRow" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=1104681404]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="IPField" type="LineEdit" parent="VBoxContainer/JoinRow" unique_id=566948792]
+[node name="IPField" type="LineEdit" parent="Panel/VBoxContainer/JoinRow" unique_id=566948792]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Server IP"
 
-[node name="JoinButton" type="Button" parent="VBoxContainer/JoinRow" unique_id=1786316092]
+[node name="JoinButton" type="Button" parent="Panel/VBoxContainer/JoinRow" unique_id=1786316092]
 layout_mode = 2
 text = "Join Game"
 
-[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=1732469866]
+[node name="StatusLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1732469866]
 layout_mode = 2
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=753830237]
+[node name="QuitButton" type="Button" parent="Panel/VBoxContainer" unique_id=753830237]
 layout_mode = 2
 text = "Quit"
 
-[connection signal="pressed" from="VBoxContainer/CharacterCreatorRow/CreateCharacterButton" to="." method="_on_create_character_button_pressed"]
-[connection signal="item_selected" from="VBoxContainer/CharacterSelectorRow/CharacterSelector" to="." method="_on_character_selector_item_selected"]
-[connection signal="pressed" from="VBoxContainer/HostButton" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="VBoxContainer/JoinRow/JoinButton" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
+[node name="ThemeButton" type="Button" parent="." unique_id=9782366]
+layout_mode = 0
+offset_left = 776.0
+offset_top = 496.0
+offset_right = 792.0
+offset_bottom = 512.0
+toggle_mode = true
+
+[connection signal="pressed" from="Panel/VBoxContainer/CharacterCreatorRow/CreateCharacterButton" to="." method="_on_create_character_button_pressed"]
+[connection signal="item_selected" from="Panel/VBoxContainer/CharacterSelectorRow/CharacterSelector" to="." method="_on_character_selector_item_selected"]
+[connection signal="pressed" from="Panel/VBoxContainer/HostButton" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/JoinRow/JoinButton" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="toggled" from="ThemeButton" to="." method="_on_theme_button_toggled"]

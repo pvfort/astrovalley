@@ -5,21 +5,38 @@ extends Control
 const GAMEPLAY_SCENE = "res://scenes/main.tscn"
 const DEFAULT_PORT = 4242
 
-@onready var character_name_field: LineEdit = $VBoxContainer/CharacterCreatorRow/CharacterNameField
-@onready var office_number_field: LineEdit = $VBoxContainer/CharacterCreatorRow/OfficeNumberField
-@onready var character_selector: OptionButton = $VBoxContainer/CharacterSelectorRow/CharacterSelector
-@onready var host_button: Button = $VBoxContainer/HostButton
-@onready var join_button: Button = $VBoxContainer/JoinRow/JoinButton
-@onready var port_field: LineEdit = $VBoxContainer/PortField
-@onready var ip_field: LineEdit = $VBoxContainer/JoinRow/IPField
-@onready var status_label: Label = $VBoxContainer/StatusLabel
+@onready var character_name_field: LineEdit = $Panel/VBoxContainer/CharacterCreatorRow/CharacterNameField
+@onready var office_number_field: LineEdit = $Panel/VBoxContainer/CharacterCreatorRow/OfficeNumberField
+@onready var character_selector: OptionButton = $Panel/VBoxContainer/CharacterSelectorRow/CharacterSelector
+@onready var host_button: Button = $Panel/VBoxContainer/HostButton
+@onready var join_button: Button = $Panel/VBoxContainer/JoinRow/JoinButton
+@onready var port_field: LineEdit = $Panel/VBoxContainer/PortField
+@onready var ip_field: LineEdit = $Panel/VBoxContainer/JoinRow/IPField
+@onready var status_label: Label = $Panel/VBoxContainer/StatusLabel
+@onready var theme_button: Button = $ThemeButton
 
 var _character_ids: Array[String] = []
+var dark_icon := preload(
+	"res://assets/ui/time/moon_icon.png"
+)
 
+var light_icon := preload(
+	"res://assets/ui/time/sun_icon.png"
+)
 func _ready() -> void:
 	_reload_character_selector()
 	_update_network_buttons()
+	theme_button.toggled.connect(
+		_on_theme_button_toggled
+	)
 
+	ThemeManager.theme_changed.connect(
+		_on_theme_changed
+	)
+
+	_on_theme_changed(
+		ThemeManager.current_mode
+	)
 func _on_host_pressed() -> void:
 	if not _ensure_character_selected():
 		return
@@ -131,3 +148,17 @@ func _update_network_buttons() -> void:
 	var has_active_character := CharacterSaveManager.get_active_character() != null
 	host_button.disabled = not has_active_character
 	join_button.disabled = not has_active_character
+
+func _on_theme_button_toggled(toggled_on: bool) -> void:
+	print("toggle:", toggled_on)
+	ThemeManager.toggle_theme(toggled_on)
+
+func _on_theme_changed(mode: int) -> void:
+
+	match mode:
+
+		ThemeManager.ThemeMode.LIGHT:
+			theme_button.icon = light_icon
+
+		ThemeManager.ThemeMode.DARK:
+			theme_button.icon = dark_icon

@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://6it8lbworf7s"]
+
+[ext_resource type="Theme" uid="uid://dapfeg8djfii3" path="res://resources/ui/light_theme.tres" id="1_rk1a6"]
+
+[node name="Test" type="Control" unique_id=560507198]
+layout_mode = 3
+anchors_preset = 0
+theme = ExtResource("1_rk1a6")
+
+[node name="Panel" type="Panel" parent="." unique_id=978694227]
+layout_mode = 0
+offset_right = 186.0
+offset_bottom = 97.0
+
+[node name="BoxContainer" type="BoxContainer" parent="Panel" unique_id=715031133]
+layout_mode = 0
+offset_left = 53.0
+offset_top = 37.0
+offset_right = 85.0
+offset_bottom = 69.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/BoxContainer" unique_id=367071839]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/BoxContainer/VBoxContainer" unique_id=1647113053]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer" unique_id=1780614091]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer" unique_id=1397945775]
+layout_mode = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer" unique_id=1908872975]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/BoxContainer/VBoxContainer" unique_id=603286129]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer2" unique_id=1705579675]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer2" unique_id=1257340914]
+layout_mode = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer2" unique_id=329140560]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/BoxContainer/VBoxContainer" unique_id=247477079]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer3" unique_id=993005096]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer3" unique_id=1192041725]
+layout_mode = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="Panel/BoxContainer/VBoxContainer/HBoxContainer3" unique_id=30769187]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel" unique_id=214370768]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 141.0
+offset_bottom = 27.0
+text = "This is astrovalley"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Label" unique_id=1858810882]
+layout_mode = 0
+offset_right = 68.5
+offset_bottom = 31.0

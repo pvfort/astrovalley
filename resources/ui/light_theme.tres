@@ -1,0 +1,38 @@
+[gd_resource type="Theme" format=3 uid="uid://dapfeg8djfii3"]
+
+[ext_resource type="FontFile" uid="uid://dgglyoux0ihvp" path="res://resources/ui/VT323-Regular.ttf" id="1_82ib3"]
+[ext_resource type="Texture2D" uid="uid://b1npjn1204f2s" path="res://assets/ui/general/ui_light.png" id="1_sxj56"]
+[ext_resource type="Texture2D" uid="uid://bys8sclt0nlyt" path="res://assets/ui/general/item_slot.png" id="2_qgnlb"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fr1ey"]
+texture = ExtResource("1_sxj56")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_82ib3"]
+texture = ExtResource("1_sxj56")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ruotg"]
+texture = ExtResource("2_qgnlb")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[resource]
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/fonts/font = ExtResource("1_82ib3")
+Button/styles/normal = SubResource("StyleBoxTexture_fr1ey")
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/fonts/font = ExtResource("1_82ib3")
+LineEdit/fonts/font = ExtResource("1_82ib3")
+Panel/styles/panel = SubResource("StyleBoxTexture_82ib3")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_ruotg")
+TextEdit/colors/font_color = Color(0, 0, 0, 0)
+TextEdit/fonts/font = ExtResource("1_82ib3")
