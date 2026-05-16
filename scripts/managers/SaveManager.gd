@@ -326,8 +326,8 @@ func _resolve_saved_weather(states: Dictionary) -> String:
 func _default_world_name() -> String:
 	var tree: SceneTree = get_tree()
 	if _tree_has_network_peer(tree):
-		if tree.is_network_server():
-			var peer: NetworkedMultiplayerPeer = tree.network_peer
+		if multiplayer.is_server():
+			var peer: MultiplayerPeer = multiplayer.multiplayer_peer
 			if peer != null:
 				return "host_%s" % str(peer.get_unique_id())
 		return "host_1"
@@ -352,13 +352,13 @@ func _is_world_authority() -> bool:
 		return true
 
 	if _tree_has_network_peer(tree):
-		return tree.is_network_server()
+		return multiplayer.is_server()
 
 	return true
 
 
 func _tree_has_network_peer(tree: SceneTree) -> bool:
-	return tree != null and tree.has_network_peer()
+	return tree != null and multiplayer.has_multiplayer_peer()
 
 func _sanitize_path_segment(value: String) -> String:
 	var sanitized: String = value.strip_edges().to_lower()
