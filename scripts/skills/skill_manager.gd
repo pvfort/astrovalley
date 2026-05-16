@@ -83,8 +83,8 @@ func get_xp(skill_id: String) -> int:
 func save_state() -> Dictionary:
 	var serialized_skills: Dictionary = {}
 	for key_variant in skills.keys():
-		var skill_id := str(key_variant)
-		var entry := skills[key_variant] as Dictionary
+		var skill_id: String = str(key_variant)
+		var entry: Dictionary = skills[key_variant] as Dictionary
 		serialized_skills[skill_id] = {
 			"xp": int(entry.get("xp", 0)),
 			"level": int(entry.get("level", 0)),
@@ -96,22 +96,22 @@ func save_state() -> Dictionary:
 
 
 func load_state(data: Dictionary) -> void:
-	var saved_skills := data.get("skills", {})
+	var saved_skills: Variant = data.get("skills", {})
 	if not (saved_skills is Dictionary):
 		return
 
-	var saved_skill_dict := saved_skills as Dictionary
+	var saved_skill_dict: Dictionary = saved_skills as Dictionary
 	for key_variant in saved_skill_dict.keys():
-		var skill_id := str(key_variant)
+		var skill_id: String = str(key_variant)
 		if not skills.has(skill_id):
 			continue
 
-		var saved_entry_variant := saved_skill_dict.get(key_variant, {})
+		var saved_entry_variant: Variant = saved_skill_dict.get(key_variant, {})
 		if not (saved_entry_variant is Dictionary):
 			continue
 
-		var saved_entry := saved_entry_variant as Dictionary
-		var entry := skills[skill_id] as Dictionary
+		var saved_entry: Dictionary = saved_entry_variant as Dictionary
+		var entry: Dictionary = skills[skill_id] as Dictionary
 		entry["xp"] = int(saved_entry.get("xp", 0))
 		entry["level"] = int(saved_entry.get("level", 0))
 		skills[skill_id] = entry
