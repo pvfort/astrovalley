@@ -46,6 +46,9 @@ func _perform_sleep(player: PlayerCharacter) -> void:
     if clear_temporary_effects:
         _clear_player_temporary_effects(player)
 
+    if EnergyManager != null:
+        EnergyManager.recover_from_sleep(player.player_id)
+
     var summary_data := WorldClock.get_daily_summary_data()
     WorldClock.daily_summary_requested.emit(summary_data)
     WorldClock.skip_to_next_morning(next_day_hour)
