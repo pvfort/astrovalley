@@ -15,8 +15,10 @@ var equipped: Dictionary = {
 var funds: int = 250
 signal inventory_changed
 signal inventory_toggled(is_open: bool)
+signal active_tool_changed(tool_data: ToolData)
 
 var is_inventory_open: bool = false
+var selected_hotbar_index: int = 0
 var _item_cache: Dictionary = {}
 var _item_cache_built: bool = false
 
@@ -34,6 +36,7 @@ func add_item(item: ItemData) -> bool:
 	remaining = try_insert_item_id(item.item_id, 1)
 	if remaining == 0:
 		inventory_changed.emit()
+		_emit_active_tool_changed()
 		return true
 
 	return false
@@ -61,6 +64,7 @@ func remove_item(index: int) -> void:
 
 	inventory[index] = null
 	inventory_changed.emit()
+	_emit_active_tool_changed()
 
 
 func sort_inventory() -> void:
@@ -89,12 +93,55 @@ func get_inventory_slot(index: int) -> Variant:
 		return null
 	return inventory[index]
 
+func set_selected_hotbar_index(index: int) -> void:
+	var clamped_index := clampi(index, 0, HOTBAR_SIZE - 1)
+	if selected_hotbar_index == clamped_index:
+		return
+
+	selected_hotbar_index = clamped_index
+	_emit_active_tool_changed()
+
+func get_selected_hotbar_index() -> int:
+	return selected_hotbar_index
+
+func get_active_hotbar_item() -> ItemData:
+	var slot_data := get_hotbar_slot(selected_hotbar_index)
+	if slot_data is Dictionary:
+		var item_variant := (slot_data as Dictionary).get("item")
+		if item_variant is ItemData:
+			return item_variant as ItemData
+	return null
+
+func get_active_tool_data() -> ToolData:
+	var active_hotbar_item := get_active_hotbar_item()
+	if active_hotbar_item != null and active_hotbar_item.tool_data != null:
+		return active_hotbar_item.tool_data
+
+	var equipped_tool := equipped.get("tool", null)
+	if equipped_tool is ItemData:
+		var equipped_item := equipped_tool as ItemData
+		if equipped_item.tool_data != null:
+			return equipped_item.tool_data
+
+	return null
+
+func get_tool_interaction_modifiers(context: StringName) -> Dictionary:
+	var active_tool := get_active_tool_data()
+	if active_tool == null:
+		return {}
+	return active_tool.get_context_modifiers(context)
+
+func get_tool_interaction_multiplier(context: StringName, key: StringName, default_value: float = 1.0) -> float:
+	var active_tool := get_active_tool_data()
+	if active_tool == null:
+		return default_value
+	return active_tool.get_modifier(context, key, default_value)
+
 
 func get_hotbar_slot(index: int) -> Variant:
 	if index < 0 or index >= HOTBAR_SIZE:
 		return null
 	return get_inventory_slot(index)
-
 
 func toggle_inventory() -> void:
 	is_inventory_open = not is_inventory_open
@@ -137,6 +184,7 @@ func remove_item_by_id(item_id: String) -> bool:
 
 		inventory[i] = null
 		inventory_changed.emit()
+		_emit_active_tool_changed()
 		return true
 
 	return false
@@ -189,6 +237,7 @@ func save_state() -> Dictionary:
 		"inventory": serialized_inventory,
 		"equipped": equipped_state,
 		"funds": funds,
+		"selected_hotbar_index": selected_hotbar_index,
 	}
 
 
@@ -213,7 +262,9 @@ func load_state(data: Dictionary) -> void:
 			equipped[key] = _item_by_id(item_id)
 
 	funds = int(data.get("funds", funds))
+	selected_hotbar_index = clampi(int(data.get("selected_hotbar_index", selected_hotbar_index)), 0, HOTBAR_SIZE - 1)
 	inventory_changed.emit()
+	_emit_active_tool_changed()
 
 
 func try_insert_item_id(item_id: String, count: int) -> int:
@@ -353,3 +404,6 @@ func _rebuild_item_cache() -> void:
 			var item: ItemData = loaded as ItemData
 			if not item.item_id.is_empty():
 				_item_cache[item.item_id] = item
+
+func _emit_active_tool_changed() -> void:
+	active_tool_changed.emit(get_active_tool_data())

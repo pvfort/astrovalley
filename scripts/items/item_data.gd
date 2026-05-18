@@ -7,6 +7,7 @@ extends Resource
 @export var icon: Texture2D
 @export var stack_size: int = 1
 @export var tags: Array[String] = []
+@export var tool_data: ToolData
 
 @export var consumable: bool = false
 

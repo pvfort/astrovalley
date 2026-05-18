@@ -84,6 +84,12 @@ func _physics_process(_delta: float) -> void:
 		print("[INPUT] PICKUP pressed")
 		_handle_interaction_input(InteractionMode.PICKUP)
 
+	if Input.is_action_just_pressed("ui_page_up"):
+		_shift_hotbar_selection(-1)
+
+	if Input.is_action_just_pressed("ui_page_down"):
+		_shift_hotbar_selection(1)
+
 		
 	if Input.is_action_just_pressed("inventory_toggle"):
 
@@ -365,6 +371,14 @@ func _handle_interaction_input(mode: int = InteractionMode.PRIMARY) -> void:
 	print("[INTERACT] using component:", best_component.name)
 
 	best_component.interact(self)
+
+func _shift_hotbar_selection(step: int) -> void:
+	if InventoryManager == null:
+		return
+
+	var current_index := InventoryManager.get_selected_hotbar_index()
+	var new_index := posmod(current_index + step, InventoryManager.HOTBAR_SIZE)
+	InventoryManager.set_selected_hotbar_index(new_index)
 
 
 func _handle_hotbar_input() -> void:

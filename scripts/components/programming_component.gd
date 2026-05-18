@@ -28,6 +28,12 @@ func interact(player: PlayerCharacter) -> void:
 	programming_started.emit(player.player_id)
 	_set_computer_visual(true)
 
+	var xp_multiplier := 1.0
+	var duration_multiplier := 1.0
+	if InventoryManager != null:
+		xp_multiplier = InventoryManager.get_tool_interaction_multiplier(&"programming", &"xp_multiplier", 1.0)
+		duration_multiplier = InventoryManager.get_tool_interaction_multiplier(&"programming", &"duration_multiplier", 1.0)
+
 	var actual_xp := xp_gain
 	var action_delay := 0.2
 	if EnergyManager != null:
@@ -36,12 +42,15 @@ func interact(player: PlayerCharacter) -> void:
 			actual_xp = int(float(xp_gain) * EnergyManager.get_xp_gain_multiplier(pid))
 			action_delay /= maxf(0.1, EnergyManager.get_action_speed_multiplier(pid))
 
-	if skill_id != "":
-		SkillManager.add_xp(skill_id, actual_xp)
-		WorldClock.add_daily_skill_xp(skill_id, actual_xp)
+	var final_xp_gain := maxi(int(round(float(actual_xp) * xp_multiplier)), 0)
+	var final_time_minutes := maxi(int(round(float(time_advance_minutes) * duration_multiplier)), 1)
 
-	WorldClock.add_minutes(time_advance_minutes)
-	WorldClock.add_programming_progress(time_advance_minutes)
+	if skill_id != "":
+		SkillManager.add_xp(skill_id, final_xp_gain)
+		WorldClock.add_daily_skill_xp(skill_id, final_xp_gain)
+
+	WorldClock.add_minutes(final_time_minutes)
+	WorldClock.add_programming_progress(final_time_minutes)
 	_attempt_energy_spend(player)
 
 	var tween := get_tree().root.create_tween()
