@@ -17,9 +17,9 @@ func register_object(persistent_object: PersistentObject) -> void:
 		return
 
 	_cleanup_invalid_entries()
-	var resolved_id := ensure_persistent_id(persistent_object)
-	var current_ref := _objects_by_id.get(resolved_id, null)
-	var current_object := _resolve_ref(current_ref)
+	var resolved_id: String = ensure_persistent_id(persistent_object)
+	var current_ref: Variant = _objects_by_id.get(resolved_id, null)
+	var current_object: PersistentObject = _resolve_ref(current_ref)
 
 	if current_object != null and current_object != persistent_object:
 		resolved_id = create_runtime_id(persistent_object.owner_character_id)
@@ -33,11 +33,11 @@ func unregister_object(persistent_object: PersistentObject) -> void:
 	if persistent_object == null:
 		return
 
-	var persistent_id := persistent_object.persistent_id
+	var persistent_id: String = persistent_object.persistent_id
 	if persistent_id.is_empty():
 		return
 
-	var stored_object := get_persistent_object(persistent_id)
+	var stored_object: PersistentObject = get_persistent_object(persistent_id)
 	if stored_object != null and stored_object != persistent_object:
 		return
 
@@ -52,12 +52,12 @@ func ensure_persistent_id(persistent_object: PersistentObject) -> String:
 	if not persistent_object.persistent_id.is_empty():
 		return persistent_object.persistent_id
 
-	var scene_stable_id := _build_scene_stable_id(persistent_object)
+	var scene_stable_id: String = _build_scene_stable_id(persistent_object)
 	if not scene_stable_id.is_empty():
 		persistent_object.persistent_id = scene_stable_id
 		return scene_stable_id
 
-	var runtime_id := create_runtime_id(persistent_object.owner_character_id)
+	var runtime_id: String = create_runtime_id(persistent_object.owner_character_id)
 	persistent_object.persistent_id = runtime_id
 	return runtime_id
 
@@ -65,14 +65,14 @@ func ensure_persistent_id(persistent_object: PersistentObject) -> String:
 func create_runtime_id(owner_character_id: String = "") -> String:
 	_runtime_id_counter += 1
 
-	var owner_part := owner_character_id
+	var owner_part: String = owner_character_id
 	if owner_part.is_empty():
 		owner_part = get_default_owner_character_id()
 	if owner_part.is_empty():
 		owner_part = "world"
 
-	var timestamp := Time.get_ticks_usec()
-	var random_value := _rng.randi()
+	var timestamp: int = Time.get_ticks_usec()
+	var random_value: int = _rng.randi()
 	return "po_%s_%s_%s_%s" % [owner_part, str(timestamp), str(_runtime_id_counter), str(random_value)]
 
 
@@ -80,12 +80,12 @@ func get_persistent_object(persistent_id: String) -> PersistentObject:
 	if persistent_id.is_empty():
 		return null
 
-	var ref := _objects_by_id.get(persistent_id, null)
+	var ref: Variant = _objects_by_id.get(persistent_id, null)
 	return _resolve_ref(ref)
 
 
 func get_object_by_id(persistent_id: String) -> Node:
-	var persistent_object := get_persistent_object(persistent_id)
+	var persistent_object: PersistentObject = get_persistent_object(persistent_id)
 	if persistent_object == null:
 		return null
 	return persistent_object.get_persistent_owner()
@@ -100,7 +100,7 @@ func export_registry_snapshot() -> Dictionary:
 	var snapshot: Dictionary = {}
 
 	for persistent_id in _objects_by_id.keys():
-		var persistent_object := get_persistent_object(persistent_id)
+		var persistent_object: PersistentObject = get_persistent_object(persistent_id)
 		if persistent_object == null:
 			continue
 		snapshot[persistent_id] = persistent_object.to_persistence_data()
@@ -112,7 +112,7 @@ func get_default_owner_character_id() -> String:
 	if CharacterSaveManager == null:
 		return ""
 
-	var profile := CharacterSaveManager.get_active_character()
+	var profile: CharacterProfile = CharacterSaveManager.get_active_character()
 	if profile == null:
 		return ""
 
@@ -120,15 +120,15 @@ func get_default_owner_character_id() -> String:
 
 
 func _build_scene_stable_id(persistent_object: PersistentObject) -> String:
-	var owner_node := persistent_object.get_persistent_owner()
+	var owner_node: Node = persistent_object.get_persistent_owner()
 	if owner_node == null:
 		return ""
 
-	var resolved_scene_path := persistent_object.scene_path
+	var resolved_scene_path: String = persistent_object.scene_path
 	if resolved_scene_path.is_empty():
 		resolved_scene_path = owner_node.scene_file_path
 	if resolved_scene_path.is_empty():
-		var tree := owner_node.get_tree()
+		var tree: SceneTree = owner_node.get_tree()
 		if tree != null and tree.current_scene != null:
 			resolved_scene_path = tree.current_scene.scene_file_path
 
@@ -143,8 +143,8 @@ func _build_scene_stable_id(persistent_object: PersistentObject) -> String:
 
 
 func _hash_text(value: String) -> String:
-	var hasher := HashingContext.new()
-	var start_error := hasher.start(HashingContext.HASH_SHA256)
+	var hasher: HashingContext = HashingContext.new()
+	var start_error: int = hasher.start(HashingContext.HASH_SHA256)
 	if start_error != OK:
 		return str(value.hash())
 
@@ -156,7 +156,7 @@ func _cleanup_invalid_entries() -> void:
 	var stale_ids: Array[String] = []
 
 	for persistent_id in _objects_by_id.keys():
-		var ref := _objects_by_id[persistent_id]
+		var ref: Variant = _objects_by_id[persistent_id]
 		if _resolve_ref(ref) == null:
 			stale_ids.append(persistent_id)
 
@@ -166,7 +166,7 @@ func _cleanup_invalid_entries() -> void:
 
 func _resolve_ref(ref: Variant) -> PersistentObject:
 	if ref is WeakRef:
-		var target := (ref as WeakRef).get_ref()
+		var target: Variant = (ref as WeakRef).get_ref()
 		if target is PersistentObject and is_instance_valid(target):
 			return target
 	return null

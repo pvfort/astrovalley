@@ -9,8 +9,8 @@ const PROGRAMMING_PRIORITY := 10
 @export var skill_id: String = "programming"
 @export var xp_gain: int = 15
 @export var time_advance_minutes: int = 45
-@export var consume_energy: bool = false
-@export var energy_cost: float = 5.0
+@export var consume_energy: bool = true
+@export var energy_cost: float = 12.0
 @export var active_texture: Texture2D = preload("res://assets/entities/furniture/computer_on.png")
 @export var sprite_path: NodePath = NodePath("Sprite2D")
 
@@ -34,7 +34,15 @@ func interact(player: PlayerCharacter) -> void:
 		xp_multiplier = InventoryManager.get_tool_interaction_multiplier(&"programming", &"xp_multiplier", 1.0)
 		duration_multiplier = InventoryManager.get_tool_interaction_multiplier(&"programming", &"duration_multiplier", 1.0)
 
-	var final_xp_gain := maxi(int(round(float(xp_gain) * xp_multiplier)), 0)
+	var actual_xp := xp_gain
+	var action_delay := 0.2
+	if EnergyManager != null:
+		var pid := _resolve_player_energy_id(player)
+		if pid >= 0:
+			actual_xp = int(float(xp_gain) * EnergyManager.get_xp_gain_multiplier(pid))
+			action_delay /= maxf(0.1, EnergyManager.get_action_speed_multiplier(pid))
+
+	var final_xp_gain := maxi(int(round(float(actual_xp) * xp_multiplier)), 0)
 	var final_time_minutes := maxi(int(round(float(time_advance_minutes) * duration_multiplier)), 1)
 
 	if skill_id != "":
@@ -46,7 +54,7 @@ func interact(player: PlayerCharacter) -> void:
 	_attempt_energy_spend(player)
 
 	var tween := get_tree().root.create_tween()
-	tween.tween_interval(0.2)
+	tween.tween_interval(action_delay)
 	tween.finished.connect(
 		func() -> void:
 			if is_inside_tree():
@@ -56,6 +64,13 @@ func interact(player: PlayerCharacter) -> void:
 			_is_interacting = false,
 		CONNECT_ONE_SHOT
 	)
+
+func _resolve_player_energy_id(player: PlayerCharacter) -> int:
+	if player.player_id >= 0:
+		return player.player_id
+	if multiplayer.has_multiplayer_peer():
+		return multiplayer.get_unique_id()
+	return -1
 
 func _attempt_energy_spend(player: PlayerCharacter) -> void:
 	if not consume_energy:

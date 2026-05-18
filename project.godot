@@ -32,9 +32,11 @@ WorldClock="*res://scripts/time/world_clock.gd"
 CharacterSaveManager="*res://scripts/managers/character_save_manager.gd"
 FurnitureSaveManager="*res://scripts/managers/furniture_save_manager.gd"
 PlacementManager="*res://scripts/managers/placement_manager.gd"
-PersistenceRegistry="*res://scripts/persistence/PersistenceRegistry.gd"
-WeatherManager="*res://scripts/managers/weather_manager.gd"
-SaveManager="*res://scripts/managers/SaveManager.gd"
+ThemeManager="*uid://df54nph25lmev"
+PersistenceRegistry="*uid://x0nknemlqftd"
+SaveManager="*uid://mwnib2g8fq2o"
+WeatherManager="*uid://c7lefm5bxmlxy"
+EnergyManager="*res://scripts/managers/EnergyManager.gd"
 
 [display]
 

@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://6qh4ao33le5u" path="res://scripts/main.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="3"]
 [ext_resource type="PackedScene" uid="uid://blctf1qsa3ufe" path="res://scenes/ui/InventoryUI.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HotbarUI.tscn" id="5_hotbar"]
 [ext_resource type="PackedScene" path="res://scenes/resources/ComputerEntity.tscn" id="5_computer"]
 [ext_resource type="PackedScene" path="res://scenes/resources/BedEntity.tscn" id="6_bed"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ClockUI.tscn" id="7_clock"]
@@ -12,6 +13,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
 [ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="12_persistent"]
 [ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="13_saveable"]
+[ext_resource type="PackedScene" path="res://scenes/furniture/OfficeDeskEntity.tscn" id="14_office_desk"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ContainerUI.tscn" id="15_container_ui"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -45,6 +48,9 @@ position = Vector2(620, 300)
 
 [node name="StoreNpcEntity" parent="." unique_id=1360177238 instance=ExtResource("10_store_npc")]
 position = Vector2(360, 300)
+
+[node name="OfficeDeskEntity" parent="." instance=ExtResource("14_office_desk")]
+position = Vector2(760, 330)
 
 [node name="UI" type="Control" parent="." unique_id=300123017]
 layout_mode = 3
@@ -91,6 +97,8 @@ horizontal_alignment = 1
 
 [node name="InventoryUi" parent="CanvasLayer" unique_id=48336469 instance=ExtResource("4_jyhfs")]
 
+[node name="HotbarUI" parent="CanvasLayer" instance=ExtResource("5_hotbar")]
+
 [node name="ClockUI" parent="CanvasLayer" unique_id=1583854537 instance=ExtResource("7_clock")]
 layout_mode = 3
 grow_horizontal = 0
@@ -98,6 +106,8 @@ grow_horizontal = 0
 [node name="DailySummaryUI" parent="CanvasLayer" unique_id=1342081110 instance=ExtResource("8_summary")]
 
 [node name="StoreUI" parent="CanvasLayer" unique_id=1164901527 instance=ExtResource("11_store_ui")]
+
+[node name="ContainerUI" parent="CanvasLayer" instance=ExtResource("15_container_ui")]
 
 [node name="DayNightController" type="CanvasLayer" parent="." unique_id=1917497699]
 

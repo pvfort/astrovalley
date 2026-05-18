@@ -45,6 +45,10 @@ func begin_placement(item_data: ItemData, source_slot_index: int = -1) -> bool:
 	return true
 
 
+func is_placement_active() -> bool:
+	return _placement_active
+
+
 func cancel_placement() -> void:
 	_placement_active = false
 	_active_item = null
@@ -110,12 +114,20 @@ func _confirm_placement() -> void:
 		return
 
 	var scene_path := _active_item.placed_scene.resource_path
+	var room_id := _current_room_id()
+
+
+	if not (instance is Node2D):
+		cancel_placement()
+		return
+
 	var persistent_object := _ensure_persistent_object(instance)
 	persistent_object.scene_path = scene_path
 	if persistent_object.owner_character_id.is_empty():
 		persistent_object.owner_character_id = _active_character_id()
 	if persistent_object.creation_timestamp.is_empty():
 		persistent_object.creation_timestamp = Time.get_datetime_string_from_system(true)
+
 	if persistent_object.persistent_id.is_empty() and PersistenceRegistry != null:
 		persistent_object.persistent_id = PersistenceRegistry.create_runtime_id(persistent_object.owner_character_id)
 
@@ -132,7 +144,6 @@ func _confirm_placement() -> void:
 			InventoryManager.remove_item_by_id(_active_item.item_id)
 
 	if FurnitureSaveManager != null:
-		var room_id := _current_room_id()
 		FurnitureSaveManager.add_furniture(
 			scene_path,
 			_snapped_position,
@@ -142,8 +153,8 @@ func _confirm_placement() -> void:
 			persistent_object.owner_character_id,
 			persistent_object.creation_timestamp
 		)
-	var scene_path := _active_item.placed_scene.resource_path
-	var room_id := _current_room_id()
+
+
 	_attach_saveable_component(furniture, scene_path, room_id)
 
 	if SaveManager != null:

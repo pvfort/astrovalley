@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://crlbhu3l4xnbk"]
 
-[ext_resource type="Script" path="res://scripts/ui/store_ui.gd" id="1_store_ui_script"]
+[ext_resource type="Script" uid="uid://d1y7e1ck6722w" path="res://scripts/ui/store_ui.gd" id="1_store_ui_script"]
 
-[node name="StoreUI" type="Control"]
+[node name="StoreUI" type="Control" unique_id=1921761177]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_store_ui_script")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=410208985]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -26,7 +26,7 @@ offset_bottom = 140.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1009044103]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -35,40 +35,39 @@ offset_top = 12.0
 offset_right = -12.0
 offset_bottom = -12.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=1880992776]
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=284197067]
 layout_mode = 2
 text = "Store"
 horizontal_alignment = 1
 
-[node name="FundsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="FundsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=1125756450]
 layout_mode = 2
 text = "Funds: $0"
 
-[node name="BuyMugButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="BuyMugButton" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=513360001]
 layout_mode = 2
 text = "Buy Mug ($25)"
 
-[node name="BuyCoffeeButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="BuyCoffeeButton" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=2086121740]
 layout_mode = 2
 text = "Buy Coffee ($40)"
 
-[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=575365395]
 layout_mode = 2
-text = ""
 autowrap_mode = 3
 
-[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=615219418]
 layout_mode = 2
 text = "Close"
 
-[node name="Spacer" type="Control" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="Spacer" type="Control" parent="Panel/MarginContainer/VBoxContainer" unique_id=1690361978]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="HintLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="HintLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=534808592]
 layout_mode = 2
 text = "Press Esc to close"
 horizontal_alignment = 1
