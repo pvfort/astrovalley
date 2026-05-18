@@ -436,15 +436,15 @@ func load_state(data: Dictionary) -> void:
 	player_id = int(data.get("player_id", player_id))
 	current_level = int(data.get("current_level", current_level))
 
-	var position_data := data.get("position", {})
+	var position_data: Variant = data.get("position", {})
 	if position_data is Dictionary:
-		var pos_dict := position_data as Dictionary
-		var loaded_position := Vector2(float(pos_dict.get("x", global_position.x)), float(pos_dict.get("y", global_position.y)))
+		var pos_dict: Dictionary = position_data as Dictionary
+		var loaded_position: Vector2 = Vector2(float(pos_dict.get("x", global_position.x)), float(pos_dict.get("y", global_position.y)))
 		global_position = loaded_position
 		target_position = loaded_position
 		is_moving = false
 
 	var status := get_status_effect_component()
-	var saved_status := data.get("status_effects", {})
+	var saved_status: Variant = data.get("status_effects", {})
 	if status != null and status.has_method("load_state") and saved_status is Dictionary:
 		status.load_state(saved_status)

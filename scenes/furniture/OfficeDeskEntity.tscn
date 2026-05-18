@@ -2,22 +2,37 @@
 
 [ext_resource type="Texture2D" path="res://assets/furniture/desk.png" id="1_desk"]
 [ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="2_persistent"]
+[ext_resource type="Script" path="res://scripts/components/ContainerComponent.gd" id="3_container"]
+[ext_resource type="Script" path="res://scripts/items/container_furniture.gd" id="4_container_furniture"]
+[ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="5_saveable"]
 
 [sub_resource type="RectangleShape2D" id="1_shape"]
 size = Vector2(30, 30)
 
 [node name="OfficeDeskEntity" type="Node2D"]
+script = ExtResource("4_container_furniture")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_desk")
 
 [node name="SolidArea" type="Area2D" parent="."]
 collision_layer = 4
-collision_mask = 0
-monitoring = false
+collision_mask = 2
+monitoring = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SolidArea"]
 shape = SubResource("1_shape")
 
+[node name="ContainerComponent" type="Node" parent="SolidArea"]
+script = ExtResource("3_container")
+container_id = "office_desk_main"
+slot_count = 16
+max_stack_per_slot = 99
+
 [node name="PersistentObject" type="Node" parent="."]
 script = ExtResource("2_persistent")
+
+[node name="SaveableComponent" type="Node" parent="."]
+script = ExtResource("5_saveable")
+unique_id = "office_desk_main"
+category = "machine_states"

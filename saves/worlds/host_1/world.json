@@ -1,0 +1,121 @@
+{
+	"day": 1,
+	"entities": [],
+	"machine_states": [],
+	"placed_furniture": [],
+	"room_states": [],
+	"save_version": 1,
+	"saved_at": "2026-05-18T10:02:07",
+	"season": "spring",
+	"seed": 0,
+	"systems": {
+		"inventory": {
+			"equipped": {
+				"accessory": "",
+				"body": "",
+				"head": "",
+				"tool": ""
+			},
+			"funds": 250,
+			"inventory": [
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				},
+				{
+
+				}
+			]
+		},
+		"skills": {
+			"skills": {
+				"programming": {
+					"level": 0,
+					"xp": 0
+				}
+			}
+		},
+		"world_clock": {
+			"daily_stats": {
+				"money_earned": 0,
+				"observation_data_collected": 0,
+				"programming_progress": 0,
+				"tasks_completed": 0,
+				"xp_gained_per_skill": {
+
+				}
+			},
+			"day": 1,
+			"hour": 11,
+			"minute": 23,
+			"phase": "Morning"
+		}
+	},
+	"weather": "clear",
+	"world_name": "host_1"
+}

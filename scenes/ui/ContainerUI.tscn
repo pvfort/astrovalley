@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/container_ui.gd" id="1_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ContainerSlot.tscn" id="2_slot"]
+
+[node name="ContainerUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ui")
+slot_scene = ExtResource("2_slot")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -280.0
+offset_right = 500.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 560.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Container"
+theme_override_font_sizes/font_size = 20
+
+[node name="Content" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Content/PlayerColumn"]
+layout_mode = 2
+text = "Player Inventory"
+
+[node name="PlayerSlots" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/Content/PlayerColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 6
+
+[node name="ContainerColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ContainerLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Content/ContainerColumn"]
+layout_mode = 2
+text = "Container"
+
+[node name="ContainerSlots" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/Content/ContainerColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Close"
