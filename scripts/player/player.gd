@@ -2,6 +2,8 @@ extends CharacterBody2D
 class_name PlayerCharacter
 
 signal interaction_target_changed(interactable: Interactable)
+signal hotbar_selection_changed(selected_slot: int)
+signal equipped_item_changed(item: ItemData, selected_slot: int)
 
 @export var tile_size: int = 32
 @export var move_speed: float = 200.0
@@ -13,6 +15,8 @@ var is_moving: bool = false
 var target_position: Vector2 = Vector2.ZERO
 var last_direction: Vector2 = Vector2.DOWN
 var current_interactable: Node = null
+var selected_hotbar_slot: int = 0
+var equipped_item: ItemData = null
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_area: Area2D = $InteractionArea
@@ -24,6 +28,7 @@ enum InteractionMode {
 }
 
 func _ready() -> void:
+	_ensure_hotbar_input_actions()
 
 	add_to_group("player")
 
@@ -41,6 +46,23 @@ func _ready() -> void:
 
 		if camera:
 			camera.make_current()
+		if InventoryManager != null:
+			InventoryManager.inventory_changed.connect(_on_inventory_changed)
+		_update_equipped_item()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
+	if InventoryManager != null and InventoryManager.is_inventory_open:
+		return
+	if _is_placement_active():
+		return
+	if event is InputEventMouseButton \
+	and event.pressed \
+	and not event.echo \
+	and event.button_index == MOUSE_BUTTON_LEFT:
+		_try_use_equipped_item()
 
 	_register_energy_state()
 
@@ -48,9 +70,15 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
+	_handle_hotbar_input()
+
+	if Input.is_action_just_pressed("use_item"):
+		_try_use_equipped_item()
+
 	if Input.is_action_just_pressed("interact"):
 		print("[DEBUG] interact pressed")
-		_handle_interaction_input(InteractionMode.PRIMARY)
+		if not _try_use_equipped_item():
+			_handle_interaction_input(InteractionMode.PRIMARY)
 
 	if Input.is_action_just_pressed("pick_up"):
 		print("[INPUT] PICKUP pressed")
@@ -339,6 +367,142 @@ func _handle_interaction_input(mode: int = InteractionMode.PRIMARY) -> void:
 	best_component.interact(self)
 
 
+func _handle_hotbar_input() -> void:
+	var hotbar_size := 8
+	if InventoryManager != null:
+		hotbar_size = InventoryManager.HOTBAR_SIZE
+
+	for i in range(hotbar_size):
+		var action_name := "hotbar_%d" % (i + 1)
+		if Input.is_action_just_pressed(action_name):
+			set_selected_hotbar_slot(i)
+			return
+
+	if Input.is_action_just_pressed("hotbar_next"):
+		set_selected_hotbar_slot(selected_hotbar_slot + 1)
+		return
+
+	if Input.is_action_just_pressed("hotbar_previous"):
+		set_selected_hotbar_slot(selected_hotbar_slot - 1)
+
+
+func _ensure_hotbar_input_actions() -> void:
+	var keycodes := [KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8]
+	for i in range(keycodes.size()):
+		var action_name := "hotbar_%d" % (i + 1)
+		_ensure_action(action_name)
+		_ensure_key_binding(action_name, keycodes[i])
+
+	_ensure_action("hotbar_next")
+	_ensure_action("hotbar_previous")
+	_ensure_mouse_wheel_binding("hotbar_next", MOUSE_BUTTON_WHEEL_DOWN)
+	_ensure_mouse_wheel_binding("hotbar_previous", MOUSE_BUTTON_WHEEL_UP)
+
+	_ensure_action("use_item")
+	_ensure_key_binding("use_item", KEY_F)
+
+
+func _ensure_action(action_name: StringName) -> void:
+	if InputMap.has_action(action_name):
+		return
+	InputMap.add_action(action_name)
+
+
+func _ensure_key_binding(action_name: StringName, keycode: Key) -> void:
+	for event in InputMap.action_get_events(action_name):
+		if event is InputEventKey and event.keycode == keycode:
+			return
+
+	var key_event := InputEventKey.new()
+	key_event.keycode = keycode
+	key_event.physical_keycode = keycode
+	InputMap.action_add_event(action_name, key_event)
+
+
+func _ensure_mouse_wheel_binding(action_name: StringName, button_index: MouseButton) -> void:
+	for event in InputMap.action_get_events(action_name):
+		if event is InputEventMouseButton and event.button_index == button_index:
+			return
+
+	var mouse_event := InputEventMouseButton.new()
+	mouse_event.button_index = button_index
+	InputMap.action_add_event(action_name, mouse_event)
+
+
+func set_selected_hotbar_slot(slot_index: int) -> void:
+	var hotbar_size := 8
+	if InventoryManager != null:
+		hotbar_size = InventoryManager.HOTBAR_SIZE
+	if hotbar_size <= 0:
+		return
+
+	var wrapped_slot := wrapi(slot_index, 0, hotbar_size)
+	if selected_hotbar_slot == wrapped_slot:
+		_update_equipped_item()
+		return
+
+	selected_hotbar_slot = wrapped_slot
+	hotbar_selection_changed.emit(selected_hotbar_slot)
+	_update_equipped_item()
+
+
+func get_equipped_item() -> ItemData:
+	return equipped_item
+
+
+func _try_use_equipped_item() -> bool:
+	if InventoryManager == null:
+		return false
+	if InventoryManager.is_inventory_open:
+		return false
+	if _is_placement_active():
+		return false
+
+	var item := equipped_item
+	if item == null:
+		return false
+
+	if item.placeable:
+		if PlacementManager == null:
+			return false
+		return PlacementManager.begin_placement(item, selected_hotbar_slot)
+
+	if item.consumable:
+		InventoryManager.use_item(selected_hotbar_slot, self)
+		return true
+
+	return false
+
+
+func _is_placement_active() -> bool:
+	if PlacementManager == null:
+		return false
+	if not PlacementManager.has_method("is_placement_active"):
+		return false
+	return bool(PlacementManager.is_placement_active())
+
+
+func _on_inventory_changed() -> void:
+	_update_equipped_item()
+
+
+func _update_equipped_item() -> void:
+	var next_item: ItemData = null
+
+	if InventoryManager != null:
+		var slot_data: Variant = InventoryManager.get_hotbar_slot(selected_hotbar_slot)
+		if slot_data is Dictionary:
+			var slot_dict := slot_data as Dictionary
+			var raw_item: Variant = slot_dict.get("item")
+			if raw_item is ItemData:
+				next_item = raw_item as ItemData
+
+	var item_changed := equipped_item != next_item
+	equipped_item = next_item
+	if item_changed:
+		equipped_item_changed.emit(equipped_item, selected_hotbar_slot)
+
+
 # ==================================================
 # LEVEL SYSTEM
 # ==================================================
@@ -424,6 +588,7 @@ func save_state() -> Dictionary:
 	return {
 		"player_id": player_id,
 		"current_level": current_level,
+		"selected_hotbar_slot": selected_hotbar_slot,
 		"position": {
 			"x": global_position.x,
 			"y": global_position.y,
@@ -435,6 +600,7 @@ func save_state() -> Dictionary:
 func load_state(data: Dictionary) -> void:
 	player_id = int(data.get("player_id", player_id))
 	current_level = int(data.get("current_level", current_level))
+	set_selected_hotbar_slot(int(data.get("selected_hotbar_slot", selected_hotbar_slot)))
 
 	var position_data: Variant = data.get("position", {})
 	if position_data is Dictionary:

@@ -45,6 +45,10 @@ func begin_placement(item_data: ItemData, source_slot_index: int = -1) -> bool:
 	return true
 
 
+func is_placement_active() -> bool:
+	return _placement_active
+
+
 func cancel_placement() -> void:
 	_placement_active = false
 	_active_item = null
