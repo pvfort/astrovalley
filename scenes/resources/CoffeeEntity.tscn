@@ -1,52 +1,49 @@
-[gd_scene format=3 uid="uid://dktm0j4vf8sq"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://bk44r4hc8rlty" path="res://scripts/items/coffee_entity.gd" id="1_7gt87"]
-[ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="1_yu6bq"]
-[ext_resource type="Script" uid="uid://d38j71xw76r6v" path="res://scripts/components/pickup_component.gd" id="2_8mniy"]
-[ext_resource type="Texture2D" uid="uid://d3gg7dj2ci7be" path="res://assets/entities/items/coffee.png" id="3_m0dd3"]
-[ext_resource type="Script" uid="uid://by4dp4w3i2oub" path="res://scripts/components/consumable_component.gd" id="5_7k70u"]
-[ext_resource type="Script" uid="uid://dg30w6inkjpo3" path="res://scripts/components/status_effect_component.gd" id="6_m0dd3"]
-[ext_resource type="Resource" uid="uid://qm4eayag8lrn" path="res://resources/items/coffee.tres" id="7_m0dd3"]
+[ext_resource type="Script" uid="uid://bk44r4hc8rlty" path="res://scripts/items/coffee_entity.gd" id="1_entity"]
+[ext_resource type="Script" uid="uid://dt6icuflg7wj0" path="res://scripts/components/interactable_component.gd" id="2_interactable"]
+[ext_resource type="Script" uid="uid://d38j71xw76r6v" path="res://scripts/components/pickup_component.gd" id="3_pickup"]
+[ext_resource type="Texture2D" uid="uid://d3gg7dj2ci7be" path="res://assets/entities/items/coffee.png" id="4_texture"]
+[ext_resource type="Script" uid="uid://by4dp4w3i2oub" path="res://scripts/components/consumable_component.gd" id="5_consumable"]
+[ext_resource type="Script" uid="uid://dg30w6inkjpo3" path="res://scripts/components/status_effect_component.gd" id="6_status"]
+[ext_resource type="Resource" uid="uid://qm4eayag8lrn" path="res://resources/items/coffee.tres" id="7_item"]
 [ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="8_persistent"]
 [ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="9_saveable"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7gt87"]
+[sub_resource type="RectangleShape2D" id="1_shape"]
 size = Vector2(8, 6)
 
-[node name="CoffeeEntity" type="Area2D" unique_id=656288315]
+[node name="CoffeeEntity" type="Area2D"]
 collision_layer = 4
 collision_mask = 2
 monitoring = false
-script = ExtResource("1_7gt87")
-item_data = ExtResource("7_m0dd3")
+script = ExtResource("1_entity")
+item_data = ExtResource("7_item")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=272223599]
-texture = ExtResource("3_m0dd3")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("4_texture")
 
-[node name="InteractableComponent" type="Node" parent="." unique_id=577099226]
-script = ExtResource("1_yu6bq")
-metadata/_custom_type_script = "uid://dt6icuflg7wj0"
+[node name="InteractableComponent" type="Node" parent="."]
+script = ExtResource("2_interactable")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=38637396]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_7gt87")
+shape = SubResource("1_shape")
 one_way_collision = true
 
-[node name="ConsumableComponent" type="Node" parent="." unique_id=1746605630]
-script = ExtResource("5_7k70u")
-metadata/_custom_type_script = "uid://by4dp4w3i2oub"
+[node name="ConsumableComponent" type="Node" parent="."]
+script = ExtResource("5_consumable")
 
-[node name="StatusEffectComponent" type="Node" parent="." unique_id=1972749196]
-script = ExtResource("6_m0dd3")
-metadata/_custom_type_script = "uid://dg30w6inkjpo3"
+[node name="StatusEffectComponent" type="Node" parent="."]
+script = ExtResource("6_status")
 
-[node name="PickupComponent" type="Node" parent="." unique_id=541824879]
-script = ExtResource("2_8mniy")
-item = ExtResource("7_m0dd3")
-metadata/_custom_type_script = "uid://d38j71xw76r6v"
+[node name="PickupComponent" type="Node" parent="."]
+script = ExtResource("3_pickup")
+item = ExtResource("7_item")
 
 [node name="PersistentObject" type="Node" parent="."]
 script = ExtResource("8_persistent")
-[node name="SaveableComponent" type="Node" parent="." unique_id=205691833]
-script = ExtResource("8_saveable")
+
+[node name="SaveableComponent" type="Node" parent="."]
+script = ExtResource("9_saveable")
 category = "dropped_items"

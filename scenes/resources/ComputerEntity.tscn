@@ -24,12 +24,10 @@ script = ExtResource("2_interactable")
 shape = SubResource("1_shape")
 one_way_collision = true
 
-[node name="ProgrammingComponent" type="Node" parent="." unique_id=696018731]
-script = ExtResource("3_programming")
-
 [node name="PersistentObject" type="Node" parent="."]
 script = ExtResource("4_persistent")
+
 [node name="SaveableComponent" type="Node" parent="." unique_id=709420221]
-script = ExtResource("4_saveable")
+script = ExtResource("5_saveable")
 unique_id = "computer_entity_main"
 category = "machine_states"

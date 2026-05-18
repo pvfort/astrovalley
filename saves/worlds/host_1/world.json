@@ -1,19 +1,14 @@
 {
-	"day": 1,
+	"day": 4,
 	"entities": [],
 	"machine_states": [],
 	"placed_furniture": [],
 	"room_states": [],
 	"save_version": 1,
-	"saved_at": "2026-05-18T18:36:58",
+	"saved_at": "2026-05-18T18:45:41",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
-		"energy": {
-			"players": {
-
-			}
-		},
 		"inventory": {
 			"equipped": {
 				"accessory": "",
@@ -21,34 +16,43 @@
 				"head": "",
 				"tool": ""
 			},
-			"funds": 250,
+			"funds": 0,
 			"inventory": [
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
-
+					"count": 1,
+					"item_id": "coffee"
 				},
 				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
 
@@ -106,10 +110,6 @@
 				}
 			}
 		},
-		"weather": {
-			"season": "spring",
-			"weather": "clear"
-		},
 		"world_clock": {
 			"daily_stats": {
 				"money_earned": 0,
@@ -120,10 +120,10 @@
 
 				}
 			},
-			"day": 1,
-			"hour": 17,
-			"minute": 0,
-			"phase": "Afternoon"
+			"day": 4,
+			"hour": 8,
+			"minute": 25,
+			"phase": "Morning"
 		}
 	},
 	"weather": "clear",
