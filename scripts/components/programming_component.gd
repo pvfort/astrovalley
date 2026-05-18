@@ -28,12 +28,21 @@ func interact(player: PlayerCharacter) -> void:
 	programming_started.emit(player.player_id)
 	_set_computer_visual(true)
 
-	if skill_id != "":
-		SkillManager.add_xp(skill_id, xp_gain)
-		WorldClock.add_daily_skill_xp(skill_id, xp_gain)
+	var xp_multiplier := 1.0
+	var duration_multiplier := 1.0
+	if InventoryManager != null:
+		xp_multiplier = InventoryManager.get_tool_interaction_multiplier(&"programming", &"xp_multiplier", 1.0)
+		duration_multiplier = InventoryManager.get_tool_interaction_multiplier(&"programming", &"duration_multiplier", 1.0)
 
-	WorldClock.add_minutes(time_advance_minutes)
-	WorldClock.add_programming_progress(time_advance_minutes)
+	var final_xp_gain := maxi(int(round(float(xp_gain) * xp_multiplier)), 0)
+	var final_time_minutes := maxi(int(round(float(time_advance_minutes) * duration_multiplier)), 1)
+
+	if skill_id != "":
+		SkillManager.add_xp(skill_id, final_xp_gain)
+		WorldClock.add_daily_skill_xp(skill_id, final_xp_gain)
+
+	WorldClock.add_minutes(final_time_minutes)
+	WorldClock.add_programming_progress(final_time_minutes)
 	_attempt_energy_spend(player)
 
 	var tween := get_tree().root.create_tween()

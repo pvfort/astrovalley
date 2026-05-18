@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" uid="uid://cigangwjk6rd6" path="res://assets/entities/furniture/pc_on_sheet.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_item_data"]
+[ext_resource type="Resource" path="res://resources/tools/ProgrammingLaptop.tres" id="3_tool_data"]
+
+[resource]
+script = ExtResource("2_item_data")
+item_id = "programming_laptop"
+display_name = "Programming Laptop"
+description = "A field-ready coding workstation that boosts programming throughput."
+icon = ExtResource("1_icon")
+stack_size = 1
+tags = Array[String](["tool", "programming", "hotbar"])
+tool_data = ExtResource("3_tool_data")
