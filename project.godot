@@ -36,6 +36,7 @@ ThemeManager="*uid://df54nph25lmev"
 PersistenceRegistry="*uid://x0nknemlqftd"
 SaveManager="*uid://mwnib2g8fq2o"
 WeatherManager="*uid://c7lefm5bxmlxy"
+EnergyManager="*res://scripts/managers/EnergyManager.gd"
 
 [display]
 

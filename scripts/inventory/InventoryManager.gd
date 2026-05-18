@@ -157,6 +157,12 @@ func use_item(index: int, player: PlayerCharacter) -> void:
 	if status != null and not item.status_effect_id.is_empty():
 		status.apply(item.status_effect_id, item.status_effect_duration)
 
+	if EnergyManager != null and item.energy_restore > 0.0:
+		var pid := player.player_id if player.player_id >= 0 else int(multiplayer.get_unique_id())
+		if item.energy_temp_max_bonus > 0.0 and item.energy_temp_max_duration > 0.0:
+			EnergyManager.apply_temporary_max_energy(pid, item.energy_temp_max_bonus, item.energy_temp_max_duration)
+		EnergyManager.recover_energy(pid, item.energy_restore)
+
 	var removed: InventorySlotData = take_from_slot(index, 1)
 	if removed.count > 0 and item.replacement_item != null:
 		add_item(item.replacement_item)
