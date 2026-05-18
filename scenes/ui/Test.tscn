@@ -64,7 +64,7 @@ offset_left = 19.0
 offset_top = 10.0
 offset_right = 141.0
 offset_bottom = 27.0
-text = "This is astrovalley"
+text = "This is AstroValley"
 
 [node name="LineEdit" type="LineEdit" parent="Panel/Label" unique_id=1858810882]
 layout_mode = 0
