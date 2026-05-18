@@ -5,7 +5,7 @@
 	"placed_furniture": [],
 	"room_states": [],
 	"save_version": 1,
-	"saved_at": "2026-05-16T00:34:18",
+	"saved_at": "2026-05-18T10:02:07",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
@@ -100,10 +100,6 @@
 				}
 			}
 		},
-		"weather": {
-			"season": "spring",
-			"weather": "clear"
-		},
 		"world_clock": {
 			"daily_stats": {
 				"money_earned": 0,
@@ -116,7 +112,7 @@
 			},
 			"day": 1,
 			"hour": 11,
-			"minute": 0,
+			"minute": 23,
 			"phase": "Morning"
 		}
 	},

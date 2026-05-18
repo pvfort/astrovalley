@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://6it8lbworf7s"]
 
-[ext_resource type="Theme" uid="uid://dapfeg8djfii3" path="res://resources/ui/light_theme.tres" id="1_rk1a6"]
+[ext_resource type="Theme" uid="uid://c1spoiqvrysm1" path="res://resources/ui/dark_theme.tres" id="1_rk1a6"]
 
 [node name="Test" type="Control" unique_id=560507198]
 layout_mode = 3

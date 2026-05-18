@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://0vdbwxf0t7jo"]
 
-[ext_resource type="Script" uid="uid://ciovykundcuem" path="res://scripts/ui/hotbar.gd" id="1_hotbar"]
+[ext_resource type="Script" uid="uid://ciovykundcuem" path="res://scripts/ui/Hotbar.gd" id="1_hotbar"]
 
 [node name="Hotbar" type="Panel" unique_id=1312478085]
 anchors_preset = 5
@@ -11,6 +11,7 @@ offset_top = 576.0
 offset_right = 360.0
 offset_bottom = 686.0
 grow_horizontal = 2
+theme_type_variation = &"HotbarPanel"
 script = ExtResource("1_hotbar")
 
 [node name="Slots" type="HBoxContainer" parent="." unique_id=1868559704]
@@ -23,6 +24,7 @@ theme_override_constants/separation = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="Slots" unique_id=677759800]
 layout_mode = 2
+theme_type_variation = &"HotbarPanelContainer"
 
 [node name="MarginContainer" type="MarginContainer" parent="Slots/PanelContainer" unique_id=1385555968]
 layout_mode = 2

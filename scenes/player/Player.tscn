@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://blctf1qsa3ufe" path="res://scenes/ui/InventoryUI.tscn" id="2_inventory_ui"]
 [ext_resource type="Texture2D" uid="uid://4ebyvrqf3enf" path="res://assets/entities/characters/character.png" id="3_character_tex"]
 [ext_resource type="Script" uid="uid://dg30w6inkjpo3" path="res://scripts/components/status_effect_component.gd" id="4_524rm"]
-[ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="5_saveable"]
+[ext_resource type="Script" uid="uid://b72h8x1qpewky" path="res://scripts/save/SaveableComponent.gd" id="5_saveable"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 
