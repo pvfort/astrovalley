@@ -30,7 +30,7 @@ func add_item(item: ItemData) -> bool:
 	if item == null:
 		return false
 
-	var remaining: int = max(item.stack_size, 1)
+	var remaining: int = 1
 	remaining = try_insert_item_id(item.item_id, 1)
 	if remaining == 0:
 		inventory_changed.emit()
