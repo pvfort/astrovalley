@@ -234,11 +234,11 @@ func save_state() -> Dictionary:
 
 func load_state(data: Dictionary) -> void:
 	_player_states.clear()
-	var players := data.get("players", {})
+	var players : Variant = data.get("players", {})
 	if not (players is Dictionary):
 		return
 	for player_id_key in (players as Dictionary).keys():
-		var player_data_variant := (players as Dictionary).get(player_id_key, {})
+		var player_data_variant : Variant = (players as Dictionary).get(player_id_key, {})
 		if not (player_data_variant is Dictionary):
 			continue
 		var player_data := player_data_variant as Dictionary

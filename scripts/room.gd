@@ -147,7 +147,7 @@ func _clear_door_interactables() -> void:
 func _create_door_interactable(pos: Vector2i) -> void:
 	var container := get_node("Doors")
 	var door := DOOR_INTERACTABLE_SCENE.instantiate()
-	var world_pos := tilemap.to_global(tilemap.map_to_local(pos))
+	var world_pos : Vector2 = tilemap.to_global(tilemap.map_to_local(pos))
 	door.global_position = world_pos
 	door.door_tile_position = pos
 	door.door_id = "level_%d_%d_%d" % [level_index, pos.x, pos.y]

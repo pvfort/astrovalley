@@ -17,7 +17,7 @@ func interact(player: Node) -> void:
 	if not can_interact(player):
 		return
 
-	var player_name := player.name if player != null else "Unknown"
+	var player_name : StringName = player.name if player != null else "Unknown"
 	print("[Door] Interact: id=%s tile=%s player=%s destination_scene=%s destination_marker=%s" % [
 		door_id,
 		door_tile_position,

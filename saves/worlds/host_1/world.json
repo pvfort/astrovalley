@@ -5,10 +5,15 @@
 	"placed_furniture": [],
 	"room_states": [],
 	"save_version": 1,
-	"saved_at": "2026-05-18T10:02:07",
+	"saved_at": "2026-05-18T18:36:58",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
+		"energy": {
+			"players": {
+
+			}
+		},
 		"inventory": {
 			"equipped": {
 				"accessory": "",
@@ -90,7 +95,8 @@
 				{
 
 				}
-			]
+			],
+			"selected_hotbar_index": 0
 		},
 		"skills": {
 			"skills": {
@@ -99,6 +105,10 @@
 					"xp": 0
 				}
 			}
+		},
+		"weather": {
+			"season": "spring",
+			"weather": "clear"
 		},
 		"world_clock": {
 			"daily_stats": {
@@ -111,9 +121,9 @@
 				}
 			},
 			"day": 1,
-			"hour": 11,
-			"minute": 23,
-			"phase": "Morning"
+			"hour": 17,
+			"minute": 0,
+			"phase": "Afternoon"
 		}
 	},
 	"weather": "clear",

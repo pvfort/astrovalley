@@ -105,9 +105,9 @@ func get_selected_hotbar_index() -> int:
 	return selected_hotbar_index
 
 func get_active_hotbar_item() -> ItemData:
-	var slot_data := get_hotbar_slot(selected_hotbar_index)
+	var slot_data : Variant = get_hotbar_slot(selected_hotbar_index)
 	if slot_data is Dictionary:
-		var item_variant := (slot_data as Dictionary).get("item")
+		var item_variant : Variant = (slot_data as Dictionary).get("item")
 		if item_variant is ItemData:
 			return item_variant as ItemData
 	return null
@@ -117,7 +117,7 @@ func get_active_tool_data() -> ToolData:
 	if active_hotbar_item != null and active_hotbar_item.tool_data != null:
 		return active_hotbar_item.tool_data
 
-	var equipped_tool := equipped.get("tool", null)
+	var equipped_tool : Variant = equipped.get("tool", null)
 	if equipped_tool is ItemData:
 		var equipped_item := equipped_tool as ItemData
 		if equipped_item.tool_data != null:

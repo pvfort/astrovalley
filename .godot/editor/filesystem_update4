@@ -1,7 +1,8 @@
-res://scenes/ui/Hotbar.tscn
+res://scenes/rooms/institute.tscn
 res://resources/ui/light_theme.tres
 res://resources/ui/dark_theme.tres
-res://scenes/ui/Test.tscn
-res://scenes/rooms/cafe.tscn
-res://scenes/player/Player.tscn
 res://assets/tilesets/wall.tres
+res://scripts/world/interactable.gd
+res://scripts/world/door.gd
+res://scripts/room.gd
+res://scripts/main_room.gd

@@ -33,7 +33,7 @@ extends Resource
 
 func get_context_modifiers(context: StringName) -> Dictionary:
 	var context_key := String(context)
-	var modifiers := interaction_modifiers.get(context_key, {})
+	var modifiers : Variant = interaction_modifiers.get(context_key, {})
 	if modifiers is Dictionary:
 		return modifiers as Dictionary
 	return {}
