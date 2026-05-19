@@ -1,0 +1,54 @@
+[gd_resource type="Theme" format=3 uid="uid://c1spoiqvrysm1"]
+
+[ext_resource type="FontFile" uid="uid://dgglyoux0ihvp" path="res://resources/ui/VT323-Regular.ttf" id="1_fg2p6"]
+[ext_resource type="Texture2D" uid="uid://652juulio1ua" path="res://assets/ui/general/ui_dark.png" id="1_o01uf"]
+[ext_resource type="Texture2D" uid="uid://cfhho83uv1c84" path="res://assets/ui/general/dark_hotbar.png" id="3_0hqls"]
+[ext_resource type="Texture2D" uid="uid://b8pu1iw6krti3" path="res://assets/ui/general/item_slot_dark.png" id="3_tlx6t"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fg2p6"]
+texture = ExtResource("1_o01uf")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yx05t"]
+texture = ExtResource("3_0hqls")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ap8of"]
+texture = ExtResource("3_tlx6t")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3fox5"]
+texture = ExtResource("1_o01uf")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_idgou"]
+texture = ExtResource("3_tlx6t")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[resource]
+Button/fonts/font = ExtResource("1_fg2p6")
+Button/styles/normal = SubResource("StyleBoxTexture_fg2p6")
+HotbarPanel/base_type = &"Panel"
+HotbarPanel/styles/panel = SubResource("StyleBoxTexture_yx05t")
+HotbarPanelConitainer/base_type = &"PanelContainer"
+HotbarPanelConitainer/styles/panel = SubResource("StyleBoxTexture_ap8of")
+Label/fonts/font = ExtResource("1_fg2p6")
+LineEdit/fonts/font = ExtResource("1_fg2p6")
+Panel/styles/panel = SubResource("StyleBoxTexture_3fox5")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_idgou")
+TextEdit/fonts/font = ExtResource("1_fg2p6")

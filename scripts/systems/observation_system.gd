@@ -2,10 +2,33 @@ extends Node
 
 # ObservationSystem: Handles observation tasks
 
-func start_observe(player_id: int):
+const BASE_OBSERVATION_DATA: int = 100
+
+
+func _ready() -> void:
+	if not TaskManager.task_completed.is_connected(_on_task_completed):
+		TaskManager.task_completed.connect(_on_task_completed)
+
+
+func start_observe(player_id: int) -> void:
 	if not multiplayer.is_server():
 		return
+	if WeatherManager != null and WeatherManager.has_method("is_telescope_usable"):
+		if not WeatherManager.is_telescope_usable():
+			print("Cannot start observe for player ", player_id, ": telescope disabled by weather")
+			return
 	if TaskManager.start_task(player_id, "observe"):
 		print("Player ", player_id, " started observing")
 	else:
 		print("Cannot start observe for player ", player_id)
+
+
+func _on_task_completed(_player_id: int, task_id: String) -> void:
+	if task_id != "observe":
+		return
+	var quality_multiplier := 1.0
+	if WeatherManager != null and WeatherManager.has_method("get_observation_quality_multiplier"):
+		quality_multiplier = float(WeatherManager.get_observation_quality_multiplier())
+	var observation_data := maxi(0, int(round(float(BASE_OBSERVATION_DATA) * maxf(0.0, quality_multiplier))))
+	if WorldClock != null and WorldClock.has_method("add_observation_data"):
+		WorldClock.add_observation_data(observation_data)

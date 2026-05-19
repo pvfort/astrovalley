@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Panel
 
 @export var slot_type: StringName = &"accessory"
 

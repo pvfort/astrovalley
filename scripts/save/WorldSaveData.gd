@@ -35,7 +35,7 @@ func to_dictionary() -> Dictionary:
 
 
 static func from_dictionary(data: Dictionary) -> WorldSaveData:
-	var result := WorldSaveData.new()
+	var result: WorldSaveData = WorldSaveData.new()
 	result.save_version = int(data.get("save_version", CURRENT_SAVE_VERSION))
 	result.world_name = str(data.get("world_name", "default_world"))
 	result.seed = int(data.get("seed", 0))
