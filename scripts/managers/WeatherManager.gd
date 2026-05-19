@@ -175,7 +175,7 @@ func _weighted_roll(season_name: String) -> String:
 
 func _get_weather_data(weather_name: String) -> WeatherData:
 	var safe_weather := _normalize_weather_name(weather_name)
-	var value := _weather_profiles.get(safe_weather, null)
+	var value : Variant = _weather_profiles.get(safe_weather, null)
 	if value is WeatherData:
 		return value as WeatherData
 	return WeatherData.default_clear()

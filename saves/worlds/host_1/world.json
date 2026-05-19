@@ -1,11 +1,11 @@
 {
-	"day": 4,
+	"day": 7,
 	"entities": [],
 	"machine_states": [],
 	"placed_furniture": [],
 	"room_states": [],
 	"save_version": 1,
-	"saved_at": "2026-05-18T18:45:41",
+	"saved_at": "2026-05-19T01:20:12",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
@@ -48,6 +48,14 @@
 				},
 				{
 					"count": 1,
+					"item_id": "mug"
+				},
+				{
+					"count": 1,
+					"item_id": "mug"
+				},
+				{
+					"count": 1,
 					"item_id": "coffee"
 				},
 				{
@@ -55,13 +63,8 @@
 					"item_id": "mug"
 				},
 				{
-
-				},
-				{
-
-				},
-				{
-
+					"count": 1,
+					"item_id": "mug"
 				},
 				{
 
@@ -120,9 +123,9 @@
 
 				}
 			},
-			"day": 4,
+			"day": 7,
 			"hour": 8,
-			"minute": 25,
+			"minute": 36,
 			"phase": "Morning"
 		}
 	},
