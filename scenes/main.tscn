@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
 [ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="12_persistent"]
 [ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="13_saveable"]
+[ext_resource type="Script" path="res://scripts/time/day_night_controller.gd" id="14_daynight"]
 [ext_resource type="PackedScene" path="res://scenes/furniture/OfficeDeskEntity.tscn" id="14_office_desk"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ContainerUI.tscn" id="15_container_ui"]
 
@@ -110,5 +111,6 @@ grow_horizontal = 0
 [node name="ContainerUI" parent="CanvasLayer" instance=ExtResource("15_container_ui")]
 
 [node name="DayNightController" type="CanvasLayer" parent="." unique_id=1917497699]
+script = ExtResource("14_daynight")
 
 [node name="Players" type="Node2D" parent="." unique_id=96690759]
