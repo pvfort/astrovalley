@@ -122,7 +122,7 @@ func _connect_weather_signals() -> void:
 
 
 func _on_weather_changed(_weather_name: String, weather_data: Dictionary) -> void:
-	var tint: Color = weather_data.get("ambience_tint", Color(1.0, 1.0, 1.0, 0.0))
+	var tint : Variant= weather_data.get("ambience_tint", Color(1.0, 1.0, 1.0, 0.0))
 	var rain_intensity := clampf(float(weather_data.get("precipitation_intensity", 0.0)), 0.0, 1.0)
 	var cloud_coverage := clampf(float(weather_data.get("cloud_coverage", 0.0)), 0.0, 1.0)
 	_weather_light_multiplier = clampf(float(weather_data.get("ambient_light_multiplier", 1.0)), 0.0, 1.2)
