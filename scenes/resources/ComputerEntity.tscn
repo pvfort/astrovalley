@@ -30,6 +30,6 @@ script = ExtResource("3_programming")
 [node name="PersistentObject" type="Node" parent="."]
 script = ExtResource("4_persistent")
 [node name="SaveableComponent" type="Node" parent="." unique_id=709420221]
-script = ExtResource("4_saveable")
+script = ExtResource("5_saveable")
 unique_id = "computer_entity_main"
 category = "machine_states"

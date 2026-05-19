@@ -48,5 +48,5 @@ metadata/_custom_type_script = "uid://d38j71xw76r6v"
 [node name="PersistentObject" type="Node" parent="."]
 script = ExtResource("8_persistent")
 [node name="SaveableComponent" type="Node" parent="." unique_id=205691833]
-script = ExtResource("8_saveable")
+script = ExtResource("9_saveable")
 category = "dropped_items"
