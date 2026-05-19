@@ -123,20 +123,20 @@ func load_state(data: Dictionary) -> void:
 	current_weather = _normalize_weather_name(str(data.get("weather", DEFAULT_WEATHER)))
 	if not _weather_profiles.has(current_weather):
 		current_weather = DEFAULT_WEATHER
-	current_humidity = clampf(float(data.get("humidity", current_humidity)), 0.0, 1.0)
-	current_seeing = clampf(float(data.get("seeing", current_seeing)), 0.0, 1.0)
-	current_turbulence = clampf(float(data.get("turbulence", current_turbulence)), 0.0, 1.0)
+	current_humidity = clampf(float(data.get("humidity", _get_weather_data(current_weather).humidity)), 0.0, 1.0)
+	current_seeing = clampf(float(data.get("seeing", _get_weather_data(current_weather).seeing)), 0.0, 1.0)
+	current_turbulence = clampf(float(data.get("turbulence", _get_weather_data(current_weather).turbulence)), 0.0, 1.0)
 	_last_rolled_day = maxi(0, int(data.get("last_rolled_day", _last_rolled_day)))
-	_apply_weather_stats()
 	weather_changed.emit(current_weather, get_current_weather_data())
 	_sync_to_clients()
 
 
 func _build_default_profiles() -> void:
 	_weather_profiles.clear()
-	for key in WeatherData.default_profiles().keys():
+	var defaults := WeatherData.default_profiles()
+	for key in defaults.keys():
 		var weather_name := str(key)
-		_weather_profiles[weather_name] = WeatherData.default_profiles()[weather_name]
+		_weather_profiles[weather_name] = defaults[weather_name]
 
 
 func _on_world_day_changed(day: int) -> void:

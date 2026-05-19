@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_RESIZED:
+	if what == NOTIFICATION_WM_SIZE_CHANGED:
 		_update_particle_layout()
 
 
