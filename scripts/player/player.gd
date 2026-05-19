@@ -103,7 +103,7 @@ func _physics_process(_delta: float) -> void:
 
 	_update_interaction_target()
 
-	if InventoryManager != null and InventoryManager.is_inventory_open:
+	if _is_movement_blocked_by_ui():
 
 		velocity = Vector2.ZERO
 		_play_idle()
@@ -591,6 +591,17 @@ func _resolve_energy_player_id() -> int:
 
 func get_saveable_id() -> String:
 	return "player_%s" % str(player_id)
+
+
+func _is_movement_blocked_by_ui() -> bool:
+	if InventoryManager != null and InventoryManager.is_inventory_open:
+		return true
+
+	for node in get_tree().get_nodes_in_group("movement_blocking_ui"):
+		if node is CanvasItem and (node as CanvasItem).visible:
+			return true
+
+	return false
 
 
 func save_state() -> Dictionary:

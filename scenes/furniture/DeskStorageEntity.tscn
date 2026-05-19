@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/furniture/desk.png" id="1_desk"]
+[ext_resource type="Script" path="res://scripts/components/interactable_component.gd" id="2_interactable"]
+[ext_resource type="Script" path="res://scripts/components/ContainerComponent.gd" id="3_container"]
+[ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="4_saveable"]
+[ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="5_persistent"]
+
+[sub_resource type="RectangleShape2D" id="1_shape"]
+size = Vector2(30, 30)
+
+[node name="DeskStorageEntity" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_desk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1_shape")
+
+[node name="InteractableComponent" type="Node" parent="."]
+script = ExtResource("2_interactable")
+
+[node name="ContainerComponent" type="Node" parent="."]
+script = ExtResource("3_container")
+container_id = "desk_storage"
+
+[node name="SaveableComponent" type="Node" parent="."]
+script = ExtResource("4_saveable")
+category = "entities"
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("5_persistent")
