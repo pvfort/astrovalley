@@ -32,11 +32,11 @@ func server_request_sleep(player_id: int) -> void:
 	if not multiplayer.is_server():
 		return
 
-	var sender_id := multiplayer.get_remote_sender_id()
+	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id != player_id:
 		return
 
-	var target_player := _find_player_by_id(player_id)
+	var target_player: PlayerCharacter = _find_player_by_id(player_id)
 	if target_player == null:
 		return
 
@@ -49,7 +49,7 @@ func _perform_sleep(player: PlayerCharacter) -> void:
 	if EnergyManager != null:
 		EnergyManager.recover_from_sleep(player.player_id)
 
-	var summary_data := WorldClock.get_daily_summary_data()
+	var summary_data: Dictionary = WorldClock.get_daily_summary_data()
 	WorldClock.daily_summary_requested.emit(summary_data)
 	WorldClock.skip_to_next_morning(next_day_hour)
 	WorldClock.reset_daily_summary_data()
@@ -62,7 +62,7 @@ func _find_player_by_id(player_id: int) -> PlayerCharacter:
 	return null
 
 func _clear_player_temporary_effects(player: PlayerCharacter) -> void:
-	var status := player.get_status_effect_component()
+	var status: StatusEffectComponent = player.get_status_effect_component()
 	if status == null:
 		return
 	if status.has_method("clear_temporary_effects"):
@@ -72,14 +72,14 @@ func _apply_sleep_fade(player: PlayerCharacter) -> void:
 	if fade_texture == null:
 		return
 
-	var layer := CanvasLayer.new()
+	var layer: CanvasLayer = CanvasLayer.new()
 	layer.layer = 50
-	var scene_root := get_tree().current_scene
+	var scene_root: Node = get_tree().current_scene
 	if scene_root == null:
 		return
 	scene_root.add_child(layer)
 
-	var fade := TextureRect.new()
+	var fade: TextureRect = TextureRect.new()
 	fade.anchor_right = 1.0
 	fade.anchor_bottom = 1.0
 	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -88,7 +88,7 @@ func _apply_sleep_fade(player: PlayerCharacter) -> void:
 	fade.modulate = Color(1.0, 1.0, 1.0, 0.0)
 	layer.add_child(fade)
 
-	var tween := scene_root.create_tween()
+	var tween: Tween = scene_root.create_tween()
 	tween.tween_property(fade, "modulate:a", 1.0, fade_duration)
 	tween.tween_property(fade, "modulate:a", 0.0, fade_duration)
 	tween.finished.connect(func(): layer.queue_free())

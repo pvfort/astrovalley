@@ -29,9 +29,9 @@ func _ready() -> void:
 func _bind_to_owning_player() -> void:
 	var player_node: Node = null
 
-	var canvas_layer := get_parent()
+	var canvas_layer: Node = get_parent()
 	if canvas_layer != null:
-		var candidate := canvas_layer.get_parent()
+		var candidate: Node = canvas_layer.get_parent()
 		if candidate is PlayerCharacter:
 			player_node = candidate
 
@@ -45,7 +45,7 @@ func _bind_to_owning_player() -> void:
 		visible = false
 		return
 
-	var player := player_node as PlayerCharacter
+	var player: PlayerCharacter = player_node as PlayerCharacter
 	if not player.is_multiplayer_authority():
 		visible = false
 		return

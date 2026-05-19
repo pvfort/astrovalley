@@ -39,7 +39,7 @@ func _build_slots() -> void:
 		hotbar_size = InventoryManager.HOTBAR_SIZE
 
 	for i in range(hotbar_size):
-		var slot = slot_scene.instantiate()
+		var slot: Variant = slot_scene.instantiate()
 		slot.slot_index = i
 		slot.slot_clicked.connect(_on_slot_clicked)
 		slots_container.add_child(slot)
@@ -73,7 +73,7 @@ func _set_tracked_player(player: PlayerCharacter) -> void:
 
 
 func _find_local_player() -> PlayerCharacter:
-	var players := get_tree().get_nodes_in_group("player")
+	var players: Array = get_tree().get_nodes_in_group("player")
 
 	for node in players:
 		if node is PlayerCharacter and node.is_multiplayer_authority():

@@ -8,7 +8,7 @@ func _ready() -> void:
 	priority = max(priority, STORE_NPC_PRIORITY)
 
 func interact(_player: PlayerCharacter) -> void:
-	var store_ui := _find_store_ui()
+	var store_ui: Node = _find_store_ui()
 	if store_ui == null:
 		return
 
@@ -16,12 +16,12 @@ func interact(_player: PlayerCharacter) -> void:
 		store_ui.open_store()
 
 func _find_store_ui() -> Node:
-	var scene_root := get_tree().current_scene
+	var scene_root: Node = get_tree().current_scene
 	if scene_root == null:
 		return null
 
 	if not store_ui_path.is_empty():
-		var store_ui_from_path := get_node_or_null(store_ui_path)
+		var store_ui_from_path: Node = get_node_or_null(store_ui_path)
 		if store_ui_from_path != null:
 			return store_ui_from_path
 
