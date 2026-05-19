@@ -1,5 +1,7 @@
-class_name ContainerSlot
+class_name ContainerSlotUI
 extends PanelContainer
+
+signal transfer_requested(from_type: String, from_index: int, to_type: String, to_index: int, amount: int)
 
 @onready var icon_rect: TextureRect = $MarginContainer/VBoxContainer/Icon
 @onready var item_name_label: Label = $MarginContainer/VBoxContainer/ItemName
@@ -7,62 +9,104 @@ extends PanelContainer
 
 var source_type: String = ""
 var slot_index: int = -1
-var _host_ui: ContainerUI = null
+var item_id: String = ""
+var count: int = 0
 
 
-func configure(host_ui: ContainerUI, source: String, index: int) -> void:
-	_host_ui = host_ui
-	source_type = source
-	slot_index = index
+func configure_source(next_source_type: String, next_slot_index: int) -> void:
+	source_type = next_source_type
+	slot_index = next_slot_index
 
 
-func set_slot_data(slot_data: Variant) -> void:
-	if slot_data == null:
+func set_slot_data(next_item_id: String, next_count: int) -> void:
+	item_id = next_item_id
+	count = max(next_count, 0)
+
+	if item_id.is_empty() or count <= 0:
 		icon_rect.texture = null
 		item_name_label.text = ""
 		stack_label.text = ""
 		tooltip_text = ""
 		return
 
-	var item := slot_data.get("item", null) as ItemData
-	if item == null:
-		icon_rect.texture = null
-		item_name_label.text = ""
-		stack_label.text = ""
-		tooltip_text = ""
-		return
+	var item: ItemData = null
 
-	var count := int(slot_data.get("count", 1))
-	icon_rect.texture = item.icon
-	item_name_label.text = item.display_name
+	if InventoryManager != null and InventoryManager.has_method("_item_by_id"):
+		item = InventoryManager._item_by_id(item_id)
+
+	if item != null:
+		icon_rect.texture = item.icon
+		item_name_label.text = item.display_name
+		tooltip_text = "%s\n%s" % [item.display_name, item.description]
+	else:
+		icon_rect.texture = null
+		item_name_label.text = item_id
+		tooltip_text = item_id
+
 	stack_label.text = str(count) if count > 1 else ""
-	tooltip_text = "%s\n%s" % [item.display_name, item.description]
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	if _host_ui == null:
-		return null
-	if not _host_ui.can_drag_from(source_type, slot_index):
+	if item_id.is_empty() or count <= 0:
 		return null
 
-	var drag_data := _host_ui.build_drag_data(source_type, slot_index)
-	if drag_data.is_empty():
-		return null
+	var payload: Dictionary = {
+		"source_type": source_type,
+		"slot_index": slot_index,
+		"item_id": item_id,
+		"count": count,
+	}
 
-	var preview := duplicate() as Control
-	if preview != null:
-		preview.modulate = Color(1.0, 1.0, 1.0, 0.85)
-		set_drag_preview(preview)
-	return drag_data
+	var preview_label: Label = Label.new()
+	preview_label.text = item_id
+	set_drag_preview(preview_label)
+
+	return payload
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	if _host_ui == null:
+	if not (data is Dictionary):
 		return false
-	return _host_ui.can_drop_on_slot(source_type, slot_index, data)
+
+	var payload: Dictionary = data as Dictionary
+
+	if not payload.has("source_type"):
+		return false
+	if not payload.has("slot_index"):
+		return false
+
+	return true
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	if _host_ui == null:
+	if not (data is Dictionary):
 		return
-	_host_ui.drop_on_slot(source_type, slot_index, data)
+
+	var payload: Dictionary = data as Dictionary
+	var from_type: String = str(payload.get("source_type", ""))
+	var from_index: int = int(payload.get("slot_index", -1))
+
+	if from_type.is_empty() or from_index < 0:
+		return
+
+	transfer_requested.emit(from_type, from_index, source_type, slot_index, 1)
+
+
+func _gui_input(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton):
+		return
+
+	var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+
+	if not mouse_event.pressed:
+		return
+
+	if mouse_event.button_index != MOUSE_BUTTON_LEFT:
+		return
+
+	if item_id.is_empty() or count <= 0:
+		return
+
+	var target_type: String = "container" if source_type == "player" else "player"
+
+	transfer_requested.emit(source_type, slot_index, target_type, -1, 1)

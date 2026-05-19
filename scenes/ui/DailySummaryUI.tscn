@@ -1,15 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cyhh2ycv2yklo"]
 
-[ext_resource type="Script" path="res://scripts/ui/daily_summary_ui.gd" id="1_summary_ui"]
-[ext_resource type="Texture2D" path="res://assets/ui/daily_summary/summary_panel.png" id="2_panel"]
-[ext_resource type="Texture2D" path="res://assets/ui/daily_summary/programming_icon.png" id="3_programming"]
-[ext_resource type="Texture2D" path="res://assets/ui/daily_summary/observatory_panel.png" id="4_observation"]
-[ext_resource type="Texture2D" path="res://assets/ui/daily_summary/money_icon.png" id="5_money"]
+[ext_resource type="Script" uid="uid://dsyr8uyq27qfe" path="res://scripts/ui/daily_summary_ui.gd" id="1_summary_ui"]
+[ext_resource type="Texture2D" uid="uid://c0mrgi23trviv" path="res://assets/ui/daily_summary/programming_icon.png" id="3_programming"]
+[ext_resource type="Texture2D" uid="uid://bhj6byc60uin" path="res://assets/ui/daily_summary/observatory_panel.png" id="4_observation"]
+[ext_resource type="Texture2D" uid="uid://cif45mbfwdu41" path="res://assets/ui/daily_summary/money_icon.png" id="5_money"]
 
-[sub_resource type="StyleBoxTexture" id="1_summary_style"]
-texture = ExtResource("2_panel")
-
-[node name="DailySummaryUI" type="Control"]
+[node name="DailySummaryUI" type="Control" unique_id=1615059]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,7 +15,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_summary_ui")
 
-[node name="Backdrop" type="ColorRect" parent="."]
+[node name="Backdrop" type="ColorRect" parent="." unique_id=332071344]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +25,7 @@ grow_vertical = 2
 mouse_filter = 1
 color = Color(0, 0, 0, 0.5)
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="Panel" parent="." unique_id=154887753]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -42,82 +38,85 @@ offset_right = 250.0
 offset_bottom = 170.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("1_summary_style")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1520696553]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 496.0
+offset_bottom = 336.0
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1489703147]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="DayLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="DayLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=344774946]
 layout_mode = 2
 text = "Daily Summary"
 horizontal_alignment = 1
 
-[node name="Stats" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Stats" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1618658370]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="XpLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats"]
+[node name="XpLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats" unique_id=1583356326]
 layout_mode = 2
 text = "XP gained per skill: none"
 autowrap_mode = 3
 
-[node name="MoneyRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Stats"]
+[node name="MoneyRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Stats" unique_id=1483255571]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="MoneyIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/MoneyRow"]
+[node name="MoneyIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/MoneyRow" unique_id=1541121629]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = ExtResource("5_money")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MoneyLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/MoneyRow"]
+[node name="MoneyLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/MoneyRow" unique_id=1113414570]
 layout_mode = 2
 text = "0"
 
-[node name="TasksLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats"]
+[node name="TasksLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats" unique_id=2117225415]
 layout_mode = 2
 text = "Tasks completed: 0"
 
-[node name="ObservationRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Stats"]
+[node name="ObservationRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Stats" unique_id=1358637440]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ObservationIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ObservationRow"]
+[node name="ObservationIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ObservationRow" unique_id=1006442570]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = ExtResource("4_observation")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ObservationLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ObservationRow"]
+[node name="ObservationLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ObservationRow" unique_id=230222576]
 layout_mode = 2
 text = "0"
 
-[node name="ProgrammingRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Stats"]
+[node name="ProgrammingRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Stats" unique_id=1415030130]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ProgrammingIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ProgrammingRow"]
+[node name="ProgrammingIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ProgrammingRow" unique_id=931771160]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = ExtResource("3_programming")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ProgrammingLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ProgrammingRow"]
+[node name="ProgrammingLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Stats/ProgrammingRow" unique_id=1162702359]
 layout_mode = 2
 text = "0"
 
-[node name="ContinueButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="ContinueButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2146207194]
 layout_mode = 2
 text = "Continue"

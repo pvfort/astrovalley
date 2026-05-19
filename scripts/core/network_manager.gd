@@ -15,19 +15,29 @@ func _ready():
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 
 func host_game(port: int = 4242) -> bool:
-	var error = peer.create_server(port)
-	if error == OK:
-		multiplayer.multiplayer_peer = peer
-		is_host = true
-		print("Hosting game on port ", port)
-		TimeManager.start_cycle()
-		# Register the server's own player so late-joiners can be told about it
-		var my_id = multiplayer.get_unique_id()
-		GameManager.add_player(my_id, "Player" + str(my_id))
-		return true
-	else:
-		print("Failed to host: ", error)
+	print("[NetworkManager] Attempting to host on port:", port)
+
+	var peer := ENetMultiplayerPeer.new()
+	var error := peer.create_server(port)
+
+	if error != OK:
+		print("[NetworkManager] Failed to host. ENet error code:", error)
 		return false
+
+	multiplayer.multiplayer_peer = peer
+	is_host = true
+
+	print("[NetworkManager] Hosting game on port", port)
+
+	# Start world systems AFTER networking is valid
+	if TimeManager != null:
+		TimeManager.start_cycle()
+
+	# Register host player
+	var my_id := multiplayer.get_unique_id()
+	GameManager.add_player(my_id, "Player" + str(my_id))
+
+	return true
 
 func join_game(ip: String, port: int = 4242) -> bool:
 	var error = peer.create_client(ip, port)

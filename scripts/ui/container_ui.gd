@@ -3,257 +3,161 @@ extends Control
 
 @export var slot_scene: PackedScene = preload("res://scenes/ui/ContainerSlot.tscn")
 
-@onready var title_label: Label = $Panel/MarginContainer/VBoxContainer/TitleLabel
-@onready var player_grid: GridContainer = $Panel/MarginContainer/VBoxContainer/TabContainer/Storage/TransferContainer/PlayerColumn/PlayerGrid
-@onready var container_grid: GridContainer = $Panel/MarginContainer/VBoxContainer/TabContainer/Storage/TransferContainer/ContainerColumn/ContainerGrid
-@onready var close_button: Button = $Panel/MarginContainer/VBoxContainer/BottomRow/CloseButton
+@onready var title_label: Label = $Panel/MarginContainer/VBoxContainer/Title
+@onready var player_grid: GridContainer = $Panel/MarginContainer/VBoxContainer/Content/PlayerColumn/PlayerSlots
+@onready var container_grid: GridContainer = $Panel/MarginContainer/VBoxContainer/Content/ContainerColumn/ContainerSlots
+@onready var close_button: Button = $Panel/MarginContainer/VBoxContainer/CloseButton
 
-var _container: ContainerComponent = null
-var _player: PlayerCharacter = null
+var _active_container: ContainerComponent = null
+var _active_player: PlayerCharacter = null
 
 
 func _ready() -> void:
 	visible = false
-	add_to_group("container_ui")
-	add_to_group("movement_blocking_ui")
-	close_button.pressed.connect(close_container)
 
+	if close_button != null and not close_button.pressed.is_connected(_on_close_pressed):
+		close_button.pressed.connect(_on_close_pressed)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if not visible:
-		return
-	if event.is_action_pressed("ui_cancel"):
-		close_container()
-		get_viewport().set_input_as_handled()
-
-
-func is_open_for(container: ContainerComponent) -> bool:
-	return visible and _container == container
+	if InventoryManager != null and not InventoryManager.inventory_changed.is_connected(_on_inventory_changed):
+		InventoryManager.inventory_changed.connect(_on_inventory_changed)
 
 
 func open_container(container: ContainerComponent, player: PlayerCharacter) -> void:
 	if container == null:
 		return
 
-	if _container != null and _container.container_changed.is_connected(_on_container_changed):
-		_container.container_changed.disconnect(_on_container_changed)
+	_close_current_container_binding()
 
-	_container = container
-	_player = player
-	_container.container_changed.connect(_on_container_changed)
+	_active_container = container
+	_active_player = player
+	title_label.text = "Container: %s" % container.container_id
 
-	_rebuild_slots()
-	_refresh_all_slots()
-	title_label.text = "Container: %s" % _container.container_id
+	if not container.container_changed.is_connected(_on_container_changed):
+		container.container_changed.connect(_on_container_changed)
+
+	if InventoryManager != null:
+		InventoryManager.set_inventory_open(true)
+
 	visible = true
-
-	if _container != null:
-		var player_id := _resolve_player_id()
-		_container.notify_opened(player_id)
+	refresh()
 
 
 func close_container() -> void:
-	if not visible:
-		return
-
-	if _container != null:
-		var player_id := _resolve_player_id()
-		_container.notify_closed(player_id)
-		if _container.container_changed.is_connected(_on_container_changed):
-			_container.container_changed.disconnect(_on_container_changed)
-
-	_container = null
-	_player = null
+	_close_current_container_binding()
+	_active_player = null
 	visible = false
 
-
-func can_drag_from(source: String, slot_index: int) -> bool:
-	var slot_data := _get_slot_data(source, slot_index)
-	return slot_data != null
+	if InventoryManager != null:
+		InventoryManager.set_inventory_open(false)
 
 
-func build_drag_data(source: String, slot_index: int) -> Dictionary:
-	if not visible:
-		return {}
-	var slot_data := _get_slot_data(source, slot_index)
-	if slot_data == null:
-		return {}
-	var item := slot_data.get("item", null) as ItemData
-	if item == null:
-		return {}
-	return {
-		"source": source,
-		"source_index": slot_index
-	}
-
-
-func can_drop_on_slot(target_source: String, target_index: int, drag_data: Variant) -> bool:
-	if not visible:
-		return false
-	if _container == null:
-		return false
-	if not (drag_data is Dictionary):
-		return false
-	var data := drag_data as Dictionary
-	var source := str(data.get("source", ""))
-	var source_index := int(data.get("source_index", -1))
-	if source.is_empty() or source_index < 0:
-		return false
-	if source == target_source and source_index == target_index:
-		return false
-
-	var source_slot := _get_slot_data(source, source_index)
-	if source_slot == null:
-		return false
-
-	var source_item := source_slot.get("item", null) as ItemData
-	if source_item == null:
-		return false
-
-	var target_slot := _get_slot_data(target_source, target_index)
-	if target_slot == null:
-		return true
-
-	var target_item := target_slot.get("item", null) as ItemData
-	if target_item == null:
-		return true
-
-	return target_item.item_id == source_item.item_id
-
-
-func drop_on_slot(target_source: String, target_index: int, drag_data: Variant) -> void:
-	if not (drag_data is Dictionary):
-		return
-	var data := drag_data as Dictionary
-	var source := str(data.get("source", ""))
-	var source_index := int(data.get("source_index", -1))
-	if source.is_empty() or source_index < 0:
+func refresh() -> void:
+	if _active_container == null:
 		return
 
-	_transfer_between_slots(source, source_index, target_source, target_index)
+	_rebuild_player_grid()
+	_rebuild_container_grid()
 
 
-func _transfer_between_slots(source: String, source_index: int, target_source: String, target_index: int) -> void:
-	var source_slot := _get_slot_data(source, source_index)
-	if source_slot == null:
+func _rebuild_player_grid() -> void:
+	_clear_children(player_grid)
+
+	for i in range(InventoryManager.INVENTORY_SIZE):
+		var slot_node: Node = slot_scene.instantiate()
+		if not (slot_node is ContainerSlotUI):
+			continue
+
+		var slot_ui: ContainerSlotUI = slot_node as ContainerSlotUI
+		slot_ui.configure_source("player", i)
+
+		if not slot_ui.transfer_requested.is_connected(_on_slot_transfer_requested):
+			slot_ui.transfer_requested.connect(_on_slot_transfer_requested)
+
+		var slot_data: Variant = InventoryManager.get_inventory_slot(i)
+		var slot_item_id: String = ""
+		var slot_count: int = 0
+
+		if slot_data is Dictionary:
+			var slot_dict: Dictionary = slot_data as Dictionary
+			var raw_item: Variant = slot_dict.get("item", null)
+
+			if raw_item is ItemData:
+				slot_item_id = (raw_item as ItemData).item_id
+				slot_count = int(slot_dict.get("count", 0))
+
+		slot_ui.set_slot_data(slot_item_id, slot_count)
+		player_grid.add_child(slot_ui)
+
+
+func _rebuild_container_grid() -> void:
+	_clear_children(container_grid)
+
+	for i in range(_active_container.get_slot_count()):
+		var slot_node: Node = slot_scene.instantiate()
+		if not (slot_node is ContainerSlotUI):
+			continue
+
+		var slot_ui: ContainerSlotUI = slot_node as ContainerSlotUI
+		slot_ui.configure_source("container", i)
+
+		if not slot_ui.transfer_requested.is_connected(_on_slot_transfer_requested):
+			slot_ui.transfer_requested.connect(_on_slot_transfer_requested)
+
+		var slot_dict: Dictionary = _active_container.get_slot_view(i)
+		var slot_item_id: String = str(slot_dict.get("item_id", ""))
+		var slot_count: int = int(slot_dict.get("count", 0))
+
+		slot_ui.set_slot_data(slot_item_id, slot_count)
+		container_grid.add_child(slot_ui)
+
+
+func _on_slot_transfer_requested(from_type: String, from_index: int, to_type: String, to_index: int, amount: int) -> void:
+	if _active_container == null:
+		return
+	if amount <= 0:
 		return
 
-	var source_item := source_slot.get("item", null) as ItemData
-	if source_item == null:
-		return
-	var source_count := int(source_slot.get("count", 1))
+	var moved: bool = false
 
-	var target_slot := _get_slot_data(target_source, target_index)
-	if target_slot == null:
-		var remainder := _try_insert_into_slot(target_source, target_index, source_item, source_count)
-		var moved_count := source_count - remainder
-		if moved_count > 0:
-			_remove_from_slot(source, source_index, moved_count)
-		_refresh_all_slots()
-		return
+	if from_type == "player" and to_type == "container":
+		moved = _active_container.transfer_from_player(from_index, to_index, amount)
+	elif from_type == "container" and to_type == "player":
+		moved = _active_container.transfer_to_player(from_index, amount)
 
-	var target_item := target_slot.get("item", null) as ItemData
-	if target_item == null:
-		return
-
-	if target_item.item_id == source_item.item_id:
-		var remainder := _try_insert_into_slot(target_source, target_index, source_item, source_count)
-		var moved_count := source_count - remainder
-		if moved_count > 0:
-			_remove_from_slot(source, source_index, moved_count)
-		_refresh_all_slots()
-		return
-
-	_set_slot(source, source_index, target_slot)
-	_set_slot(target_source, target_index, source_slot)
-	_refresh_all_slots()
+	if moved:
+		refresh()
 
 
-func _rebuild_slots() -> void:
-	var player_size := InventoryManager.get_inventory_size() if InventoryManager != null else 0
-	_rebuild_grid(player_grid, player_size, "player")
-
-	var container_size := _container.get_slot_size() if _container != null else 0
-	_rebuild_grid(container_grid, container_size, "container")
-
-
-func _rebuild_grid(grid: GridContainer, desired_count: int, source: String) -> void:
-	while grid.get_child_count() > desired_count:
-		var child := grid.get_child(grid.get_child_count() - 1)
-		grid.remove_child(child)
-		child.queue_free()
-
-	while grid.get_child_count() < desired_count:
-		var slot := slot_scene.instantiate()
-		if slot.has_method("configure"):
-			slot.configure(self, source, grid.get_child_count())
-		grid.add_child(slot)
-
-	for i in range(grid.get_child_count()):
-		var child := grid.get_child(i)
-		if child.has_method("configure"):
-			child.configure(self, source, i)
-
-
-func _refresh_all_slots() -> void:
-	_refresh_grid_slots(player_grid, "player")
-	_refresh_grid_slots(container_grid, "container")
-
-
-func _refresh_grid_slots(grid: GridContainer, source: String) -> void:
-	for i in range(grid.get_child_count()):
-		var slot := grid.get_child(i)
-		if slot.has_method("set_slot_data"):
-			slot.set_slot_data(_get_slot_data(source, i))
-
-
-func _get_slot_data(source: String, index: int) -> Variant:
-	if source == "player":
-		if InventoryManager == null:
-			return null
-		return InventoryManager.get_inventory_slot(index)
-	if source == "container":
-		if _container == null:
-			return null
-		return _container.get_slot(index)
-	return null
-
-
-func _set_slot(source: String, index: int, slot_data: Variant) -> void:
-	if source == "player":
-		if InventoryManager == null:
-			return
-		InventoryManager.set_inventory_slot(index, slot_data)
-		return
-	if source == "container" and _container != null:
-		_container.set_slot(index, slot_data)
-
-
-func _remove_from_slot(source: String, index: int, count: int) -> Dictionary:
-	if source == "player":
-		if InventoryManager == null:
-			return {}
-		return InventoryManager.remove_from_slot(index, count)
-	if source == "container" and _container != null:
-		return _container.remove_from_slot(index, count)
-	return {}
-
-
-func _try_insert_into_slot(source: String, index: int, item: ItemData, count: int) -> int:
-	if source == "player":
-		if InventoryManager == null:
-			return max(count, 0)
-		return InventoryManager.try_insert_into_slot(index, item, count)
-	if source == "container" and _container != null:
-		return _container.try_insert_into_slot(index, item, count)
-	return max(count, 0)
+func _on_inventory_changed() -> void:
+	if visible:
+		refresh()
 
 
 func _on_container_changed() -> void:
-	_refresh_all_slots()
+	if visible:
+		refresh()
 
 
-func _resolve_player_id() -> int:
-	if _player != null:
-		return _player.player_id
-	return multiplayer.get_unique_id()
+func _on_close_pressed() -> void:
+	close_container()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+		close_container()
+		get_viewport().set_input_as_handled()
+
+
+func _close_current_container_binding() -> void:
+	if _active_container != null and _active_container.container_changed.is_connected(_on_container_changed):
+		_active_container.container_changed.disconnect(_on_container_changed)
+
+	_active_container = null
+
+
+func _clear_children(node: Node) -> void:
+	for child in node.get_children():
+		child.queue_free()

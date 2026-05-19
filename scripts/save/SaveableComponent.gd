@@ -26,7 +26,7 @@ func set_component_state_value(key: String, value: Variant) -> void:
 
 
 func get_save_entry() -> Dictionary:
-	var target := _target_node()
+	var target: Node = _target_node()
 	if target == null:
 		return {}
 
@@ -46,14 +46,14 @@ func get_save_entry() -> Dictionary:
 
 
 func load_from_entry(entry: Dictionary) -> void:
-	var target := _target_node()
+	var target: Node = _target_node()
 	if target == null:
 		return
 
 	if include_transform and entry.has("transform"):
 		_apply_transform(target, _as_dictionary(entry.get("transform", {})))
 
-	var state := _as_dictionary(entry.get("state", {}))
+	var state: Dictionary = _as_dictionary(entry.get("state", {}))
 	_component_state = _as_dictionary(state.get("__component", {}))
 	state.erase("__component")
 	_apply_state(target, state)
@@ -66,7 +66,7 @@ func _target_node() -> Node:
 func _collect_state(target: Node) -> Dictionary:
 	var state: Dictionary = {}
 	if target.has_method("save_state"):
-		var output := target.call("save_state")
+		var output: Variant = target.call("save_state")
 		if output is Dictionary:
 			state = (output as Dictionary).duplicate(true)
 	else:
@@ -91,7 +91,7 @@ func _collect_child_states(target: Node) -> Dictionary:
 	for child in target.get_children():
 		if not child.has_method("save_state"):
 			continue
-		var child_state := child.call("save_state")
+		var child_state: Variant = child.call("save_state")
 		if child_state is Dictionary:
 			child_states[str(child.name)] = (child_state as Dictionary).duplicate(true)
 	return child_states
@@ -99,13 +99,13 @@ func _collect_child_states(target: Node) -> Dictionary:
 
 func _apply_child_states(target: Node, state: Dictionary) -> void:
 	for key in state.keys():
-		var child_name := str(key)
-		var child := target.get_node_or_null(NodePath(child_name))
+		var child_name: String = str(key)
+		var child: Node = target.get_node_or_null(NodePath(child_name))
 		if child == null:
 			continue
 		if not child.has_method("load_state"):
 			continue
-		var child_state := state.get(key, {})
+		var child_state: Variant = state.get(key, {})
 		if child_state is Dictionary:
 			child.call("load_state", child_state)
 
@@ -118,7 +118,7 @@ func _resolve_scene_path(target: Node) -> String:
 
 func _serialize_transform(target: Node) -> Dictionary:
 	if target is Node2D:
-		var node2d := target as Node2D
+		var node2d: Node2D = target as Node2D
 		return {
 			"type": "node2d",
 			"position": {"x": node2d.global_position.x, "y": node2d.global_position.y},
@@ -131,14 +131,14 @@ func _serialize_transform(target: Node) -> Dictionary:
 
 func _apply_transform(target: Node, transform_data: Dictionary) -> void:
 	if target is Node2D:
-		var node2d := target as Node2D
-		var position_data := _as_dictionary(transform_data.get("position", {}))
-		var scale_data := _as_dictionary(transform_data.get("scale", {}))
-		var loaded_position := Vector2(
+		var node2d: Node2D = target as Node2D
+		var position_data: Dictionary = _as_dictionary(transform_data.get("position", {}))
+		var scale_data: Dictionary = _as_dictionary(transform_data.get("scale", {}))
+		var loaded_position: Vector2 = Vector2(
 			float(position_data.get("x", node2d.global_position.x)),
 			float(position_data.get("y", node2d.global_position.y))
 		)
-		var loaded_scale := Vector2(
+		var loaded_scale: Vector2 = Vector2(
 			float(scale_data.get("x", node2d.scale.x)),
 			float(scale_data.get("y", node2d.scale.y))
 		)
@@ -148,16 +148,16 @@ func _apply_transform(target: Node, transform_data: Dictionary) -> void:
 
 
 func _generate_default_id() -> String:
-	var target := _target_node()
+	var target: Node = _target_node()
 	if target == null:
 		return "saveable_%s" % str(get_instance_id())
 
 	if target.has_method("get_saveable_id"):
-		var target_id := str(target.call("get_saveable_id"))
+		var target_id: String = str(target.call("get_saveable_id"))
 		if not target_id.is_empty():
 			return target_id
 
-	var stable_path := str(target.get_path())
+	var stable_path: String = str(target.get_path())
 	if not stable_path.is_empty():
 		return "%s::%s" % [str(target.name).to_snake_case(), stable_path]
 
