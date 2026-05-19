@@ -1,13 +1,14 @@
 class_name StoreNpcComponent
-extends InteractableComponent
+extends DialogueComponent
 
 const STORE_NPC_PRIORITY := 30
 @export var store_ui_path: NodePath
 
 func _ready() -> void:
+	super._ready()
 	priority = max(priority, STORE_NPC_PRIORITY)
 
-func interact(_player: PlayerCharacter) -> void:
+func _on_dialogue_completed(_player: PlayerCharacter) -> void:
 	var store_ui := _find_store_ui()
 	if store_ui == null:
 		return
