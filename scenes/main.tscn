@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
 [ext_resource type="Script" path="res://scripts/persistence/PersistentObject.gd" id="12_persistent"]
 [ext_resource type="Script" path="res://scripts/save/SaveableComponent.gd" id="13_saveable"]
+[ext_resource type="PackedScene" path="res://scenes/furniture/DeskStorageEntity.tscn" id="14_desk_storage"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -45,6 +46,9 @@ position = Vector2(620, 300)
 
 [node name="StoreNpcEntity" parent="." unique_id=1360177238 instance=ExtResource("10_store_npc")]
 position = Vector2(360, 300)
+
+[node name="DeskStorageEntity" parent="." instance=ExtResource("14_desk_storage")]
+position = Vector2(700, 300)
 
 [node name="UI" type="Control" parent="." unique_id=300123017]
 layout_mode = 3
