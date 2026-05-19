@@ -1,6 +1,11 @@
 extends Area2D
 class_name Interactable
 
+const PRIORITY_DEFAULT := 0
+const PRIORITY_ITEM := 10
+const PRIORITY_NPC := 20
+const PRIORITY_DOOR := 30
+
 signal interaction_available_changed(is_available: bool)
 
 @export var interaction_name: StringName = &"Interact"

@@ -245,7 +245,7 @@ func save_state() -> Dictionary:
 
 
 func load_state(data: Dictionary) -> void:
-	var room_id := str(data.get("current_room_id", current_room_id))
+	var room_id: String = str(data.get("current_room_id", current_room_id))
 	if room_id.is_empty() or room_id == current_room_id:
 		return
 	_create_room(room_id)

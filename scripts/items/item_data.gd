@@ -7,11 +7,16 @@ extends Resource
 @export var icon: Texture2D
 @export var stack_size: int = 1
 @export var tags: Array[String] = []
+@export var tool_data: ToolData
 
 @export var consumable: bool = false
 
 @export var status_effect_id: String = ""
 @export var status_effect_duration: float = 0.0
+
+@export var energy_restore: float = 0.0
+@export var energy_temp_max_bonus: float = 0.0
+@export var energy_temp_max_duration: float = 0.0
 
 @export var replacement_item: ItemData
 

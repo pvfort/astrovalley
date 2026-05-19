@@ -52,5 +52,5 @@ script = ExtResource("4_dcse5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stairs/StairArea" unique_id=1540785197]
 
-[node name="PlayerSpawn" type="Marker2D" parent="."]
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=787563140]
 position = Vector2(256, 480)

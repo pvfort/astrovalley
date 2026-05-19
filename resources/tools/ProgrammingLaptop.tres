@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ToolData" format=3]
+
+[ext_resource type="Script" path="res://scripts/tools/ToolData.gd" id="1_tool_data"]
+
+[resource]
+script = ExtResource("1_tool_data")
+tool_id = "programming_laptop"
+display_name = "Programming Laptop"
+description = "Portable development workstation tuned for institute software workflows."
+rarity = &"uncommon"
+max_durability = 140.0
+durability_loss_per_use = 0.8
+energy_cost_per_use = 2.0
+cooldown_seconds = 0.5
+use_animation = &"use_laptop"
+skill_id = "programming"
+skill_scaling = {
+"duration_multiplier_per_level": -0.01,
+"xp_multiplier_per_level": 0.01
+}
+interaction_modifiers = {
+"programming": {
+"duration_multiplier": 0.85,
+"xp_multiplier": 1.35
+}
+}
+upgrade_ids = Array[String](["programming_laptop_mk2"])
+module_slots = 2
+supported_modules = Array[StringName]([&"battery_pack", &"code_assistant", &"cooling_module"])
+battery_capacity = 100.0
+battery_drain_per_use = 4.0
+active_ability_id = &"burst_compile"
+active_ability_cooldown = 20.0
+contextual_interactions = {
+"programming": {
+"faster_programming": true
+}
+}
