@@ -134,7 +134,7 @@ func build_level(data: Dictionary) -> void:
 
 
 func _clear_door_interactables() -> void:
-	var container := get_node_or_null("Doors")
+	var container: Node = get_node_or_null("Doors")
 	if container == null:
 		container = Node2D.new()
 		container.name = "Doors"
@@ -145,12 +145,12 @@ func _clear_door_interactables() -> void:
 
 
 func _create_door_interactable(pos: Vector2i) -> void:
-	var container := get_node("Doors")
-	var door := DOOR_INTERACTABLE_SCENE.instantiate()
+	var container: Node = get_node("Doors")
+	var door: Node2D = DOOR_INTERACTABLE_SCENE.instantiate() as Node2D
 	var world_pos : Vector2 = tilemap.to_global(tilemap.map_to_local(pos))
 	door.global_position = world_pos
-	door.door_tile_position = pos
-	door.door_id = "level_%d_%d_%d" % [level_index, pos.x, pos.y]
+	door.set("door_tile_position", pos)
+	door.set("door_id", "level_%d_%d_%d" % [level_index, pos.x, pos.y])
 	container.add_child(door)
 
 

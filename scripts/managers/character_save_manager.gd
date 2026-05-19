@@ -59,7 +59,7 @@ func load_character(character_id: String) -> CharacterProfile:
 	if not FileAccess.file_exists(path):
 		return null
 
-	var loaded := ResourceLoader.load(path)
+	var loaded: Resource = ResourceLoader.load(path)
 	if loaded is CharacterProfile:
 		return loaded
 

@@ -97,9 +97,10 @@ func import_sync_state(sync_state: Dictionary) -> void:
 	current_durability = float(sync_state.get("current_durability", current_durability))
 	current_power = float(sync_state.get("current_power", current_power))
 	_last_used_time = float(sync_state.get("last_used_time", _last_used_time))
-	var modules := sync_state.get("modules", {})
-	if modules is Dictionary:
-		_equipped_modules = (modules as Dictionary).duplicate(true)
+	var modules_value: Variant = sync_state.get("modules", {})
+	if modules_value is Dictionary:
+		var modules: Dictionary = modules_value as Dictionary
+		_equipped_modules = modules.duplicate(true)
 
 	durability_changed.emit(current_durability)
 	power_changed.emit(current_power)

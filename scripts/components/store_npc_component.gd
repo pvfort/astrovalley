@@ -17,12 +17,12 @@ func _on_dialogue_completed(_player: PlayerCharacter) -> void:
 		store_ui.open_store()
 
 func _find_store_ui() -> Node:
-	var scene_root := get_tree().current_scene
+	var scene_root: Node = get_tree().current_scene
 	if scene_root == null:
 		return null
 
 	if not store_ui_path.is_empty():
-		var store_ui_from_path := get_node_or_null(store_ui_path)
+		var store_ui_from_path: Node = get_node_or_null(store_ui_path)
 		if store_ui_from_path != null:
 			return store_ui_from_path
 

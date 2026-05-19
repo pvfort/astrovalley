@@ -53,7 +53,7 @@ func interact(player: PlayerCharacter) -> void:
 	WorldClock.add_programming_progress(final_time_minutes)
 	_attempt_energy_spend(player)
 
-	var tween := get_tree().root.create_tween()
+	var tween: Tween = get_tree().root.create_tween()
 	tween.tween_interval(action_delay)
 	tween.finished.connect(
 		func() -> void:
@@ -80,7 +80,7 @@ func _attempt_energy_spend(player: PlayerCharacter) -> void:
 		player.consume_energy(energy_cost)
 		return
 
-	var status := player.get_status_effect_component()
+	var status: StatusEffectComponent = player.get_status_effect_component()
 	if status != null and status.has_method("apply"):
 		status.apply("programming_fatigue", energy_cost, {"temporary": true, "source": "programming"})
 

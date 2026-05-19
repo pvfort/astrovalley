@@ -25,7 +25,7 @@ func begin_placement(item_data: ItemData, source_slot_index: int = -1) -> bool:
 
 	cancel_placement()
 
-	var scene := get_tree().current_scene
+	var scene: Node = get_tree().current_scene
 	if scene == null:
 		return false
 
@@ -108,7 +108,7 @@ func _confirm_placement() -> void:
 		cancel_placement()
 		return
 
-	var instance := _active_item.placed_scene.instantiate()
+	var instance: Node = _active_item.placed_scene.instantiate()
 	if not (instance is Node2D):
 		cancel_placement()
 		return
@@ -169,7 +169,7 @@ func _confirm_placement() -> void:
 
 
 func _resolve_furniture_parent() -> Node:
-	var scene := get_tree().current_scene
+	var scene: Node = get_tree().current_scene
 	if scene != null and scene.has_method("get_furniture_container"):
 		var container = scene.get_furniture_container()
 		if container != null:
@@ -278,7 +278,7 @@ func _active_character_id() -> String:
 
 
 func _ensure_persistent_object(instance: Node) -> PersistentObject:
-	var existing := instance.find_child("PersistentObject", true, false)
+	var existing: Node = instance.find_child("PersistentObject", true, false)
 	if existing is PersistentObject:
 		return existing as PersistentObject
 
@@ -287,7 +287,7 @@ func _ensure_persistent_object(instance: Node) -> PersistentObject:
 	instance.add_child(persistent_object)
 	return persistent_object
 func _attach_saveable_component(node: Node2D, scene_path: String, room_id: String) -> void:
-	var saveable := node.get_node_or_null("SaveableComponent")
+	var saveable: Node = node.get_node_or_null("SaveableComponent")
 	if not (saveable is SaveableComponent):
 		saveable = SaveableComponent.new()
 		saveable.name = "SaveableComponent"
