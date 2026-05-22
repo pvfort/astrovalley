@@ -1,42 +1,42 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://btb2nw3da1mqc"]
 
-[ext_resource type="Script" path="res://scripts/ui/energy_bar_ui.gd" id="1_energybar"]
+[ext_resource type="Script" uid="uid://bwpoghfmxb1aw" path="res://scripts/ui/energy_bar_ui.gd" id="1_energybar"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.08, 0.08, 0.1, 0.88)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.25, 0.25, 0.3, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
-bg_color = Color(0.2, 0.85, 0.35, 1.0)
+bg_color = Color(0.2, 0.85, 0.35, 1)
 corner_radius_top_left = 1
 corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
-[node name="EnergyBarUI" type="Control"]
+[node name="EnergyBarUI" type="Control" unique_id=1315078221]
 layout_mode = 3
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -110.0
-offset_top = -62.0
+offset_top = -134.0
 offset_right = 110.0
-offset_bottom = -40.0
+offset_bottom = -112.0
 grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("1_energybar")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="Panel" parent="." unique_id=399173609]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,8 +45,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
 
-[node name="Fill" type="Panel" parent="."]
+[node name="Fill" type="Panel" parent="." unique_id=704571046]
 layout_mode = 1
+anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 2.0
 offset_top = 2.0
@@ -54,7 +55,7 @@ offset_right = 218.0
 offset_bottom = -2.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_fill")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=1918681891]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

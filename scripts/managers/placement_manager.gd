@@ -73,21 +73,33 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not _placement_active:
 		return
 
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
-		cancel_placement()
-		get_viewport().set_input_as_handled()
+	if event is InputEventKey:
+		var key_event := event as InputEventKey
+
+		if key_event.pressed \
+		and not key_event.echo \
+		and key_event.keycode == KEY_ESCAPE:
+
+			cancel_placement()
+			get_viewport().set_input_as_handled()
+			return
+
+	if not (event is InputEventMouseButton):
 		return
 
-	if not (event is InputEventMouseButton) or not event.pressed:
+	var mouse_event := event as InputEventMouseButton
+
+	if not mouse_event.pressed:
 		return
 
-	if event.button_index == MOUSE_BUTTON_LEFT:
+	if mouse_event.button_index == MOUSE_BUTTON_LEFT:
 		if _is_valid_position:
 			_confirm_placement()
+
 		get_viewport().set_input_as_handled()
 		return
 
-	if event.button_index == MOUSE_BUTTON_RIGHT:
+	if mouse_event.button_index == MOUSE_BUTTON_RIGHT:
 		cancel_placement()
 		get_viewport().set_input_as_handled()
 

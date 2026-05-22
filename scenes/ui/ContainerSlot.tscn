@@ -1,35 +1,35 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bb06de8mqkyr0"]
 
-[ext_resource type="Script" path="res://scripts/ui/container_slot.gd" id="1_slot"]
+[ext_resource type="Script" uid="uid://c1knkc417mkuj" path="res://scripts/ui/container_slot.gd" id="1_slot"]
 
-[node name="ContainerSlot" type="PanelContainer"]
+[node name="ContainerSlot" type="PanelContainer" unique_id=400852957]
 custom_minimum_size = Vector2(80, 96)
 script = ExtResource("1_slot")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1209209720]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1389543997]
 layout_mode = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=129924288]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ItemName" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="ItemName" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1586337385]
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stack" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Stack" type="Label" parent="MarginContainer/VBoxContainer" unique_id=895831061]
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 horizontal_alignment = 2

@@ -1,27 +1,27 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dt6le82x0cs5y"]
 
-[ext_resource type="PackedScene" uid="uid://dktm0j4vf8sq" path="res://scenes/resources/CoffeeEntity.tscn" id="1_coffee"]
+[ext_resource type="PackedScene" path="res://scenes/resources/CoffeeEntity.tscn" id="1_coffee"]
 [ext_resource type="PackedScene" uid="uid://brs6wu0yexn1k" path="res://scenes/player/Player.tscn" id="2_player"]
 [ext_resource type="PackedScene" uid="uid://b21y80aekuplp" path="res://scenes/resources/CoffeeMachine.tscn" id="3_machine"]
 [ext_resource type="PackedScene" uid="uid://dkwttj2gmt7t2" path="res://scenes/resources/MugEntity.tscn" id="4_mug"]
 [ext_resource type="PackedScene" uid="uid://clgl8qe4cxqq7" path="res://scenes/resources/ComputerEntity.tscn" id="5_computer"]
 
-[node name="Cafe" type="Node2D"]
+[node name="Cafe" type="Node2D" unique_id=1098801687]
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Player" parent="." unique_id=1097649750 instance=ExtResource("2_player")]
 position = Vector2(383, 192)
 
-[node name="CoffeeEntity" parent="." instance=ExtResource("1_coffee")]
+[node name="CoffeeEntity" parent="." unique_id=1346885133 instance=ExtResource("1_coffee")]
 position = Vector2(463, 195)
 
-[node name="CoffeeMachineEntity" parent="." instance=ExtResource("3_machine")]
+[node name="CoffeeMachineEntity" parent="." unique_id=397669631 instance=ExtResource("3_machine")]
 position = Vector2(384, 267)
 
-[node name="MugEntity" parent="." instance=ExtResource("4_mug")]
+[node name="MugEntity" parent="." unique_id=1149989198 instance=ExtResource("4_mug")]
 position = Vector2(304, 197)
 
-[node name="MugEntity2" parent="." instance=ExtResource("4_mug")]
+[node name="MugEntity2" parent="." unique_id=725824393 instance=ExtResource("4_mug")]
 position = Vector2(301, 225)
 
-[node name="ComputerEntity" parent="." instance=ExtResource("5_computer")]
+[node name="ComputerEntity" parent="." unique_id=1872347810 instance=ExtResource("5_computer")]
 position = Vector2(423, 148)

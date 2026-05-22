@@ -3,12 +3,9 @@ extends Node2D
 const MapSystem = preload("res://scripts/map_system.gd")
 var map_system = MapSystem.new()
 
-# Main scene script
+# Optional UI references
 
-@onready var phase_label: Label = $UI/PhaseLabel
-@onready var player_label: Label = $UI/PlayerLabel
-@onready var task_label: Label = $UI/TaskLabel
-@onready var interaction_prompt: Label = $UI/InteractionPrompt
+
 @onready var players_node: Node = $Players
 @onready var telescope: Area2D = $Telescope
 
@@ -16,19 +13,13 @@ var current_room_id: String = "institute"
 var furniture_container: Node2D = null
 
 func _ready():
-	TimeManager.phase_changed.connect(_on_phase_changed)
-	TaskManager.task_started.connect(_on_task_started)
-	TaskManager.task_completed.connect(_on_task_completed)
+
 	NetworkManager.player_connected.connect(_on_player_connected)
 	NetworkManager.player_disconnected.connect(_on_player_disconnected)
 	NetworkManager.game_state_synced.connect(_on_game_state_synced)
-	telescope.player_entered.connect(_on_player_entered)
-	telescope.player_exited.connect(_on_player_exited)
 
-	# Set initial UI state
-	_on_phase_changed(TimeManager.get_current_phase())
+
 	var local_id = multiplayer.get_unique_id()
-	player_label.text = "Player: " + str(local_id)
 
 	# Spawn local player
 	spawn_player(local_id)
@@ -192,28 +183,6 @@ func _on_game_state_synced(state: Dictionary):
 		if not players_node.has_node("Player" + str(id)):
 			spawn_player(id)
 
-func _on_phase_changed(phase: String):
-	phase_label.text = "Phase: " + phase
-
-func _on_player_entered(_player: PlayerCharacter):
-	interaction_prompt.visible = true
-
-func _on_player_exited(_player: PlayerCharacter):
-	interaction_prompt.visible = false
-
-func _on_task_started(player_id: int, task_id: String):
-	if player_id == multiplayer.get_unique_id():
-		if task_id == "observe":
-			task_label.text = "Task: Observing..."
-		else:
-			task_label.text = "Task: " + task_id
-
-func _on_task_completed(player_id: int, _task_id: String):
-	if player_id == multiplayer.get_unique_id():
-		task_label.text = "Task: Done"
-		await get_tree().create_timer(2.0).timeout
-		if TaskManager.get_active_task(player_id) == "":
-			task_label.text = "Task: none"
 
 func spawn_room_entities(room_id: String):
 	var room_data = {

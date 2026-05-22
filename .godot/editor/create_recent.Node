@@ -1,3 +1,4 @@
+ProgrammingComponent
 Button
 Panel
 LineEdit
@@ -11,4 +12,3 @@ Node2D
 StatusEffectComponent
 ProducerComponent
 PickupComponent
-Area2D

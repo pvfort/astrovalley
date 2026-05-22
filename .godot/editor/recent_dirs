@@ -1,3 +1,4 @@
+res://scripts/items/
 res://scenes/resources/
 res://scripts/managers/
 res://scripts/persistence/
@@ -10,7 +11,6 @@ res://assets/entities/characters/
 res://resources/items/
 res://scripts/components/
 res://assets/sprites/
-res://scripts/items/
 res://scripts/inventory/
 res://scripts/
 res://assets/tilesets/

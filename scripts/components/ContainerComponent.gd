@@ -21,12 +21,22 @@ func _ready() -> void:
 
 
 func interact(player: PlayerCharacter) -> void:
+
+	print("[CONTAINER] interact called")
+
 	if player == null:
+		print("[CONTAINER] player null")
 		return
 
 	var ui: ContainerUI = _resolve_container_ui()
+
+	print("[CONTAINER] resolved ui:", ui)
+
 	if ui == null:
+		print("[CONTAINER] UI NULL")
 		return
+
+	print("[CONTAINER] opening UI")
 
 	ui.open_container(self, player)
 
@@ -200,20 +210,19 @@ func _initialize_slots() -> void:
 
 
 func _resolve_container_ui() -> ContainerUI:
-	var tree: SceneTree = get_tree()
-	if tree == null or tree.current_scene == null:
+
+	var ui_nodes := get_tree().get_nodes_in_group("container_ui")
+
+	if ui_nodes.is_empty():
+		push_warning("No ContainerUI found in group")
 		return null
 
-	var canvas_layer: Node = tree.current_scene.get_node_or_null("CanvasLayer")
-	if canvas_layer == null:
-		return null
+	var ui := ui_nodes[0]
 
-	var ui_node: Node = canvas_layer.get_node_or_null("ContainerUI")
-	if ui_node is ContainerUI:
-		return ui_node as ContainerUI
+	if ui is ContainerUI:
+		return ui as ContainerUI
 
 	return null
-
 
 func _is_server_authority() -> bool:
 	if multiplayer.has_multiplayer_peer():

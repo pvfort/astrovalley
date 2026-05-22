@@ -1,14 +1,837 @@
 {
-	"day": 7,
-	"entities": [],
-	"machine_states": [],
+	"day": 25,
+	"entities": [
+		{
+			"category": "room_states",
+			"node_path": "/root/Main",
+			"parent_path": "/root",
+			"scene_path": "res://scenes/main.tscn",
+			"state": {
+				"current_room_id": "institute"
+			},
+			"transform": {
+				"position": {
+					"x": 0.0,
+					"y": 0.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "main_world_state"
+		},
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/@Area2D@51",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/ComputerEntity.tscn",
+			"state": {
+				"ProgrammingComponent": {
+					"is_interacting": false
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 500.0,
+					"y": 300.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "computer_entity_main"
+		},
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/@Node2D@52",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/OfficeDeskEntity.tscn",
+			"state": {
+				"container_state": {
+					"container": {
+						"container_id": "office_desk_main",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 5,
+								"item_id": "mug"
+							},
+							{
+								"count": 1,
+								"item_id": "coffee"
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 760.0,
+					"y": 330.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "office_desk_main"
+		},
+		{
+			"category": "entities",
+			"node_path": "/root/Main/DeskStorageEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+			"state": {
+				"ContainerComponent": {
+					"container": {
+						"container_id": "desk_storage",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 440.0,
+					"y": 501.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "desk_storage_entity::/root/Main/DeskStorageEntity"
+		},
+		{
+			"category": "players",
+			"node_path": "/root/Main/Players/Player1",
+			"parent_path": "/root/Main/Players",
+			"scene_path": "res://scenes/player/Player.tscn",
+			"state": {
+				"current_level": 0,
+				"player_id": 1,
+				"position": {
+					"x": -236.066223144531,
+					"y": -897.65625
+				},
+				"selected_hotbar_slot": 0,
+				"status_effects": {
+					"active_effects": {
+
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": -236.066223144531,
+					"y": -897.65625
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "player_1"
+		},
+		{
+			"category": "entities",
+			"node_path": "/root/Main/@Area2D@53",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+			"state": {
+				"ContainerComponent": {
+					"container": {
+						"container_id": "desk_storage",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 440.0,
+					"y": 501.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "desk_storage_entity::/root/Main/DeskStorageEntity"
+		},
+		{
+			"category": "players",
+			"node_path": "/root/Main/Players/@CharacterBody2D@85",
+			"parent_path": "/root/Main/Players",
+			"scene_path": "res://scenes/player/Player.tscn",
+			"state": {
+				"current_level": 0,
+				"player_id": 1,
+				"position": {
+					"x": 630.0,
+					"y": 292.0
+				},
+				"selected_hotbar_slot": 0,
+				"status_effects": {
+					"active_effects": {
+
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 630.0,
+					"y": 292.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "player_1"
+		},
+		{
+			"category": "entities",
+			"node_path": "/root/Main/@Area2D@84",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+			"state": {
+				"ContainerComponent": {
+					"container": {
+						"container_id": "desk_storage",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 440.0,
+					"y": 501.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "desk_storage_entity::/root/Main/DeskStorageEntity"
+		},
+		{
+			"category": "entities",
+			"node_path": "/root/Main/@Area2D@116",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+			"state": {
+				"ContainerComponent": {
+					"container": {
+						"container_id": "desk_storage",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 440.0,
+					"y": 501.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "desk_storage_entity::/root/Main/DeskStorageEntity"
+		},
+		{
+			"category": "entities",
+			"node_path": "/root/Main/@Area2D@117",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+			"state": {
+				"ContainerComponent": {
+					"container": {
+						"container_id": "desk_storage",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 6,
+								"item_id": "mug"
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 440.0,
+					"y": 501.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "desk_storage_entity::/root/Main/DeskStorageEntity"
+		}
+	],
+	"machine_states": [
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/@Area2D@51",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/ComputerEntity.tscn",
+			"state": {
+				"ProgrammingComponent": {
+					"is_interacting": false
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 500.0,
+					"y": 300.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "computer_entity_main"
+		},
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/@Node2D@52",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/OfficeDeskEntity.tscn",
+			"state": {
+				"container_state": {
+					"container": {
+						"container_id": "office_desk_main",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 5,
+								"item_id": "mug"
+							},
+							{
+								"count": 1,
+								"item_id": "coffee"
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 760.0,
+					"y": 330.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "office_desk_main"
+		}
+	],
 	"placed_furniture": [],
-	"room_states": [],
+	"room_states": [
+		{
+			"category": "room_states",
+			"node_path": "/root/Main",
+			"parent_path": "/root",
+			"scene_path": "res://scenes/main.tscn",
+			"state": {
+				"current_room_id": "institute"
+			},
+			"transform": {
+				"position": {
+					"x": 0.0,
+					"y": 0.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "main_world_state"
+		}
+	],
 	"save_version": 1,
-	"saved_at": "2026-05-19T01:20:12",
+	"saved_at": "2026-05-21T20:37:22",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
+		"energy": {
+			"players": {
+				"1": {
+					"current_energy": 100.0,
+					"exhausted": false,
+					"max_energy": 100.0,
+					"temporary_max_bonus": 0.0,
+					"temporary_max_duration": 0.0
+				}
+			}
+		},
 		"inventory": {
 			"equipped": {
 				"accessory": "",
@@ -23,48 +846,37 @@
 					"item_id": "mug"
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "coffee"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
-					"count": 1,
-					"item_id": "mug"
+
 				},
 				{
 
@@ -108,10 +920,18 @@
 		"skills": {
 			"skills": {
 				"programming": {
-					"level": 0,
-					"xp": 0
+					"level": 4,
+					"xp": 1177
 				}
 			}
+		},
+		"weather": {
+			"humidity": 0.85,
+			"last_rolled_day": 25,
+			"season": "spring",
+			"seeing": 0.35,
+			"turbulence": 0.65,
+			"weather": "rainy"
 		},
 		"world_clock": {
 			"daily_stats": {
@@ -123,12 +943,12 @@
 
 				}
 			},
-			"day": 7,
+			"day": 25,
 			"hour": 8,
-			"minute": 36,
+			"minute": 3,
 			"phase": "Morning"
 		}
 	},
-	"weather": "clear",
+	"weather": "rainy",
 	"world_name": "host_1"
 }

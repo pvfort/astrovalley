@@ -6,8 +6,6 @@ enum InteractionMode { PRIMARY, PICKUP }
 @export var priority := 0
 @export var allowed_mode := InteractionMode.PRIMARY
 
-
-
 func can_interact(_player: PlayerCharacter) -> bool:
 	return true
 

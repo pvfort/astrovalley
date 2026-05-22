@@ -1,0 +1,15 @@
+res://scenes/main.tscn
+res://resources/ui/light_theme.tres
+res://resources/ui/dark_theme.tres
+res://resources/dialogue/store_npc_dialogue.tres
+res://assets/tilesets/wall.tres
+res://scripts/components/ContainerComponent.gd
+res://scripts/ui/container_ui.gd
+res://scenes/player/Player.tscn
+res://scenes/ui/ContainerUI.tscn
+res://scenes/furniture/DeskStorageEntity.tscn
+res://scenes/ui/ContainerSlot.tscn
+res://scripts/ui/container_slot.gd
+res://scenes/main_menu.tscn
+res://scripts/managers/placement_manager.gd
+res://scripts/player/player.gd

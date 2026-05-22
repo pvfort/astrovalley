@@ -54,15 +54,20 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
+
 	if InventoryManager != null and InventoryManager.is_inventory_open:
 		return
+
 	if _is_placement_active():
 		return
-	if event is InputEventMouseButton \
-	and event.pressed \
-	and not event.echo \
-	and event.button_index == MOUSE_BUTTON_LEFT:
-		_try_use_equipped_item()
+
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+
+		if mouse_event.pressed \
+		and mouse_event.button_index == MOUSE_BUTTON_LEFT:
+
+			_try_use_equipped_item()
 
 	_register_energy_state()
 

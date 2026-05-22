@@ -3,25 +3,14 @@
 [ext_resource type="Script" uid="uid://tsw3ctmmghv8" path="res://scripts/entities/proximity_sensor.gd" id="1"]
 [ext_resource type="Script" uid="uid://6qh4ao33le5u" path="res://scripts/main.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="3"]
-[ext_resource type="PackedScene" uid="uid://blctf1qsa3ufe" path="res://scenes/ui/InventoryUI.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://clgl8qe4cxqq7" path="res://scenes/resources/ComputerEntity.tscn" id="5_computer"]
-[ext_resource type="PackedScene" path="res://scenes/ui/HotbarUI.tscn" id="5_hotbar"]
 [ext_resource type="PackedScene" path="res://scenes/resources/BedEntity.tscn" id="6_bed"]
-[ext_resource type="PackedScene" uid="uid://ddu1cthhi7q31" path="res://scenes/ui/ClockUI.tscn" id="7_clock"]
-[ext_resource type="PackedScene" uid="uid://cyhh2ycv2yklo" path="res://scenes/ui/DailySummaryUI.tscn" id="8_summary"]
 [ext_resource type="PackedScene" path="res://scenes/resources/StoreNpcEntity.tscn" id="10_store_npc"]
-[ext_resource type="PackedScene" uid="uid://crlbhu3l4xnbk" path="res://scenes/ui/StoreUI.tscn" id="11_store_ui"]
+[ext_resource type="PackedScene" uid="uid://1p08iq7sfmgk" path="res://scenes/furniture/DeskStorageEntity.tscn" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://b826ef35wfi07" path="res://scripts/persistence/PersistentObject.gd" id="12_persistent"]
 [ext_resource type="Script" uid="uid://b72h8x1qpewky" path="res://scripts/save/SaveableComponent.gd" id="13_saveable"]
-
 [ext_resource type="Script" uid="uid://cigl8op6wxe3c" path="res://scripts/time/day_night_controller.gd" id="14_daynight"]
-
 [ext_resource type="PackedScene" path="res://scenes/furniture/OfficeDeskEntity.tscn" id="15_office_desk"]
-
-[ext_resource type="PackedScene" path="res://scenes/ui/ContainerUI.tscn" id="16_container_ui"]
-
-[ext_resource type="PackedScene" path="res://scenes/ui/DialogueUI.tscn" id="17_dialogue_ui"]
-
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -59,66 +48,10 @@ position = Vector2(360, 300)
 [node name="OfficeDeskEntity" parent="." unique_id=1624438215 instance=ExtResource("15_office_desk")]
 position = Vector2(760, 330)
 
-[node name="UI" type="Control" parent="." unique_id=300123017]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PhaseLabel" type="Label" parent="UI" unique_id=1824383763]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 200.0
-offset_bottom = 26.0
-text = "Phase: morning"
-
-[node name="PlayerLabel" type="Label" parent="UI" unique_id=1729284151]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 30.0
-offset_right = 200.0
-offset_bottom = 46.0
-text = "Player: Player1"
-
-[node name="TaskLabel" type="Label" parent="UI" unique_id=1343997142]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 50.0
-offset_right = 200.0
-offset_bottom = 66.0
-text = "Task: none"
-
-[node name="InteractionPrompt" type="Label" parent="UI" unique_id=1695647856]
-layout_mode = 0
-offset_left = 490.0
-offset_top = 650.0
-offset_right = 790.0
-offset_bottom = 670.0
-text = "Press E to interact"
-horizontal_alignment = 1
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1397689064]
-
-[node name="InventoryUi" parent="CanvasLayer" unique_id=48336469 instance=ExtResource("4_jyhfs")]
-
-[node name="HotbarUI" parent="CanvasLayer" unique_id=1230332764 instance=ExtResource("5_hotbar")]
-anchors_preset = 5
-
-[node name="ClockUI" parent="CanvasLayer" unique_id=1583854537 instance=ExtResource("7_clock")]
-
-[node name="DailySummaryUI" parent="CanvasLayer" unique_id=1342081110 instance=ExtResource("8_summary")]
-
-[node name="StoreUI" parent="CanvasLayer" unique_id=1164901527 instance=ExtResource("11_store_ui")]
-
-
-[node name="DialogueUI" parent="CanvasLayer" unique_id=371544251 instance=ExtResource("17_dialogue_ui")]
-
-[node name="ContainerUI" parent="CanvasLayer" unique_id=87819662 instance=ExtResource("16_container_ui")]
-
 [node name="DayNightController" type="CanvasLayer" parent="." unique_id=1917497699]
 script = ExtResource("14_daynight")
 
 [node name="Players" type="Node2D" parent="." unique_id=96690759]
+
+[node name="DeskStorageEntity" parent="." unique_id=374593 instance=ExtResource("11_ya4ey")]
+position = Vector2(440, 501)

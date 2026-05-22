@@ -1,7 +1,7 @@
 class_name ContainerUI
 extends Control
 
-@export var slot_scene: PackedScene = preload("res://scenes/ui/ContainerSlot.tscn")
+const SLOT_SCENE := preload("res://scenes/ui/ContainerSlot.tscn")
 
 @onready var title_label: Label = $Panel/MarginContainer/VBoxContainer/Title
 @onready var player_grid: GridContainer = $Panel/MarginContainer/VBoxContainer/Content/PlayerColumn/PlayerSlots
@@ -13,6 +13,8 @@ var _active_player: PlayerCharacter = null
 
 
 func _ready() -> void:
+	
+	add_to_group("container_ui")
 	visible = false
 
 	if close_button != null and not close_button.pressed.is_connected(_on_close_pressed):
@@ -23,13 +25,22 @@ func _ready() -> void:
 
 
 func open_container(container: ContainerComponent, player: PlayerCharacter) -> void:
+
+	print("[UI] open_container called")
+
 	if container == null:
+		print("[UI] container null")
 		return
+
+	visible = true
+
+	print("[UI] visible set true")
 
 	_close_current_container_binding()
 
 	_active_container = container
 	_active_player = player
+
 	title_label.text = "Container: %s" % container.container_id
 
 	if not container.container_changed.is_connected(_on_container_changed):
@@ -38,7 +49,6 @@ func open_container(container: ContainerComponent, player: PlayerCharacter) -> v
 	if InventoryManager != null:
 		InventoryManager.set_inventory_open(true)
 
-	visible = true
 	refresh()
 
 
@@ -60,16 +70,25 @@ func refresh() -> void:
 
 
 func _rebuild_player_grid() -> void:
+	
 	_clear_children(player_grid)
+	print("REBUILD PLAYER GRID")
 
 	for i in range(InventoryManager.INVENTORY_SIZE):
-		var slot_node: Node = slot_scene.instantiate()
+		var slot_node: Node = SLOT_SCENE.instantiate()
+		print(slot_node)
+		print(slot_node.get_class())
+		print(slot_node.get_script())
+		print("creating slot")
+		print("instantiated:", slot_node)
+
+
 		if not (slot_node is ContainerSlotUI):
+			print("NOT SLOT UI")
 			continue
 
 		var slot_ui: ContainerSlotUI = slot_node as ContainerSlotUI
 		slot_ui.configure_source("player", i)
-
 		if not slot_ui.transfer_requested.is_connected(_on_slot_transfer_requested):
 			slot_ui.transfer_requested.connect(_on_slot_transfer_requested)
 
@@ -85,15 +104,18 @@ func _rebuild_player_grid() -> void:
 				slot_item_id = (raw_item as ItemData).item_id
 				slot_count = int(slot_dict.get("count", 0))
 
-		slot_ui.set_slot_data(slot_item_id, slot_count)
 		player_grid.add_child(slot_ui)
+		slot_ui.set_slot_data(slot_item_id, slot_count)
+		print("ADDING CHILD")
+		print("CHILD ADDED")
+	print("DONE")
 
 
 func _rebuild_container_grid() -> void:
 	_clear_children(container_grid)
 
 	for i in range(_active_container.get_slot_count()):
-		var slot_node: Node = slot_scene.instantiate()
+		var slot_node: Node = SLOT_SCENE.instantiate()
 		if not (slot_node is ContainerSlotUI):
 			continue
 
@@ -107,8 +129,8 @@ func _rebuild_container_grid() -> void:
 		var slot_item_id: String = str(slot_dict.get("item_id", ""))
 		var slot_count: int = int(slot_dict.get("count", 0))
 
-		slot_ui.set_slot_data(slot_item_id, slot_count)
 		container_grid.add_child(slot_ui)
+		slot_ui.set_slot_data(slot_item_id, slot_count)
 
 
 func _on_slot_transfer_requested(from_type: String, from_index: int, to_type: String, to_index: int, amount: int) -> void:
@@ -146,9 +168,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
 
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
-		close_container()
-		get_viewport().set_input_as_handled()
+	if event is InputEventKey:
+		var key_event := event as InputEventKey
+
+		if key_event.pressed \
+		and not key_event.echo \
+		and key_event.keycode == KEY_ESCAPE:
+
+			close_container()
+			get_viewport().set_input_as_handled()
 
 
 func _close_current_container_binding() -> void:
