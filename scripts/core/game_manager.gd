@@ -82,7 +82,7 @@ func save_state() -> Dictionary:
 func load_state(data: Dictionary) -> void:
 	players.clear()
 
-	var saved_players := data.get("players", {})
+	var saved_players :Variant= data.get("players", {})
 	if saved_players is Dictionary:
 		for player_id_variant in (saved_players as Dictionary).keys():
 			var player_id: int = int(player_id_variant)
@@ -97,7 +97,7 @@ func load_state(data: Dictionary) -> void:
 				"observation_total": int(player_state.get("observation_total", 0)),
 			}
 
-	var saved_resources := data.get("resources", {})
+	var saved_resources :Variant= data.get("resources", {})
 	if saved_resources is Dictionary:
 		resources = (saved_resources as Dictionary).duplicate(true)
 	if not resources.has("telescope"):

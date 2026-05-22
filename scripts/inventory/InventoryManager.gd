@@ -226,9 +226,9 @@ func remove_items_by_id(item_id: String, amount: int) -> bool:
 		if item == null or item.item_id != item_id:
 			continue
 
-		var current_count := max(int(slot_dict.get("count", 0)), 0)
-		var remove_count := min(current_count, remaining)
-		var next_count := current_count - remove_count
+		var current_count :Variant= max(int(slot_dict.get("count", 0)), 0)
+		var remove_count :Variant= min(current_count, remaining)
+		var next_count :Variant= current_count - remove_count
 
 		if next_count <= 0:
 			inventory[i] = null

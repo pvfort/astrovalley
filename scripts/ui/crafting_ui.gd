@@ -99,7 +99,7 @@ func _refresh_details() -> void:
 	for ingredient in selected_recipe.ingredients:
 		if ingredient == null:
 			continue
-		var owned := inventory.count_item(ingredient.item_id) if inventory != null and inventory.has_method("count_item") else 0
+		var owned :float= inventory.count_item(ingredient.item_id) if inventory != null and inventory.has_method("count_item") else 0
 		ingredient_list.add_item("%s x%d (have %d)" % [ingredient.item_id, ingredient.quantity, owned])
 
 	for output in selected_recipe.outputs:

@@ -56,7 +56,7 @@ func load_state(data: Dictionary) -> void:
 	_player_id = _resolve_local_player_id()
 	_initialize_default_quests()
 
-	var saved_quests := data.get("quests", {})
+	var saved_quests :Variant= data.get("quests", {})
 	if saved_quests is Dictionary:
 		for quest_id_variant in (saved_quests as Dictionary).keys():
 			var quest_variant: Variant = _quests.get(str(quest_id_variant), null)

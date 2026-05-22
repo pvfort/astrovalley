@@ -120,7 +120,7 @@ func load_state(data: Dictionary) -> void:
 
 	active_tasks.clear()
 
-	var saved_active_tasks := data.get("active_tasks", {})
+	var saved_active_tasks :Variant= data.get("active_tasks", {})
 	if not (saved_active_tasks is Dictionary):
 		return
 
