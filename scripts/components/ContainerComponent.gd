@@ -21,22 +21,13 @@ func _ready() -> void:
 
 
 func interact(player: PlayerCharacter) -> void:
-
-	print("[CONTAINER] interact called")
-
 	if player == null:
-		print("[CONTAINER] player null")
 		return
 
 	var ui: ContainerUI = _resolve_container_ui()
 
-	print("[CONTAINER] resolved ui:", ui)
-
 	if ui == null:
-		print("[CONTAINER] UI NULL")
 		return
-
-	print("[CONTAINER] opening UI")
 
 	ui.open_container(self, player)
 

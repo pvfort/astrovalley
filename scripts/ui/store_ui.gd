@@ -31,11 +31,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func open_store() -> void:
 	visible = true
+	if InventoryManager != null:
+		InventoryManager.set_inventory_open(true)
 	_refresh_funds()
 	_set_status("Welcome!")
 
 func close_store() -> void:
 	visible = false
+	if InventoryManager != null:
+		InventoryManager.set_inventory_open(false)
 	_set_status("")
 
 func _on_buy_mug_pressed() -> void:

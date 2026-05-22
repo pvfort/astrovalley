@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://blctf1qsa3ufe"]
 
 [ext_resource type="Script" uid="uid://bmj86eg4amd0u" path="res://scripts/ui/InventoryUI.gd" id="1_1r87s"]
-[ext_resource type="PackedScene" uid="uid://0vdbwxf0t7jo" path="res://scenes/ui/Hotbar.tscn" id="2_hotbar"]
 [ext_resource type="PackedScene" uid="uid://dmfth7fumvx1f" path="res://scenes/ui/EquipmentSlot.tscn" id="3_lvuwj"]
 
 [node name="InventoryUi" type="Control" unique_id=1835366274]
@@ -31,6 +30,3 @@ layout_mode = 2
 [node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1034987366]
 layout_mode = 2
 columns = 9
-
-[node name="Hotbar" parent="Panel/MarginContainer/VBoxContainer" unique_id=2085621906 instance=ExtResource("2_hotbar")]
-layout_mode = 2

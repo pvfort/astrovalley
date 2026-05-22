@@ -25,16 +25,10 @@ func _ready() -> void:
 
 
 func open_container(container: ContainerComponent, player: PlayerCharacter) -> void:
-
-	print("[UI] open_container called")
-
 	if container == null:
-		print("[UI] container null")
 		return
 
 	visible = true
-
-	print("[UI] visible set true")
 
 	_close_current_container_binding()
 
@@ -72,19 +66,11 @@ func refresh() -> void:
 func _rebuild_player_grid() -> void:
 	
 	_clear_children(player_grid)
-	print("REBUILD PLAYER GRID")
 
 	for i in range(InventoryManager.get_inventory_size()):
 		var slot_node: Node = SLOT_SCENE.instantiate()
-		print(slot_node)
-		print(slot_node.get_class())
-		print(slot_node.get_script())
-		print("creating slot")
-		print("instantiated:", slot_node)
-
 
 		if not (slot_node is ContainerSlotUI):
-			print("NOT SLOT UI")
 			continue
 
 		var slot_ui: ContainerSlotUI = slot_node as ContainerSlotUI
@@ -106,9 +92,6 @@ func _rebuild_player_grid() -> void:
 
 		player_grid.add_child(slot_ui)
 		slot_ui.set_slot_data(slot_item_id, slot_count)
-		print("ADDING CHILD")
-		print("CHILD ADDED")
-	print("DONE")
 
 
 func _rebuild_container_grid() -> void:

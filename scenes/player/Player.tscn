@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cyhh2ycv2yklo" path="res://scenes/ui/DailySummaryUI.tscn" id="7_5stf6"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DialogueUI.tscn" id="8_180ig"]
 [ext_resource type="PackedScene" uid="uid://dmfth7fumvx1f" path="res://scenes/ui/EquipmentSlot.tscn" id="8_ov1oi"]
+[ext_resource type="PackedScene" path="res://scenes/ui/CraftingUI.tscn" id="9_crafting_ui"]
 [ext_resource type="PackedScene" uid="uid://crlbhu3l4xnbk" path="res://scenes/ui/StoreUI.tscn" id="11_rn7t0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
@@ -183,6 +184,8 @@ layer = 2
 [node name="InventoryUi" parent="CanvasLayer" unique_id=1835366274 instance=ExtResource("2_inventory_ui")]
 
 [node name="StoreUI" parent="CanvasLayer" unique_id=1921761177 instance=ExtResource("11_rn7t0")]
+
+[node name="CraftingUI" parent="CanvasLayer" instance=ExtResource("9_crafting_ui")]
 
 [node name="ClockUI" parent="CanvasLayer" unique_id=47210436 instance=ExtResource("6_7oing")]
 

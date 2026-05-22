@@ -1,45 +1,133 @@
 [gd_scene format=3 uid="uid://c8hfhndb1dsd0"]
 
-[ext_resource type="Script" uid="uid://dce17s4tm5de0" path="res://scripts/ui/crafting_ui.gd" id="1_qo0p8"]
+[ext_resource type="Script" path="res://scripts/ui/crafting_ui.gd" id="1_crafting_ui"]
 
-[node name="CraftingUi" type="Control" unique_id=933815635]
+[node name="CraftingUI" type="Control"]
+visible = false
 layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_qo0p8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_crafting_ui")
 
-[node name="Panel" type="Panel" parent="." unique_id=716960987]
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -190.0
+offset_right = 260.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=617009382]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
 
-[node name="PanelContainer" type="PanelContainer" parent="Panel" unique_id=810101258]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="TitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Crafting"
+horizontal_alignment = 1
 
-[node name="RecipeName" type="Label" parent="Panel/PanelContainer" unique_id=594861643]
+[node name="Content" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="RecipeColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Content"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="RecipeListLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Content/RecipeColumn"]
+layout_mode = 2
+text = "Recipes"
+
+[node name="RecipeListScroll" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer/Content/RecipeColumn"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RecipeList" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Content/RecipeColumn/RecipeListScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="DetailsColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Content"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="RecipeName" type="Label" parent="Panel/MarginContainer/VBoxContainer/Content/DetailsColumn"]
+layout_mode = 2
+text = "Select a recipe"
+
+[node name="IngredientLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Content/DetailsColumn"]
+layout_mode = 2
+text = "Ingredients"
+
+[node name="IngredientList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/Content/DetailsColumn"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OutputLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Content/DetailsColumn"]
+layout_mode = 2
+text = "Outputs"
+
+[node name="OutputList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/Content/DetailsColumn"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CraftTimeLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Content/DetailsColumn"]
+layout_mode = 2
+text = "Craft time: --"
+
+[node name="ActiveJobsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Active jobs"
+
+[node name="ActiveJobsList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 
-[node name="IngredientList" type="ItemList" parent="Panel/PanelContainer" unique_id=1713914950]
+[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
+autowrap_mode = 3
 
-[node name="OutputList" type="ItemList" parent="Panel/PanelContainer" unique_id=963272130]
+[node name="Buttons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 8
 
-[node name="CraftTimeLabel" type="Label" parent="Panel/PanelContainer" unique_id=1969127073]
+[node name="CraftButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "Craft"
 
-[node name="CraftButton" type="Button" parent="Panel/PanelContainer" unique_id=1723618901]
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
 layout_mode = 2
-
-[node name="ActiveJobsList" type="ItemList" parent="Panel" unique_id=1835505970]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[connection signal="pressed" from="Panel/PanelContainer/CraftButton" to="." method="_on_craft_button_pressed"]
+size_flags_horizontal = 3
+text = "Close"

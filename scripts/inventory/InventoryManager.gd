@@ -122,6 +122,9 @@ func purchase_item(item: ItemData, cost: int) -> bool:
 		return false
 
 	funds -= final_cost
+	if EventBus != null:
+		var player_id := multiplayer.get_unique_id() if multiplayer != null else 1
+		EventBus.item_purchased.emit(player_id, item.item_id, 1, final_cost)
 
 	return true
 
@@ -164,6 +167,25 @@ func has_item(item_id: String) -> bool:
 	return false
 
 
+func count_item(item_id: String) -> int:
+	if item_id.is_empty():
+		return 0
+
+	var total := 0
+	for slot_variant in inventory:
+		if not (slot_variant is Dictionary):
+			continue
+
+		var slot_dict: Dictionary = slot_variant as Dictionary
+		var item: ItemData = _slot_item(slot_dict)
+		if item == null or item.item_id != item_id:
+			continue
+
+		total += int(slot_dict.get("count", 0))
+
+	return total
+
+
 func remove_item_by_id(item_id: String) -> bool:
 	for i in range(inventory.size()):
 
@@ -184,6 +206,44 @@ func remove_item_by_id(item_id: String) -> bool:
 		return true
 
 	return false
+
+
+func remove_items_by_id(item_id: String, amount: int) -> bool:
+	if item_id.is_empty() or amount <= 0:
+		return false
+
+	var remaining := amount
+	for i in range(inventory.size()):
+		if remaining <= 0:
+			break
+
+		var slot_variant: Variant = inventory[i]
+		if not (slot_variant is Dictionary):
+			continue
+
+		var slot_dict: Dictionary = slot_variant as Dictionary
+		var item: ItemData = _slot_item(slot_dict)
+		if item == null or item.item_id != item_id:
+			continue
+
+		var current_count := max(int(slot_dict.get("count", 0)), 0)
+		var remove_count := min(current_count, remaining)
+		var next_count := current_count - remove_count
+
+		if next_count <= 0:
+			inventory[i] = null
+		else:
+			slot_dict["count"] = next_count
+			inventory[i] = slot_dict
+
+		remaining -= remove_count
+
+	if remaining == amount:
+		return false
+
+	inventory_changed.emit()
+	_emit_active_tool_changed()
+	return remaining == 0
 
 
 # ==================================================

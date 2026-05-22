@@ -4,6 +4,8 @@ extends Control
 @onready var _time_label: Label = $PanelContainer/MarginContainer/VBoxContainer/TimeRow/TimeLabel
 @onready var _phase_icon: TextureRect = $PanelContainer/MarginContainer/VBoxContainer/InfoRow/PhaseIcon
 @onready var _weather_icon: TextureRect = $PanelContainer/MarginContainer/VBoxContainer/InfoRow/WeatherIcon
+@onready var _current_task_label: Label = $PanelContainer/MarginContainer/VBoxContainer/CurrentTaskLabel
+@onready var _quest_label: Label = $PanelContainer/MarginContainer/VBoxContainer/QuestLabel
 
 @export var sun_icon: Texture2D = preload("res://assets/ui/time/sun_icon.png")
 @export var moon_icon: Texture2D = preload("res://assets/ui/time/moon_icon.png")
@@ -20,6 +22,13 @@ func _ready() -> void:
 	WorldClock.phase_changed.connect(_on_phase_changed)
 	if WeatherManager != null and WeatherManager.has_signal("weather_changed"):
 		WeatherManager.weather_changed.connect(_on_weather_changed)
+	if GameManager != null and GameManager.has_signal("player_task_changed"):
+		GameManager.player_task_changed.connect(_on_player_task_changed)
+	if QuestManager != null:
+		if QuestManager.has_signal("active_quest_changed"):
+			QuestManager.active_quest_changed.connect(_refresh_progression)
+		if QuestManager.has_signal("quest_progressed"):
+			QuestManager.quest_progressed.connect(_refresh_progression)
 
 	_weather_icon.texture = weather_placeholder_icon
 	_weather_icon.modulate = Color(1.0, 1.0, 1.0, 0.35)
@@ -30,6 +39,7 @@ func _ready() -> void:
 	_on_phase_changed(WorldClock.get_phase_name())
 	if WeatherManager != null and WeatherManager.has_method("get_current_weather_data"):
 		_on_weather_changed(WeatherManager.current_weather, WeatherManager.get_current_weather_data())
+	_refresh_progression()
 
 func _on_day_changed(day: int) -> void:
 	_day_label.text = "Day %d" % day
@@ -66,3 +76,33 @@ func _on_weather_changed(weather_name: String, _weather_data: Dictionary) -> voi
 			_weather_icon.texture = weather_placeholder_icon
 			_weather_icon.modulate = Color(1.0, 1.0, 1.0, 0.35)
 	_weather_icon.tooltip_text = "Weather: %s" % normalized.capitalize()
+
+
+func _on_player_task_changed(player_id: int, _task_id: String) -> void:
+	if player_id != _resolve_local_player_id():
+		return
+	_refresh_progression()
+
+
+func _refresh_progression(_value = null) -> void:
+	var current_task := ""
+	if GameManager != null and GameManager.has_method("get_current_task"):
+		current_task = GameManager.get_current_task(_resolve_local_player_id())
+	_current_task_label.text = "Task: %s" % (current_task if not current_task.is_empty() else "none")
+
+	var quest_text := "none"
+	if QuestManager != null and QuestManager.has_method("get_active_objective_text"):
+		var active_quest_title := QuestManager.get_active_quest_title()
+		var active_objective := QuestManager.get_active_objective_text()
+		if not active_quest_title.is_empty() and not active_objective.is_empty():
+			quest_text = "%s — %s" % [active_quest_title, active_objective]
+		elif not active_quest_title.is_empty():
+			quest_text = active_quest_title
+	_current_task_label.tooltip_text = "Current task"
+	_quest_label.text = "Quest: %s" % quest_text
+
+
+func _resolve_local_player_id() -> int:
+	if multiplayer.has_multiplayer_peer():
+		return multiplayer.get_unique_id()
+	return 1

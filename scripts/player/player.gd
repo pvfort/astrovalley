@@ -32,18 +32,7 @@ func _ready() -> void:
 
 	add_to_group("player")
 
-	print(
-		name,
-		" authority=",
-		get_multiplayer_authority(),
-		" local=",
-		multiplayer.get_unique_id()
-	)
-
 	if is_multiplayer_authority():
-
-		print("I am authority")
-
 		if camera:
 			camera.make_current()
 		if InventoryManager != null:
@@ -81,12 +70,10 @@ func _physics_process(_delta: float) -> void:
 		_try_use_equipped_item()
 
 	if Input.is_action_just_pressed("interact"):
-		print("[DEBUG] interact pressed")
 		if not _try_use_equipped_item():
 			_handle_interaction_input(InteractionMode.PRIMARY)
 
 	if Input.is_action_just_pressed("pick_up"):
-		print("[INPUT] PICKUP pressed")
 		_handle_interaction_input(InteractionMode.PICKUP)
 
 	if Input.is_action_just_pressed("ui_page_up"):
@@ -97,13 +84,7 @@ func _physics_process(_delta: float) -> void:
 
 		
 	if Input.is_action_just_pressed("inventory_toggle"):
-
-		print("Pressed inventory")
-
 		if InventoryManager != null:
-
-			print("Calling inventory manager")
-
 			InventoryManager.toggle_inventory()
 
 	_update_interaction_target()
@@ -260,9 +241,6 @@ func _play_idle() -> void:
 func _update_interaction_target() -> void:
 	var nearest := _get_nearest_interactable()
 
-	if nearest != current_interactable:
-		print("[INTERACT] target changed ->", nearest)
-
 	current_interactable = nearest
 	interaction_target_changed.emit(current_interactable)
 
@@ -270,7 +248,6 @@ func _update_interaction_target() -> void:
 func _get_nearest_interactable() -> InteractableComponent:
 
 	if interaction_area == null:
-		print("[INTERACT] NO interaction_area")
 		return null
 
 	var overlapping := interaction_area.get_overlapping_areas()
@@ -298,7 +275,6 @@ func _get_nearest_interactable() -> InteractableComponent:
 				var interactable := c as InteractableComponent
 
 				if not interactable.can_interact(self):
-					print("[INTERACT] ignored component on:", area.name)
 					continue
 
 				var priority := float(interactable.priority)
@@ -325,30 +301,18 @@ func _get_interactable_from_entity(entity: Node) -> Node:
 
 
 func _handle_interaction_input(mode: int = InteractionMode.PRIMARY) -> void:
-	print("[INTERACT] input received by player:", player_id, " mode=", mode)
-
 	var interactable := current_interactable
 	if interactable == null:
-		print("[INTERACT] no interactable in range")
 		return
 
 	var entity := interactable.get_parent()
 	if entity == null:
-		print("[INTERACT] interactable has no parent entity")
 		return
 
 	var best_component = null
 	var best_priority := -INF
 
-	print("[INTERACT] scanning entity:", entity.name)
-
 	for c in entity.get_children():
-		print(
-				"[SCAN]",
-				c.name,
-				" script=",
-				c.get_script()
-			)
 		if not c.has_method("interact"):
 			continue
 
@@ -370,10 +334,7 @@ func _handle_interaction_input(mode: int = InteractionMode.PRIMARY) -> void:
 			best_priority = priority
 
 	if best_component == null:
-		print("[INTERACT] no valid component for mode")
 		return
-
-	print("[INTERACT] using component:", best_component.name)
 
 	best_component.interact(self)
 
