@@ -4,11 +4,38 @@ extends Control
 @export var mug_price: int = 25
 @export var coffee_item: ItemData = preload("res://resources/items/coffee.tres")
 @export var coffee_price: int = 40
+@export var books_item: ItemData = preload("res://resources/items/books.tres")
+@export var books_price: int = 30
+@export var papers_item: ItemData = preload("res://resources/items/papers.tres")
+@export var papers_price: int = 20
+@export var plant_item: ItemData = preload("res://resources/items/plant_decor.tres")
+@export var plant_price: int = 60
+@export var chair_item: ItemData = preload("res://resources/items/office_chair.tres")
+@export var chair_price: int = 70
+@export var table_item: ItemData = preload("res://resources/items/small_table.tres")
+@export var table_price: int = 90
+@export var sofa_item: ItemData = preload("res://resources/items/office_sofa.tres")
+@export var sofa_price: int = 120
+@export var bookshelf_item: ItemData = preload("res://resources/items/bookshelf.tres")
+@export var bookshelf_price: int = 135
+@export var printer_station_item: ItemData = preload("res://resources/items/printer.tres")
+@export var printer_station_price: int = 180
+@export var water_station_item: ItemData = preload("res://resources/items/water_dispenser.tres")
+@export var water_station_price: int = 140
 
 @onready var funds_label: Label = $Panel/MarginContainer/VBoxContainer/FundsLabel
 @onready var status_label: Label = $Panel/MarginContainer/VBoxContainer/StatusLabel
 @onready var buy_mug_button: Button = $Panel/MarginContainer/VBoxContainer/BuyMugButton
 @onready var buy_coffee_button: Button = $Panel/MarginContainer/VBoxContainer/BuyCoffeeButton
+@onready var buy_books_button: Button = $Panel/MarginContainer/VBoxContainer/BuyBooksButton
+@onready var buy_papers_button: Button = $Panel/MarginContainer/VBoxContainer/BuyPapersButton
+@onready var buy_plant_button: Button = $Panel/MarginContainer/VBoxContainer/BuyPlantButton
+@onready var buy_chair_button: Button = $Panel/MarginContainer/VBoxContainer/BuyChairButton
+@onready var buy_table_button: Button = $Panel/MarginContainer/VBoxContainer/BuyTableButton
+@onready var buy_sofa_button: Button = $Panel/MarginContainer/VBoxContainer/BuySofaButton
+@onready var buy_bookshelf_button: Button = $Panel/MarginContainer/VBoxContainer/BuyBookshelfButton
+@onready var buy_printer_station_button: Button = $Panel/MarginContainer/VBoxContainer/BuyPrinterStationButton
+@onready var buy_water_station_button: Button = $Panel/MarginContainer/VBoxContainer/BuyWaterStationButton
 @onready var close_button: Button = $Panel/MarginContainer/VBoxContainer/CloseButton
 
 func _ready() -> void:
@@ -16,6 +43,15 @@ func _ready() -> void:
 
 	buy_mug_button.pressed.connect(_on_buy_mug_pressed)
 	buy_coffee_button.pressed.connect(_on_buy_coffee_pressed)
+	buy_books_button.pressed.connect(_on_buy_books_pressed)
+	buy_papers_button.pressed.connect(_on_buy_papers_pressed)
+	buy_plant_button.pressed.connect(_on_buy_plant_pressed)
+	buy_chair_button.pressed.connect(_on_buy_chair_pressed)
+	buy_table_button.pressed.connect(_on_buy_table_pressed)
+	buy_sofa_button.pressed.connect(_on_buy_sofa_pressed)
+	buy_bookshelf_button.pressed.connect(_on_buy_bookshelf_pressed)
+	buy_printer_station_button.pressed.connect(_on_buy_printer_station_pressed)
+	buy_water_station_button.pressed.connect(_on_buy_water_station_pressed)
 	close_button.pressed.connect(close_store)
 
 	_refresh_funds()
@@ -47,6 +83,33 @@ func _on_buy_mug_pressed() -> void:
 
 func _on_buy_coffee_pressed() -> void:
 	_purchase_item(coffee_item, coffee_price)
+
+func _on_buy_books_pressed() -> void:
+	_purchase_item(books_item, books_price)
+
+func _on_buy_papers_pressed() -> void:
+	_purchase_item(papers_item, papers_price)
+
+func _on_buy_plant_pressed() -> void:
+	_purchase_item(plant_item, plant_price)
+
+func _on_buy_chair_pressed() -> void:
+	_purchase_item(chair_item, chair_price)
+
+func _on_buy_table_pressed() -> void:
+	_purchase_item(table_item, table_price)
+
+func _on_buy_sofa_pressed() -> void:
+	_purchase_item(sofa_item, sofa_price)
+
+func _on_buy_bookshelf_pressed() -> void:
+	_purchase_item(bookshelf_item, bookshelf_price)
+
+func _on_buy_printer_station_pressed() -> void:
+	_purchase_item(printer_station_item, printer_station_price)
+
+func _on_buy_water_station_pressed() -> void:
+	_purchase_item(water_station_item, water_station_price)
 
 func _purchase_item(item: ItemData, cost: int) -> void:
 	if InventoryManager == null:

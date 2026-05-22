@@ -1,10 +1,17 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cpttu2fxrlypx"]
 
-[ext_resource type="Texture2D" uid="uid://tc5ioghs8hi0" path="res://assets/entities/furniture/Printer.png" id="1_hrffx"]
-[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="1_item"]
+[ext_resource type="Texture2D" uid="uid://tc5ioghs8hi0" path="res://assets/entities/furniture/Printer.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_item"]
+[ext_resource type="PackedScene" path="res://scenes/resources/PrinterStationEntity.tscn" id="3_scene"]
 
 [resource]
-script = ExtResource("1_item")
-display_name = "Printer"
-description = "Printer. Needs paper to work."
-icon = ExtResource("1_hrffx")
+script = ExtResource("2_item")
+item_id = "printer_station"
+display_name = "Office Printer"
+description = "Production station for office paperwork."
+icon = ExtResource("1_icon")
+stack_size = 1
+tags = Array[String](["furniture", "production_station", "printer"])
+placeable = true
+placed_scene = ExtResource("3_scene")
+furniture_category = "production_station"

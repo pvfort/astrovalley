@@ -1,10 +1,17 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://2khk63bivmdn"]
 
-[ext_resource type="Texture2D" uid="uid://ddjvx0piimfbj" path="res://assets/entities/furniture/Coffee-Machine.png" id="1_u0u8e"]
-[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_axgot"]
+[ext_resource type="Texture2D" uid="uid://ddjvx0piimfbj" path="res://assets/entities/furniture/Coffee-Machine.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_item"]
+[ext_resource type="PackedScene" path="res://scenes/resources/CoffeeMachine.tscn" id="3_scene"]
 
 [resource]
-script = ExtResource("2_axgot")
+script = ExtResource("2_item")
+item_id = "coffee_machine"
 display_name = "Coffee Machine"
-icon = ExtResource("1_u0u8e")
-tags = Array[String](["furniture", "producer", ""])
+description = "A production station for brewing coffee."
+icon = ExtResource("1_icon")
+stack_size = 1
+tags = Array[String](["furniture", "production_station", "coffee"])
+placeable = true
+placed_scene = ExtResource("3_scene")
+furniture_category = "production_station"
