@@ -1,8 +1,10 @@
+res://scripts/ui/
+res://scripts/crafting/
+res://scripts/core/
 res://scripts/items/
 res://scenes/resources/
 res://scripts/managers/
 res://scripts/persistence/
-res://scripts/ui/
 res://resources/ui/
 res://assets/ui/general/
 res://assets/entities/furniture/

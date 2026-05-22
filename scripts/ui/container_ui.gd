@@ -74,7 +74,7 @@ func _rebuild_player_grid() -> void:
 	_clear_children(player_grid)
 	print("REBUILD PLAYER GRID")
 
-	for i in range(InventoryManager.INVENTORY_SIZE):
+	for i in range(InventoryManager.get_inventory_size()):
 		var slot_node: Node = SLOT_SCENE.instantiate()
 		print(slot_node)
 		print(slot_node.get_class())

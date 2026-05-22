@@ -30,6 +30,7 @@ layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1034987366]
 layout_mode = 2
+columns = 9
 
 [node name="Hotbar" parent="Panel/MarginContainer/VBoxContainer" unique_id=2085621906 instance=ExtResource("2_hotbar")]
 layout_mode = 2

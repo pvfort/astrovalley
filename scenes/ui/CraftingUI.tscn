@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://c8hfhndb1dsd0"]
+
+[ext_resource type="Script" uid="uid://dce17s4tm5de0" path="res://scripts/ui/crafting_ui.gd" id="1_qo0p8"]
+
+[node name="CraftingUi" type="Control" unique_id=933815635]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_qo0p8")
+
+[node name="Panel" type="Panel" parent="." unique_id=716960987]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=617009382]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel" unique_id=810101258]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RecipeName" type="Label" parent="Panel/PanelContainer" unique_id=594861643]
+layout_mode = 2
+
+[node name="IngredientList" type="ItemList" parent="Panel/PanelContainer" unique_id=1713914950]
+layout_mode = 2
+
+[node name="OutputList" type="ItemList" parent="Panel/PanelContainer" unique_id=963272130]
+layout_mode = 2
+
+[node name="CraftTimeLabel" type="Label" parent="Panel/PanelContainer" unique_id=1969127073]
+layout_mode = 2
+
+[node name="CraftButton" type="Button" parent="Panel/PanelContainer" unique_id=1723618901]
+layout_mode = 2
+
+[node name="ActiveJobsList" type="ItemList" parent="Panel" unique_id=1835505970]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="pressed" from="Panel/PanelContainer/CraftButton" to="." method="_on_craft_button_pressed"]

@@ -1,10 +1,17 @@
 extends Node
 
-const INVENTORY_SIZE: int = 24
 const HOTBAR_SIZE: int = 8
+const DEFAULT_INVENTORY_SIZE: int = 27
+const MAX_INVENTORY_SIZE: int = 72
+
 const ITEM_RESOURCES_ROOT: String = "res://resources/items"
 
+# --------------------------------------------------
+# INVENTORY DATA
+# --------------------------------------------------
+var inventory_size: int = DEFAULT_INVENTORY_SIZE
 var inventory: Array[Variant] = []
+
 var equipped: Dictionary = {
 	"head": null,
 	"body": null,
@@ -12,28 +19,86 @@ var equipped: Dictionary = {
 	"tool": null,
 }
 
+# --------------------------------------------------
+# PLAYER ECONOMY / PROGRESSION
+# --------------------------------------------------
 var funds: int = 250
+
+# --------------------------------------------------
+# SIGNALS
+# --------------------------------------------------
 signal inventory_changed
 signal inventory_toggled(is_open: bool)
 signal active_tool_changed(tool_data: ToolData)
+signal inventory_size_changed(new_size: int)
 
+# --------------------------------------------------
+# UI STATE
+# --------------------------------------------------
 var is_inventory_open: bool = false
 var selected_hotbar_index: int = 0
+
+# --------------------------------------------------
+# ITEM CACHE
+# --------------------------------------------------
 var _item_cache: Dictionary = {}
 var _item_cache_built: bool = false
 
 
 func _ready() -> void:
-	inventory.resize(INVENTORY_SIZE)
+	_resize_inventory_array(inventory_size)
 	_rebuild_item_cache()
 
 
+# ==================================================
+# INVENTORY SIZE / BACKPACK UPGRADES
+# ==================================================
+func upgrade_backpack(extra_slots: int) -> bool:
+	if extra_slots <= 0:
+		return false
+
+	var new_size := inventory_size + extra_slots
+	new_size = clampi(new_size, HOTBAR_SIZE, MAX_INVENTORY_SIZE)
+
+	if new_size == inventory_size:
+		return false
+
+	inventory_size = new_size
+
+	_resize_inventory_array(inventory_size)
+
+	inventory_size_changed.emit(inventory_size)
+	inventory_changed.emit()
+
+	print("Inventory upgraded to:", inventory_size)
+
+	return true
+
+
+func _resize_inventory_array(new_size: int) -> void:
+	var old_size := inventory.size()
+
+	inventory.resize(new_size)
+
+	# initialize new slots
+	for i in range(old_size, new_size):
+		inventory[i] = null
+
+
+func get_inventory_size() -> int:
+	return inventory_size
+
+
+# ==================================================
+# ITEM INSERTION
+# ==================================================
 func add_item(item: ItemData) -> bool:
 	if item == null:
 		return false
 
 	var remaining: int = max(item.stack_size, 1)
 	remaining = try_insert_item_id(item.item_id, 1)
+
 	if remaining == 0:
 		inventory_changed.emit()
 		_emit_active_tool_changed()
@@ -47,122 +112,38 @@ func purchase_item(item: ItemData, cost: int) -> bool:
 		return false
 
 	var final_cost: int = max(cost, 0)
+
 	if funds < final_cost:
 		return false
 
 	var added: bool = add_item(item)
+
 	if not added:
 		return false
 
 	funds -= final_cost
+
 	return true
 
 
+# ==================================================
+# SLOT MANAGEMENT
+# ==================================================
 func remove_item(index: int) -> void:
 	if index < 0 or index >= inventory.size():
 		return
 
 	inventory[index] = null
+
 	inventory_changed.emit()
 	_emit_active_tool_changed()
-
-
-func sort_inventory() -> void:
-	inventory.sort_custom(sort_items)
-	inventory_changed.emit()
-
-
-func sort_items(a: Variant, b: Variant) -> bool:
-	if a == null:
-		return false
-	if b == null:
-		return true
-
-	var a_item: ItemData = _slot_item(a)
-	var b_item: ItemData = _slot_item(b)
-	if a_item == null:
-		return false
-	if b_item == null:
-		return true
-
-	return a_item.display_name < b_item.display_name
 
 
 func get_inventory_slot(index: int) -> Variant:
 	if index < 0 or index >= inventory.size():
 		return null
+
 	return inventory[index]
-
-func set_selected_hotbar_index(index: int) -> void:
-	var clamped_index := clampi(index, 0, HOTBAR_SIZE - 1)
-	if selected_hotbar_index == clamped_index:
-		return
-
-	selected_hotbar_index = clamped_index
-	_emit_active_tool_changed()
-
-func get_selected_hotbar_index() -> int:
-	return selected_hotbar_index
-
-func get_active_hotbar_item() -> ItemData:
-	var slot_data : Variant = get_hotbar_slot(selected_hotbar_index)
-	if slot_data is Dictionary:
-		var item_variant : Variant = (slot_data as Dictionary).get("item")
-		if item_variant is ItemData:
-			return item_variant as ItemData
-	return null
-
-func get_active_tool_data() -> ToolData:
-	var active_hotbar_item := get_active_hotbar_item()
-	if active_hotbar_item != null and active_hotbar_item.tool_data != null:
-		return active_hotbar_item.tool_data
-
-	var equipped_tool : Variant = equipped.get("tool", null)
-	if equipped_tool is ItemData:
-		var equipped_item := equipped_tool as ItemData
-		if equipped_item.tool_data != null:
-			return equipped_item.tool_data
-
-	return null
-
-func get_tool_interaction_modifiers(context: StringName) -> Dictionary:
-	var active_tool := get_active_tool_data()
-	if active_tool == null:
-		return {}
-	return active_tool.get_context_modifiers(context)
-
-func get_tool_interaction_multiplier(context: StringName, key: StringName, default_value: float = 1.0) -> float:
-	var active_tool := get_active_tool_data()
-	if active_tool == null:
-		return default_value
-	return active_tool.get_modifier(context, key, default_value)
-
-
-func get_hotbar_slot(index: int) -> Variant:
-	if index < 0 or index >= HOTBAR_SIZE:
-		return null
-	return get_inventory_slot(index)
-
-func toggle_inventory() -> void:
-	is_inventory_open = not is_inventory_open
-	inventory_toggled.emit(is_inventory_open)
-
-
-func set_inventory_open(open_state: bool) -> void:
-	if is_inventory_open == open_state:
-		return
-
-	is_inventory_open = open_state
-	inventory_toggled.emit(is_inventory_open)
-
-
-func has_item(item_id: String) -> bool:
-	for slot_variant in inventory:
-		var item: ItemData = _slot_item(slot_variant)
-		if item != null and item.item_id == item_id:
-			return true
-
-	return false
 
 
 func has_free_slot() -> bool:
@@ -173,68 +154,269 @@ func has_free_slot() -> bool:
 	return false
 
 
+func has_item(item_id: String) -> bool:
+	for slot_variant in inventory:
+		var item: ItemData = _slot_item(slot_variant)
+
+		if item != null and item.item_id == item_id:
+			return true
+
+	return false
+
+
 func remove_item_by_id(item_id: String) -> bool:
 	for i in range(inventory.size()):
+
 		var slot_variant: Variant = inventory[i]
 		var item: ItemData = _slot_item(slot_variant)
+
 		if item == null:
 			continue
+
 		if item.item_id != item_id:
 			continue
 
 		inventory[i] = null
+
 		inventory_changed.emit()
 		_emit_active_tool_changed()
+
 		return true
 
 	return false
 
 
+# ==================================================
+# HOTBAR
+# ==================================================
+func set_selected_hotbar_index(index: int) -> void:
+	var clamped_index := clampi(index, 0, HOTBAR_SIZE - 1)
+
+	if selected_hotbar_index == clamped_index:
+		return
+
+	selected_hotbar_index = clamped_index
+
+	_emit_active_tool_changed()
+
+
+func get_selected_hotbar_index() -> int:
+	return selected_hotbar_index
+
+
+func get_hotbar_slot(index: int) -> Variant:
+	if index < 0 or index >= HOTBAR_SIZE:
+		return null
+
+	return get_inventory_slot(index)
+
+
+func get_active_hotbar_item() -> ItemData:
+	var slot_data : Variant = get_hotbar_slot(selected_hotbar_index)
+
+	if slot_data is Dictionary:
+		var item_variant : Variant = (slot_data as Dictionary).get("item")
+
+		if item_variant is ItemData:
+			return item_variant as ItemData
+
+	return null
+
+
+# ==================================================
+# TOOLS
+# ==================================================
+func get_active_tool_data() -> ToolData:
+	var active_hotbar_item := get_active_hotbar_item()
+
+	if active_hotbar_item != null and active_hotbar_item.tool_data != null:
+		return active_hotbar_item.tool_data
+
+	var equipped_tool : Variant = equipped.get("tool", null)
+
+	if equipped_tool is ItemData:
+		var equipped_item := equipped_tool as ItemData
+
+		if equipped_item.tool_data != null:
+			return equipped_item.tool_data
+
+	return null
+
+
+func get_tool_interaction_modifiers(context: StringName) -> Dictionary:
+	var active_tool := get_active_tool_data()
+
+	if active_tool == null:
+		return {}
+
+	return active_tool.get_context_modifiers(context)
+
+
+func get_tool_interaction_multiplier(
+	context: StringName,
+	key: StringName,
+	default_value: float = 1.0
+) -> float:
+
+	var active_tool := get_active_tool_data()
+
+	if active_tool == null:
+		return default_value
+
+	return active_tool.get_modifier(
+		context,
+		key,
+		default_value
+	)
+
+
+# ==================================================
+# INVENTORY UI
+# ==================================================
+func toggle_inventory() -> void:
+	is_inventory_open = not is_inventory_open
+
+	inventory_toggled.emit(is_inventory_open)
+
+
+func set_inventory_open(open_state: bool) -> void:
+	if is_inventory_open == open_state:
+		return
+
+	is_inventory_open = open_state
+
+	inventory_toggled.emit(is_inventory_open)
+
+
+# ==================================================
+# SORTING
+# ==================================================
+func sort_inventory() -> void:
+	inventory.sort_custom(sort_items)
+
+	inventory_changed.emit()
+
+
+func sort_items(a: Variant, b: Variant) -> bool:
+	if a == null:
+		return false
+
+	if b == null:
+		return true
+
+	var a_item: ItemData = _slot_item(a)
+	var b_item: ItemData = _slot_item(b)
+
+	if a_item == null:
+		return false
+
+	if b_item == null:
+		return true
+
+	return a_item.display_name < b_item.display_name
+
+
+# ==================================================
+# ITEM USAGE
+# ==================================================
 func use_item(index: int, player: PlayerCharacter) -> void:
 	if index < 0 or index >= inventory.size():
 		return
 
 	var slot_variant: Variant = inventory[index]
 	var item: ItemData = _slot_item(slot_variant)
+
 	if item == null:
 		return
+
 	if not item.consumable:
 		return
 
-	var status: StatusEffectComponent = player.get_status_effect_component()
+	var status: StatusEffectComponent = (
+		player.get_status_effect_component()
+	)
+
 	if status != null and not item.status_effect_id.is_empty():
-		status.apply(item.status_effect_id, item.status_effect_duration)
+		status.apply(
+			item.status_effect_id,
+			item.status_effect_duration
+		)
 
 	if EnergyManager != null and item.energy_restore > 0.0:
-		var pid := player.player_id if player.player_id >= 0 else int(multiplayer.get_unique_id())
-		if item.energy_temp_max_bonus > 0.0 and item.energy_temp_max_duration > 0.0:
-			EnergyManager.apply_temporary_max_energy(pid, item.energy_temp_max_bonus, item.energy_temp_max_duration)
-		EnergyManager.recover_energy(pid, item.energy_restore)
+
+		var pid := (
+			player.player_id
+			if player.player_id >= 0
+			else int(multiplayer.get_unique_id())
+		)
+
+		if (
+			item.energy_temp_max_bonus > 0.0
+			and item.energy_temp_max_duration > 0.0
+		):
+			EnergyManager.apply_temporary_max_energy(
+				pid,
+				item.energy_temp_max_bonus,
+				item.energy_temp_max_duration
+			)
+
+		EnergyManager.recover_energy(
+			pid,
+			item.energy_restore
+		)
 
 	var removed: InventorySlotData = take_from_slot(index, 1)
+
 	if removed.count > 0 and item.replacement_item != null:
 		add_item(item.replacement_item)
 
 
+# ==================================================
+# SAVE / LOAD
+# ==================================================
 func save_state() -> Dictionary:
+
 	var serialized_inventory: Array[Dictionary] = []
+
 	for slot_variant in inventory:
+
 		if slot_variant == null:
 			serialized_inventory.append({})
 			continue
 
-		var slot_data: InventorySlotData = InventorySlotData.from_runtime_slot(slot_variant)
-		serialized_inventory.append(slot_data.to_save_dictionary())
+		var slot_data: InventorySlotData = (
+			InventorySlotData.from_runtime_slot(slot_variant)
+		)
+
+		serialized_inventory.append(
+			slot_data.to_save_dictionary()
+		)
 
 	var equipped_state: Dictionary = {}
+
 	for key_variant in equipped.keys():
+
 		var key: String = str(key_variant)
-		var equipped_variant: Variant = equipped.get(key, null)
-		var equipped_item: ItemData = equipped_variant as ItemData if equipped_variant is ItemData else null
-		equipped_state[key] = equipped_item.item_id if equipped_item != null else ""
+
+		var equipped_variant: Variant = (
+			equipped.get(key, null)
+		)
+
+		var equipped_item: ItemData = (
+			equipped_variant as ItemData
+			if equipped_variant is ItemData
+			else null
+		)
+
+		equipped_state[key] = (
+			equipped_item.item_id
+			if equipped_item != null
+			else ""
+		)
 
 	return {
 		"inventory": serialized_inventory,
+		"inventory_size": inventory_size,
 		"equipped": equipped_state,
 		"funds": funds,
 		"selected_hotbar_index": selected_hotbar_index,
@@ -242,73 +424,164 @@ func save_state() -> Dictionary:
 
 
 func load_state(data: Dictionary) -> void:
-	inventory.resize(INVENTORY_SIZE)
-	for i in range(INVENTORY_SIZE):
+
+	inventory_size = int(
+		data.get(
+			"inventory_size",
+			DEFAULT_INVENTORY_SIZE
+		)
+	)
+
+	inventory_size = clampi(
+		inventory_size,
+		HOTBAR_SIZE,
+		MAX_INVENTORY_SIZE
+	)
+
+	_resize_inventory_array(inventory_size)
+
+	for i in range(inventory.size()):
 		inventory[i] = null
 
-	var saved_inventory_variant: Variant = data.get("inventory", [])
-	if saved_inventory_variant is Array:
-		var saved_inventory: Array = saved_inventory_variant as Array
-		for i in range(min(INVENTORY_SIZE, saved_inventory.size())):
-			var slot_model: InventorySlotData = InventorySlotData.from_variant(saved_inventory[i])
-			inventory[i] = slot_model.to_runtime_slot(_item_cache)
+	var saved_inventory_variant: Variant = (
+		data.get("inventory", [])
+	)
 
-	var saved_equipped_variant: Variant = data.get("equipped", {})
+	if saved_inventory_variant is Array:
+
+		var saved_inventory: Array = (
+			saved_inventory_variant as Array
+		)
+
+		for i in range(
+			min(inventory_size, saved_inventory.size())
+		):
+
+			var slot_model: InventorySlotData = (
+				InventorySlotData.from_variant(
+					saved_inventory[i]
+				)
+			)
+
+			inventory[i] = (
+				slot_model.to_runtime_slot(_item_cache)
+			)
+
+	var saved_equipped_variant: Variant = (
+		data.get("equipped", {})
+	)
+
 	if saved_equipped_variant is Dictionary:
-		var saved_equipped: Dictionary = saved_equipped_variant as Dictionary
+
+		var saved_equipped: Dictionary = (
+			saved_equipped_variant as Dictionary
+		)
+
 		for key_variant in equipped.keys():
+
 			var key: String = str(key_variant)
-			var item_id: String = str(saved_equipped.get(key, ""))
+
+			var item_id: String = str(
+				saved_equipped.get(key, "")
+			)
+
 			equipped[key] = _item_by_id(item_id)
 
 	funds = int(data.get("funds", funds))
-	selected_hotbar_index = clampi(int(data.get("selected_hotbar_index", selected_hotbar_index)), 0, HOTBAR_SIZE - 1)
+
+	selected_hotbar_index = clampi(
+		int(
+			data.get(
+				"selected_hotbar_index",
+				selected_hotbar_index
+			)
+		),
+		0,
+		HOTBAR_SIZE - 1
+	)
+
+	inventory_size_changed.emit(inventory_size)
 	inventory_changed.emit()
+
 	_emit_active_tool_changed()
 
 
+# ==================================================
+# STACKING
+# ==================================================
 func try_insert_item_id(item_id: String, count: int) -> int:
+
 	if item_id.is_empty() or count <= 0:
 		return count
 
 	var item: ItemData = _item_by_id(item_id)
+
 	if item == null:
 		return count
 
 	var stack_limit: int = max(item.stack_size, 1)
 	var remaining: int = count
 
+	# fill existing stacks
 	for i in range(inventory.size()):
+
 		if remaining <= 0:
 			break
+
 		var slot_variant: Variant = inventory[i]
+
 		if not (slot_variant is Dictionary):
 			continue
-		var slot_dict: Dictionary = slot_variant as Dictionary
+
+		var slot_dict: Dictionary = (
+			slot_variant as Dictionary
+		)
+
 		var slot_item: ItemData = _slot_item(slot_dict)
-		if slot_item == null or slot_item.item_id != item_id:
+
+		if slot_item == null:
 			continue
 
-		var current_count: int = int(slot_dict.get("count", 0))
+		if slot_item.item_id != item_id:
+			continue
+
+		var current_count: int = (
+			int(slot_dict.get("count", 0))
+		)
+
 		if current_count >= stack_limit:
 			continue
 
-		var add_amount: int = min(stack_limit - current_count, remaining)
+		var add_amount: int = min(
+			stack_limit - current_count,
+			remaining
+		)
+
 		slot_dict["count"] = current_count + add_amount
+
 		inventory[i] = slot_dict
+
 		remaining -= add_amount
 
+	# create new stacks
 	for i in range(inventory.size()):
+
 		if remaining <= 0:
 			break
+
 		if inventory[i] != null:
 			continue
 
-		var add_amount: int = min(stack_limit, remaining)
+		var add_amount: int = min(
+			stack_limit,
+			remaining
+		)
+
 		inventory[i] = {
 			"item": item,
 			"count": add_amount,
 		}
+
 		remaining -= add_amount
 
 	if remaining != count:
@@ -317,31 +590,54 @@ func try_insert_item_id(item_id: String, count: int) -> int:
 	return remaining
 
 
-func take_from_slot(index: int, amount: int) -> InventorySlotData:
-	var removed: InventorySlotData = InventorySlotData.new()
-	if index < 0 or index >= inventory.size() or amount <= 0:
+func take_from_slot(
+	index: int,
+	amount: int
+) -> InventorySlotData:
+
+	var removed: InventorySlotData = (
+		InventorySlotData.new()
+	)
+
+	if (
+		index < 0
+		or index >= inventory.size()
+		or amount <= 0
+	):
 		return removed
 
 	var slot_variant: Variant = inventory[index]
+
 	if not (slot_variant is Dictionary):
 		return removed
 
 	var slot_dict: Dictionary = slot_variant as Dictionary
+
 	var slot_item: ItemData = _slot_item(slot_dict)
+
 	if slot_item == null:
 		return removed
 
-	var current_count: int = max(int(slot_dict.get("count", 0)), 0)
+	var current_count: int = max(
+		int(slot_dict.get("count", 0)),
+		0
+	)
+
 	if current_count <= 0:
 		inventory[index] = null
 		inventory_changed.emit()
 		return removed
 
-	var remove_count: int = min(current_count, amount)
+	var remove_count: int = min(
+		current_count,
+		amount
+	)
+
 	removed.item_id = slot_item.item_id
 	removed.count = remove_count
 
 	var next_count: int = current_count - remove_count
+
 	if next_count <= 0:
 		inventory[index] = null
 	else:
@@ -349,26 +645,41 @@ func take_from_slot(index: int, amount: int) -> InventorySlotData:
 		inventory[index] = slot_dict
 
 	inventory_changed.emit()
+
 	return removed
 
 
+# ==================================================
+# ITEM LOOKUP
+# ==================================================
 func _slot_item(slot_variant: Variant) -> ItemData:
+
 	if not (slot_variant is Dictionary):
 		return null
 
 	var slot_dict: Dictionary = slot_variant as Dictionary
-	var item_variant: Variant = slot_dict.get("item", null)
+
+	var item_variant: Variant = (
+		slot_dict.get("item", null)
+	)
+
 	if item_variant is ItemData:
 		return item_variant as ItemData
+
 	return null
 
 
 func _item_by_id(item_id: String) -> ItemData:
+
 	if item_id.is_empty():
 		return null
 
 	if _item_cache.has(item_id):
-		var cached_item: Variant = _item_cache.get(item_id, null)
+
+		var cached_item: Variant = (
+			_item_cache.get(item_id, null)
+		)
+
 		if cached_item is ItemData:
 			return cached_item as ItemData
 
@@ -376,34 +687,64 @@ func _item_by_id(item_id: String) -> ItemData:
 		_rebuild_item_cache()
 
 	if _item_cache.has(item_id):
-		var rebuilt_item: Variant = _item_cache.get(item_id, null)
+
+		var rebuilt_item: Variant = (
+			_item_cache.get(item_id, null)
+		)
+
 		if rebuilt_item is ItemData:
 			return rebuilt_item as ItemData
 
-	push_warning("[InventoryManager] Could not resolve saved item_id: %s" % item_id)
+	push_warning(
+		"[InventoryManager] Could not resolve saved item_id: %s"
+		% item_id
+	)
+
 	return null
 
 
 func _rebuild_item_cache() -> void:
+
 	_item_cache.clear()
 	_item_cache_built = true
-	if not DirAccess.dir_exists_absolute(ITEM_RESOURCES_ROOT):
+
+	if not DirAccess.dir_exists_absolute(
+		ITEM_RESOURCES_ROOT
+	):
 		return
 
-	var dir: DirAccess = DirAccess.open(ITEM_RESOURCES_ROOT)
+	var dir: DirAccess = (
+		DirAccess.open(ITEM_RESOURCES_ROOT)
+	)
+
 	if dir == null:
 		return
 
 	var files: PackedStringArray = dir.get_files()
+
 	for file_name in files:
+
 		if not file_name.ends_with(".tres"):
 			continue
-		var resource_path: String = "%s/%s" % [ITEM_RESOURCES_ROOT, file_name]
+
+		var resource_path: String = (
+			"%s/%s" % [
+				ITEM_RESOURCES_ROOT,
+				file_name
+			]
+		)
+
 		var loaded: Variant = load(resource_path)
+
 		if loaded is ItemData:
+
 			var item: ItemData = loaded as ItemData
+
 			if not item.item_id.is_empty():
 				_item_cache[item.item_id] = item
 
+
 func _emit_active_tool_changed() -> void:
-	active_tool_changed.emit(get_active_tool_data())
+	active_tool_changed.emit(
+		get_active_tool_data()
+	)
