@@ -53,6 +53,7 @@ func save_state() -> Dictionary:
 
 
 func load_state(data: Dictionary) -> void:
+	_player_id = _resolve_local_player_id()
 	_initialize_default_quests()
 
 	var saved_quests := data.get("quests", {})

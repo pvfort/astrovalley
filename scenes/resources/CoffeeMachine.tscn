@@ -26,7 +26,7 @@ one_way_collision = true
 script = ExtResource("3_crafting_station")
 station_id = "coffee_station"
 station_tags = Array[String](["coffee"])
-available_recipes = Array[ExtResource("4_recipe")]([ExtResource("4_recipe")])
+available_recipes = [ExtResource("4_recipe")]
 
 [node name="PersistentObject" type="Node" parent="."]
 script = ExtResource("7_persistent")
