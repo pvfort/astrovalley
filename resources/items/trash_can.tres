@@ -1,10 +1,13 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dcha65w6kwdix"]
 
-[ext_resource type="Texture2D" uid="uid://mb0hk5pd4do3" path="res://assets/entities/furniture/Bin.png" id="1_la8dd"]
-[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_caqwt"]
+[ext_resource type="Texture2D" uid="uid://mb0hk5pd4do3" path="res://assets/entities/furniture/Bin.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_item"]
 
 [resource]
-script = ExtResource("2_caqwt")
-display_name = "Trash"
+script = ExtResource("2_item")
+item_id = "trash_can"
+display_name = "Trash Can"
 description = "Trash can, use to dispose items."
-icon = ExtResource("1_la8dd")
+icon = ExtResource("1_icon")
+stack_size = 1
+tags = Array[String](["furniture", "utility"])

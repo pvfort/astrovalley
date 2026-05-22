@@ -1,10 +1,17 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://byqfngliawsko"]
 
-[ext_resource type="Texture2D" uid="uid://cigangwjk6rd6" path="res://assets/entities/furniture/pc_on_sheet.png" id="1_koi78"]
-[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_hxq42"]
+[ext_resource type="Texture2D" uid="uid://cigangwjk6rd6" path="res://assets/entities/furniture/pc_on_sheet.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_item"]
+[ext_resource type="PackedScene" uid="uid://clgl8qe4cxqq7" path="res://scenes/resources/ComputerEntity.tscn" id="3_scene"]
 
 [resource]
-script = ExtResource("2_hxq42")
+script = ExtResource("2_item")
+item_id = "computer"
 display_name = "Computer"
 description = "Use to work on your thesis, send emails and reduce data."
-icon = ExtResource("1_koi78")
+icon = ExtResource("1_icon")
+stack_size = 1
+tags = Array[String](["furniture", "workstation", "electronics"])
+placeable = true
+placed_scene = ExtResource("3_scene")
+furniture_category = "workstation"

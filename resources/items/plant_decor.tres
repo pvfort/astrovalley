@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/entities/furniture/plant.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_item"]
+[ext_resource type="PackedScene" path="res://scenes/resources/PlantEntity.tscn" id="3_scene"]
+
+[resource]
+script = ExtResource("2_item")
+item_id = "plant_decor"
+display_name = "Office Plant"
+description = "A small decorative plant."
+icon = ExtResource("1_icon")
+stack_size = 1
+tags = Array[String](["furniture", "decor"])
+placeable = true
+placed_scene = ExtResource("3_scene")
+furniture_category = "decor"

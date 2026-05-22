@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/entities/furniture/chair.png" id="1_texture"]
+[ext_resource type="Script" uid="uid://b826ef35wfi07" path="res://scripts/persistence/PersistentObject.gd" id="2_persistent"]
+[ext_resource type="Script" uid="uid://b72h8x1qpewky" path="res://scripts/save/SaveableComponent.gd" id="3_saveable"]
+
+[sub_resource type="RectangleShape2D" id="1_shape"]
+size = Vector2(18, 18)
+
+[node name="ChairEntity" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1_shape")
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("2_persistent")
+
+[node name="SaveableComponent" type="Node" parent="."]
+script = ExtResource("3_saveable")
+category = "placed_furniture"

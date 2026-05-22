@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/entities/furniture/Printer.png" id="1_texture"]
+[ext_resource type="Script" uid="uid://cvi4htsmb7dkc" path="res://scripts/items/coffee_machine.gd" id="2_entity"]
+[ext_resource type="Script" path="res://scripts/components/crafting_station_component.gd" id="3_crafting_station"]
+[ext_resource type="Resource" path="res://resources/recipes/print_documents_recipe.tres" id="4_recipe_print"]
+[ext_resource type="Resource" path="res://resources/recipes/organize_documents_recipe.tres" id="5_recipe_organize"]
+[ext_resource type="Resource" path="res://resources/recipes/archive_documents_recipe.tres" id="6_recipe_archive"]
+[ext_resource type="Script" uid="uid://b826ef35wfi07" path="res://scripts/persistence/PersistentObject.gd" id="7_persistent"]
+
+[sub_resource type="RectangleShape2D" id="1_shape"]
+size = Vector2(20, 16)
+
+[node name="PrinterStationEntity" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+script = ExtResource("2_entity")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1_shape")
+
+[node name="CraftingStationComponent" type="Node" parent="."]
+script = ExtResource("3_crafting_station")
+station_id = "printer_station"
+station_tags = Array[String](["printer"])
+available_recipes = [ExtResource("4_recipe_print"), ExtResource("5_recipe_organize"), ExtResource("6_recipe_archive")]
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("7_persistent")

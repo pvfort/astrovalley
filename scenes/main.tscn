@@ -14,6 +14,13 @@
 [ext_resource type="Script" uid="uid://b72h8x1qpewky" path="res://scripts/save/SaveableComponent.gd" id="13_saveable"]
 [ext_resource type="Script" uid="uid://cigl8op6wxe3c" path="res://scripts/time/day_night_controller.gd" id="14_daynight"]
 [ext_resource type="PackedScene" path="res://scenes/furniture/OfficeDeskEntity.tscn" id="15_office_desk"]
+[ext_resource type="PackedScene" path="res://scenes/resources/PrinterStationEntity.tscn" id="16_printer_station"]
+[ext_resource type="PackedScene" path="res://scenes/resources/WaterDispenserEntity.tscn" id="17_water_station"]
+[ext_resource type="PackedScene" path="res://scenes/resources/PlantEntity.tscn" id="18_plant"]
+[ext_resource type="PackedScene" path="res://scenes/resources/BookshelfEntity.tscn" id="19_bookshelf"]
+[ext_resource type="PackedScene" path="res://scenes/resources/ChairEntity.tscn" id="20_chair"]
+[ext_resource type="PackedScene" path="res://scenes/resources/SmallTableEntity.tscn" id="21_small_table"]
+[ext_resource type="PackedScene" path="res://scenes/resources/CoffeeEntity.tscn" id="22_coffee_entity"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -56,6 +63,27 @@ position = Vector2(285, 300)
 
 [node name="OfficeDeskEntity" parent="." unique_id=1624438215 instance=ExtResource("15_office_desk")]
 position = Vector2(760, 330)
+
+[node name="PrinterStationEntity" parent="." instance=ExtResource("16_printer_station")]
+position = Vector2(825, 305)
+
+[node name="WaterDispenserEntity" parent="." instance=ExtResource("17_water_station")]
+position = Vector2(220, 300)
+
+[node name="PlantEntity" parent="." instance=ExtResource("18_plant")]
+position = Vector2(220, 356)
+
+[node name="BookshelfEntity" parent="." instance=ExtResource("19_bookshelf")]
+position = Vector2(900, 336)
+
+[node name="ChairEntity" parent="." instance=ExtResource("20_chair")]
+position = Vector2(530, 330)
+
+[node name="SmallTableEntity" parent="." instance=ExtResource("21_small_table")]
+position = Vector2(560, 335)
+
+[node name="CoffeeEntity" parent="." instance=ExtResource("22_coffee_entity")]
+position = Vector2(256, 352)
 
 [node name="DayNightController" type="CanvasLayer" parent="." unique_id=1917497699]
 script = ExtResource("14_daynight")

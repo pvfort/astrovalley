@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/crafting/recipe_data.gd" id="1_recipe"]
+[ext_resource type="Script" path="res://scripts/crafting/ingredient_data.gd" id="2_ingredient"]
+
+[sub_resource type="Resource" id="1_input"]
+script = ExtResource("2_ingredient")
+item_id = "papers"
+quantity = 2
+
+[sub_resource type="Resource" id="2_output"]
+script = ExtResource("2_ingredient")
+item_id = "folders"
+quantity = 1
+
+[resource]
+script = ExtResource("1_recipe")
+id = "organize_documents"
+display_name = "Organize Documents"
+ingredients = [SubResource("1_input")]
+outputs = [SubResource("2_output")]
+craft_time = 2.0
+required_station_tags = Array[String](["printer"])

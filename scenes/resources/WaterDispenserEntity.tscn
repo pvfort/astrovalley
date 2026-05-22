@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/entities/furniture/Water-Dispenser.png" id="1_texture"]
+[ext_resource type="Script" uid="uid://cvi4htsmb7dkc" path="res://scripts/items/coffee_machine.gd" id="2_entity"]
+[ext_resource type="Script" path="res://scripts/components/crafting_station_component.gd" id="3_crafting_station"]
+[ext_resource type="Resource" path="res://resources/recipes/water_recipe.tres" id="4_recipe"]
+[ext_resource type="Script" uid="uid://b826ef35wfi07" path="res://scripts/persistence/PersistentObject.gd" id="5_persistent"]
+
+[sub_resource type="RectangleShape2D" id="1_shape"]
+size = Vector2(14, 20)
+
+[node name="WaterDispenserEntity" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+script = ExtResource("2_entity")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1_shape")
+
+[node name="CraftingStationComponent" type="Node" parent="."]
+script = ExtResource("3_crafting_station")
+station_id = "water_station"
+station_tags = Array[String](["water"])
+available_recipes = [ExtResource("4_recipe")]
+
+[node name="PersistentObject" type="Node" parent="."]
+script = ExtResource("5_persistent")
