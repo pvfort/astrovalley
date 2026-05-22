@@ -10,20 +10,20 @@ func _ready() -> void:
 		TaskManager.task_completed.connect(_on_task_completed)
 
 
-func start_observe(player_id: int) -> void:
-	if not multiplayer.is_server():
-		return
+func start_observe(player_id: int) -> bool:
+	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
+		return false
 	if WeatherManager != null and WeatherManager.has_method("is_telescope_usable"):
 		if not WeatherManager.is_telescope_usable():
-			print("Cannot start observe for player ", player_id, ": telescope disabled by weather")
-			return
+			return false
 	if TaskManager.start_task(player_id, "observe"):
-		print("Player ", player_id, " started observing")
-	else:
-		print("Cannot start observe for player ", player_id)
+		if EventBus != null:
+			EventBus.station_used.emit(player_id, "telescope")
+		return true
+	return false
 
 
-func _on_task_completed(_player_id: int, task_id: String) -> void:
+func _on_task_completed(player_id: int, task_id: String) -> void:
 	if task_id != "observe":
 		return
 	var quality_multiplier := 1.0
@@ -32,3 +32,5 @@ func _on_task_completed(_player_id: int, task_id: String) -> void:
 	var observation_data := maxi(0, int(round(float(BASE_OBSERVATION_DATA) * maxf(0.0, quality_multiplier))))
 	if WorldClock != null and WorldClock.has_method("add_observation_data"):
 		WorldClock.add_observation_data(observation_data)
+	if GameManager != null and GameManager.has_method("record_observation_output"):
+		GameManager.record_observation_output(player_id, observation_data)

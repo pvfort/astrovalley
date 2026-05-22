@@ -31,7 +31,6 @@ func _ready() -> void:
 
 
 func _on_inventory_toggled(open_state: bool) -> void:
-	print("UI received toggle")
 	is_open = open_state
 
 	visible = is_open

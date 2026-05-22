@@ -9,18 +9,12 @@ func can_interact(_player) -> bool:
 	return item != null
 
 func interact(player: PlayerCharacter) -> void:
-	print("[PICKUP] interact CALLED on:", get_parent().name)
-
 	if item == null:
-		print("[PICKUP] item is NULL")
 		return
-
-	print("[PICKUP] item =", item.item_id)
 
 	var ok := InventoryManager.add_item(item)
 
-	print("[PICKUP] inventory result =", ok)
-
 	if ok:
-		print("[PICKUP] removing entity")
+		if EventBus != null and player != null:
+			EventBus.item_collected.emit(player.player_id, item.item_id, 1)
 		get_parent().queue_free()

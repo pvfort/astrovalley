@@ -3,8 +3,11 @@
 [ext_resource type="Script" uid="uid://tsw3ctmmghv8" path="res://scripts/entities/proximity_sensor.gd" id="1"]
 [ext_resource type="Script" uid="uid://6qh4ao33le5u" path="res://scripts/main.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dnd8nj4qh5vel" path="res://assets/sprites/pc.png" id="3"]
+[ext_resource type="Script" path="res://scripts/components/observation_component.gd" id="4_observation"]
 [ext_resource type="PackedScene" uid="uid://clgl8qe4cxqq7" path="res://scenes/resources/ComputerEntity.tscn" id="5_computer"]
 [ext_resource type="PackedScene" path="res://scenes/resources/BedEntity.tscn" id="6_bed"]
+[ext_resource type="PackedScene" path="res://scenes/resources/CoffeeMachine.tscn" id="7_coffee_machine"]
+[ext_resource type="PackedScene" path="res://scenes/resources/MugEntity.tscn" id="8_mug_entity"]
 [ext_resource type="PackedScene" path="res://scenes/resources/StoreNpcEntity.tscn" id="10_store_npc"]
 [ext_resource type="PackedScene" uid="uid://1p08iq7sfmgk" path="res://scenes/furniture/DeskStorageEntity.tscn" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://b826ef35wfi07" path="res://scripts/persistence/PersistentObject.gd" id="12_persistent"]
@@ -36,6 +39,9 @@ shape = SubResource("1")
 [node name="PersistentObject" type="Node" parent="Telescope" unique_id=1937489900]
 script = ExtResource("12_persistent")
 
+[node name="ObservationComponent" type="Node" parent="Telescope"]
+script = ExtResource("4_observation")
+
 [node name="ComputerEntity" parent="." unique_id=1955995544 instance=ExtResource("5_computer")]
 position = Vector2(500, 300)
 
@@ -44,6 +50,9 @@ position = Vector2(620, 300)
 
 [node name="StoreNpcEntity" parent="." unique_id=1360177238 instance=ExtResource("10_store_npc")]
 position = Vector2(360, 300)
+
+[node name="CoffeeMachineEntity" parent="." instance=ExtResource("7_coffee_machine")]
+position = Vector2(285, 300)
 
 [node name="OfficeDeskEntity" parent="." unique_id=1624438215 instance=ExtResource("15_office_desk")]
 position = Vector2(760, 330)
@@ -55,3 +64,6 @@ script = ExtResource("14_daynight")
 
 [node name="DeskStorageEntity" parent="." unique_id=374593 instance=ExtResource("11_ya4ey")]
 position = Vector2(440, 501)
+
+[node name="QuestMug" parent="." instance=ExtResource("8_mug_entity")]
+position = Vector2(280, 360)

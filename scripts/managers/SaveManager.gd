@@ -192,6 +192,12 @@ func _collect_system_states() -> Dictionary:
 		states["inventory"] = _dictionary(InventoryManager.save_state())
 	if SkillManager != null and SkillManager.has_method("save_state"):
 		states["skills"] = _dictionary(SkillManager.save_state())
+	if GameManager != null and GameManager.has_method("save_state"):
+		states["game_manager"] = _dictionary(GameManager.save_state())
+	if TaskManager != null and TaskManager.has_method("save_state"):
+		states["tasks"] = _dictionary(TaskManager.save_state())
+	if QuestManager != null and QuestManager.has_method("save_state"):
+		states["quests"] = _dictionary(QuestManager.save_state())
 	if WorldClock != null and WorldClock.has_method("save_state"):
 		states["world_clock"] = _dictionary(WorldClock.save_state())
 	if WeatherManager != null and WeatherManager.has_method("save_state"):
@@ -213,6 +219,12 @@ func _apply_system_states(states: Dictionary) -> void:
 		WeatherManager.load_state(_dictionary(states.get("weather", {})))
 	if EnergyManager != null and EnergyManager.has_method("load_state"):
 		EnergyManager.load_state(_dictionary(states.get("energy", {})))
+	if GameManager != null and GameManager.has_method("load_state"):
+		GameManager.load_state(_dictionary(states.get("game_manager", {})))
+	if TaskManager != null and TaskManager.has_method("load_state"):
+		TaskManager.load_state(_dictionary(states.get("tasks", {})))
+	if QuestManager != null and QuestManager.has_method("load_state"):
+		QuestManager.load_state(_dictionary(states.get("quests", {})))
 
 
 func _collect_entity_states() -> Array[Dictionary]:

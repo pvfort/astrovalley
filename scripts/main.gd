@@ -167,6 +167,9 @@ func spawn_player(id: int):
 		100
 	)
 
+	if GameManager != null and GameManager.has_method("add_player"):
+		GameManager.add_player(id, "Player" + str(id))
+
 	players_node.add_child(player)
 
 func _on_player_connected(id: int):
