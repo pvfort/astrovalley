@@ -1,11 +1,11 @@
 {
-	"day": 28,
+	"day": 44,
 	"entities": [],
 	"machine_states": [],
 	"placed_furniture": [],
 	"room_states": [],
 	"save_version": 1,
-	"saved_at": "2026-05-22T17:51:24",
+	"saved_at": "2026-05-23T18:12:13",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
@@ -14,13 +14,14 @@
 				"1": {
 					"current_task": "",
 					"name": "Player1",
+					"observation_time_granted": 0,
 					"observation_total": 0,
 					"tasks_completed": 0
 				}
 			},
 			"resources": {
 				"telescope": {
-					"by": -1,
+					"by": -1.0,
 					"locked": false
 				}
 			}
@@ -32,8 +33,64 @@
 				"head": "",
 				"tool": ""
 			},
-			"funds": 225,
+			"funds": 61,
 			"inventory": [
+				{
+					"count": 1,
+					"item_id": "mug"
+				},
+				{
+					"count": 1,
+					"item_id": "coffee"
+				},
+				{
+					"count": 1,
+					"item_id": "programming_laptop"
+				},
+				{
+					"count": 1,
+					"item_id": "coffee"
+				},
+				{
+					"count": 1,
+					"item_id": "folders"
+				},
+				{
+					"count": 1,
+					"item_id": "coffee"
+				},
+				{
+					"count": 1,
+					"item_id": "plant_decor"
+				},
+				{
+					"count": 1,
+					"item_id": "coffee"
+				},
+				{
+					"count": 1,
+					"item_id": "coffee"
+				},
+				{
+					"count": 1,
+					"item_id": "coffee"
+				},
+				{
+					"count": 1,
+					"item_id": "coffee"
+				},
+				{
+					"count": 1,
+					"item_id": "office_sofa"
+				},
+				{
+					"count": 2,
+					"item_id": "papers"
+				},
+				{
+					"count": 2,
+					"item_id": "archive_folders"
+				},
 				{
 
 				},
@@ -54,49 +111,8 @@
 
 				},
 				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
-				},
-				{
-
+					"count": 1,
+					"item_id": "plant_decor"
 				},
 				{
 
@@ -128,11 +144,11 @@
 					"objectives": [
 						{
 							"completed": true,
-							"current_amount": 1
+							"current_amount": 4
 						},
 						{
 							"completed": true,
-							"current_uses": 2
+							"current_uses": 5
 						},
 						{
 							"completed": false,
@@ -145,9 +161,13 @@
 		},
 		"skills": {
 			"skills": {
+				"observation": {
+					"level": 0,
+					"xp": 0
+				},
 				"programming": {
-					"level": 4,
-					"xp": 1297
+					"level": 5,
+					"xp": 1888
 				}
 			}
 		},
@@ -160,16 +180,16 @@
 			"daily_stats": {
 				"money_earned": 0,
 				"observation_data_collected": 0,
-				"programming_progress": 225,
+				"programming_progress": 0,
 				"tasks_completed": 0,
 				"xp_gained_per_skill": {
-					"programming": 75
+
 				}
 			},
-			"day": 28,
-			"hour": 12,
-			"minute": 8,
-			"phase": "Afternoon"
+			"day": 44,
+			"hour": 8,
+			"minute": 58,
+			"phase": "Morning"
 		}
 	},
 	"weather": "clear",

@@ -82,7 +82,7 @@ func get_observation_time(player_id: int) -> int:
 	return max(int(player_state.get("observation_time_granted", 0)), 0)
 
 func consume_observation_time(player_id: int, amount: int = 1) -> bool:
-	var spend_amount := max(amount, 0)
+	var spend_amount :int= max(amount, 0)
 	if spend_amount <= 0:
 		return true
 	var player_state := _ensure_player_state(player_id)

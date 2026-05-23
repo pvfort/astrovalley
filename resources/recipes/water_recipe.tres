@@ -1,22 +1,20 @@
-[gd_resource type="Resource" script_class="RecipeData" format=3]
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://cab08eauawy8l"]
 
-[ext_resource type="Script" path="res://scripts/crafting/recipe_data.gd" id="1_recipe"]
-[ext_resource type="Script" path="res://scripts/crafting/ingredient_data.gd" id="2_ingredient"]
+[ext_resource type="Script" uid="uid://cgblfbf6aa73s" path="res://scripts/crafting/recipe_data.gd" id="1_recipe"]
+[ext_resource type="Script" uid="uid://bk1caaptdndip" path="res://scripts/crafting/ingredient_data.gd" id="2_ingredient"]
 
 [sub_resource type="Resource" id="1_input"]
 script = ExtResource("2_ingredient")
 item_id = "mug"
-quantity = 1
 
 [sub_resource type="Resource" id="2_output"]
 script = ExtResource("2_ingredient")
 item_id = "water_cup"
-quantity = 1
 
 [resource]
 script = ExtResource("1_recipe")
 id = "dispense_water"
 display_name = "Dispense Water"
-ingredients = [SubResource("1_input")]
-outputs = [SubResource("2_output")]
+ingredients = Array[ExtResource("2_ingredient")]([SubResource("1_input")])
+outputs = Array[ExtResource("2_ingredient")]([SubResource("2_output")])
 required_station_tags = Array[String](["water"])

@@ -10,7 +10,6 @@ item_id = "printer_station"
 display_name = "Office Printer"
 description = "Production station for office paperwork."
 icon = ExtResource("1_icon")
-stack_size = 1
 tags = Array[String](["furniture", "production_station", "printer"])
 placeable = true
 placed_scene = ExtResource("3_scene")
