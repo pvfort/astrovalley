@@ -66,7 +66,7 @@ These legacy room and interaction scripts are no longer part of the canonical ga
 
 - 2-4 players
 - Top-down movement
-- Telescope object for "observe" task (only at night)
+- Telescope observation that consumes granted observation time and is affected by weather quality
 - UI showing current phase, player name, current task
 - Starter quest progression for pickup -> crafting station use -> observation completion
 - Coffee machine crafting station with `resources/recipes/coffee_recipe.tres`
@@ -84,7 +84,7 @@ These legacy room and interaction scripts are no longer part of the canonical ga
 
 - Pick up the mug in `main.tscn` and confirm the quest tracker updates
 - Use the coffee machine and confirm the crafting UI opens and brewing coffee refreshes inventory
-- Start the telescope observation at night and confirm current task / quest progress update
+- Complete a proposal task to gain observation time, then observe with telescope and confirm output changes with weather quality
 - Sleep in the bed and confirm the daily summary includes completed tasks and observation totals
 - Save, reload, and verify world/UI state restores without runtime errors
 - Host and join a session and verify the local player can still interact with world stations

@@ -75,7 +75,8 @@ func _on_accept_pressed() -> void:
         return
 
     var task: Dictionary = _available_tasks[_selected_index]
-    _complete_task(task)
+    if not _complete_task(task):
+        return
     _available_tasks.remove_at(_selected_index)
     _rebuild_task_list()
 
@@ -92,8 +93,14 @@ func _on_refresh_pressed() -> void:
     _set_status("Task board refreshed.")
 
 
-func _complete_task(task: Dictionary) -> void:
+func _complete_task(task: Dictionary) -> bool:
     var task_title := str(task.get("title", "Task"))
+    var requirements_result := _validate_task_requirements(task)
+    if not bool(requirements_result.get("ok", false)):
+        _set_status(str(requirements_result.get("message", "Requirements not met.")))
+        return false
+
+    _consume_task_requirements(task)
     var duration_minutes := max(int(task.get("duration_minutes", 0)), 0)
     if WorldClock != null and duration_minutes > 0:
         WorldClock.add_minutes(duration_minutes)
@@ -133,10 +140,16 @@ func _complete_task(task: Dictionary) -> void:
             if remaining > 0:
                 _set_status("Inventory full. Could not receive %s x%d." % [item_id.replace("_", " "), remaining])
 
+    var observation_time_reward := max(int(task.get("observation_time_reward", 0)), 0)
+    if observation_time_reward > 0 and GameManager != null and GameManager.has_method("grant_observation_time"):
+        GameManager.grant_observation_time(_resolve_local_player_id(), observation_time_reward)
+        reward_summary.append("Observation time +%d" % observation_time_reward)
+
     if reward_summary.is_empty():
         reward_summary.append("No rewards")
 
     _set_status("Completed %s. Rewards: %s" % [task_title, ", ".join(reward_summary)])
+    return true
 
 
 func _refresh_available_tasks(initial_load: bool) -> void:
@@ -223,9 +236,72 @@ func _format_rewards(task: Dictionary) -> String:
                 continue
             rewards.append("%s x%d" % [item_id.replace("_", " "), amount])
 
+    var observation_time_reward := max(int(task.get("observation_time_reward", 0)), 0)
+    if observation_time_reward > 0:
+        rewards.append("Observation time +%d" % observation_time_reward)
+
     if rewards.is_empty():
         return "Rewards: --"
     return "Rewards: %s" % ", ".join(rewards)
+
+
+func _validate_task_requirements(task: Dictionary) -> Dictionary:
+    var required_programming_progress := max(int(task.get("required_programming_progress", 0)), 0)
+    if required_programming_progress > 0:
+        var current_programming_progress := 0
+        if WorldClock != null and WorldClock.has_method("get_daily_summary_data"):
+            var summary: Dictionary = WorldClock.get_daily_summary_data()
+            current_programming_progress = max(int(summary.get("programming_progress", 0)), 0)
+        if current_programming_progress < required_programming_progress:
+            return {
+                "ok": false,
+                "message": "Need %d programming progress today (have %d)." % [required_programming_progress, current_programming_progress],
+            }
+
+    var required_items_variant: Variant = task.get("required_items", [])
+    if required_items_variant is Array:
+        if InventoryManager == null:
+            return {"ok": false, "message": "Inventory manager unavailable."}
+        for entry_variant in required_items_variant:
+            if not (entry_variant is Dictionary):
+                continue
+            var entry: Dictionary = entry_variant as Dictionary
+            var item_id := str(entry.get("item_id", ""))
+            var amount := max(int(entry.get("count", 0)), 0)
+            if item_id.is_empty() or amount <= 0:
+                continue
+            var available := InventoryManager.count_item(item_id)
+            if available < amount:
+                return {
+                    "ok": false,
+                    "message": "Need %s x%d (have %d)." % [item_id.replace("_", " "), amount, available],
+                }
+
+    return {"ok": true, "message": "Ready"}
+
+
+func _consume_task_requirements(task: Dictionary) -> void:
+    var required_items_variant: Variant = task.get("required_items", [])
+    if not (required_items_variant is Array):
+        return
+    if InventoryManager == null:
+        return
+
+    for entry_variant in required_items_variant:
+        if not (entry_variant is Dictionary):
+            continue
+        var entry: Dictionary = entry_variant as Dictionary
+        var item_id := str(entry.get("item_id", ""))
+        var amount := max(int(entry.get("count", 0)), 0)
+        if item_id.is_empty() or amount <= 0:
+            continue
+        InventoryManager.remove_items_by_id(item_id, amount)
+
+
+func _resolve_local_player_id() -> int:
+    if multiplayer.has_multiplayer_peer():
+        return multiplayer.get_unique_id()
+    return 1
 
 
 func _set_status(message: String) -> void:

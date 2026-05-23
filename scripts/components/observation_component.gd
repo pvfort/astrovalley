@@ -12,7 +12,10 @@ func can_interact(player: PlayerCharacter) -> bool:
 	if player == null:
 		return false
 	if TaskManager != null and TaskManager.has_method("get_active_task"):
-		return TaskManager.get_active_task(player.player_id) == ""
+		if TaskManager.get_active_task(player.player_id) != "":
+			return false
+	if GameManager != null and GameManager.has_method("get_observation_time"):
+		return GameManager.get_observation_time(player.player_id) > 0
 	return true
 
 func interact(player: PlayerCharacter) -> void:

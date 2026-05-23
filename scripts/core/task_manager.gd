@@ -45,12 +45,9 @@ func start_task(player_id: int, task_id: String) -> bool:
 	
 	var task = tasks[task_id]
 	var current_phase = TimeManager.get_current_phase()
-	if str(task.get("allowed_phase", "")).to_lower() != current_phase.to_lower():
+	var allowed_phase := str(task.get("allowed_phase", "")).to_lower()
+	if allowed_phase != "any" and allowed_phase != current_phase.to_lower():
 		return false
-
-	if task_id == "observe" and WeatherManager != null and WeatherManager.has_method("is_telescope_usable"):
-		if not WeatherManager.is_telescope_usable():
-			return false
 	
 	# Check resource if required
 	if task.has("required_resource"):
