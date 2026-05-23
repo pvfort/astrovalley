@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" path="res://scenes/resources/ChairEntity.tscn" id="20_chair"]
 [ext_resource type="PackedScene" path="res://scenes/resources/SmallTableEntity.tscn" id="21_small_table"]
 [ext_resource type="PackedScene" path="res://scenes/resources/CoffeeEntity.tscn" id="22_coffee_entity"]
+[ext_resource type="PackedScene" path="res://scenes/resources/TaskBoardEntity.tscn" id="23_task_board"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(96, 96)
@@ -84,6 +85,9 @@ position = Vector2(560, 335)
 
 [node name="CoffeeEntity" parent="." instance=ExtResource("22_coffee_entity")]
 position = Vector2(256, 352)
+
+[node name="TaskBoardEntity" parent="." instance=ExtResource("23_task_board")]
+position = Vector2(675, 338)
 
 [node name="DayNightController" type="CanvasLayer" parent="." unique_id=1917497699]
 script = ExtResource("14_daynight")
