@@ -1,7 +1,7 @@
 [
   {
 	"id": "observe",
-	"allowed_phase": "night",
+	"allowed_phase": "any",
 	"duration": 7,
 	"required_resource": "telescope"
   },

@@ -71,5 +71,35 @@
     "item_rewards": [
       { "item_id": "books", "count": 1 }
     ]
+  },
+  {
+    "id": "proposal_draft_alpha",
+    "title": "Observation Proposal Draft",
+    "description": "Prepare an observation proposal by processing station data and validating citations from books.",
+    "duration_minutes": 90,
+    "required_programming_progress": 60,
+    "required_items": [
+      { "item_id": "books", "count": 1 }
+    ],
+    "skill_id": "programming",
+    "xp_reward": 30,
+    "money_reward": 15,
+    "observation_time_reward": 1,
+    "item_rewards": []
+  },
+  {
+    "id": "proposal_peer_review",
+    "title": "Proposal Peer Review",
+    "description": "Refine a telescope proposal with additional data processing and literature cross-checking.",
+    "duration_minutes": 110,
+    "required_programming_progress": 90,
+    "required_items": [
+      { "item_id": "books", "count": 2 }
+    ],
+    "skill_id": "programming",
+    "xp_reward": 42,
+    "money_reward": 25,
+    "observation_time_reward": 2,
+    "item_rewards": []
   }
 ]

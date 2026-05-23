@@ -25,6 +25,7 @@ func add_player(id: int, name: String):
 		"current_task": str(existing.get("current_task", "")),
 		"tasks_completed": int(existing.get("tasks_completed", 0)),
 		"observation_total": int(existing.get("observation_total", 0)),
+		"observation_time_granted": max(int(existing.get("observation_time_granted", 0)), 0),
 	}
 
 func remove_player(id: int):
@@ -68,6 +69,30 @@ func record_observation_output(player_id: int, amount: int) -> void:
 	player_state["observation_total"] = int(player_state.get("observation_total", 0)) + amount
 	_emit_player_state(player_id)
 
+func grant_observation_time(player_id: int, amount: int) -> int:
+	if amount <= 0:
+		return get_observation_time(player_id)
+	var player_state := _ensure_player_state(player_id)
+	player_state["observation_time_granted"] = int(player_state.get("observation_time_granted", 0)) + amount
+	_emit_player_state(player_id)
+	return int(player_state.get("observation_time_granted", 0))
+
+func get_observation_time(player_id: int) -> int:
+	var player_state := _ensure_player_state(player_id)
+	return max(int(player_state.get("observation_time_granted", 0)), 0)
+
+func consume_observation_time(player_id: int, amount: int = 1) -> bool:
+	var spend_amount := max(amount, 0)
+	if spend_amount <= 0:
+		return true
+	var player_state := _ensure_player_state(player_id)
+	var available := int(player_state.get("observation_time_granted", 0))
+	if available < spend_amount:
+		return false
+	player_state["observation_time_granted"] = available - spend_amount
+	_emit_player_state(player_id)
+	return true
+
 func save_state() -> Dictionary:
 	var serialized_players: Dictionary = {}
 	for player_id_variant in players.keys():
@@ -95,6 +120,7 @@ func load_state(data: Dictionary) -> void:
 				"current_task": str(player_state.get("current_task", "")),
 				"tasks_completed": int(player_state.get("tasks_completed", 0)),
 				"observation_total": int(player_state.get("observation_total", 0)),
+				"observation_time_granted": max(int(player_state.get("observation_time_granted", 0)), 0),
 			}
 
 	var saved_resources :Variant= data.get("resources", {})

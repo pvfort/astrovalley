@@ -128,11 +128,23 @@ func recover_from_sleep(player_id: int) -> void:
 	var state := _get_state(player_id)
 	state["temporary_max_bonus"] = 0.0
 	state["temporary_max_duration"] = 0.0
-	state["current_energy"] = _resolve_max_energy(state)
-	state["exhausted"] = false
+	var next_sleep_start_ratio := clampf(float(state.get("next_sleep_start_ratio", 1.0)), 0.0, 1.0)
+	state["current_energy"] = _resolve_max_energy(state) * next_sleep_start_ratio
+	state["next_sleep_start_ratio"] = 1.0
+	_recalculate_exhaustion(state)
 	_player_states[player_id] = state
 	energy_changed.emit(player_id, float(state["current_energy"]), _resolve_max_energy(state))
-	exhaustion_changed.emit(player_id, false)
+	exhaustion_changed.emit(player_id, bool(state["exhausted"]))
+
+
+func apply_next_sleep_start_ratio(player_id: int, ratio: float) -> void:
+	if ratio < 0.0:
+		return
+	var state := _get_state(player_id)
+	var clamped_ratio := clampf(ratio, 0.0, 1.0)
+	var existing_ratio := clampf(float(state.get("next_sleep_start_ratio", 1.0)), 0.0, 1.0)
+	state["next_sleep_start_ratio"] = minf(existing_ratio, clamped_ratio)
+	_player_states[player_id] = state
 
 
 func recover_from_rest(player_id: int, amount: float = -1.0) -> void:
@@ -226,6 +238,7 @@ func save_state() -> Dictionary:
 			"temporary_max_bonus": float(state["temporary_max_bonus"]),
 			"temporary_max_duration": float(state["temporary_max_duration"]),
 			"exhausted": bool(state["exhausted"]),
+			"next_sleep_start_ratio": clampf(float(state.get("next_sleep_start_ratio", 1.0)), 0.0, 1.0),
 		}
 	return {
 		"players": saved_players,
@@ -246,6 +259,7 @@ func load_state(data: Dictionary) -> void:
 		state["max_energy"] = maxf(1.0, float(player_data.get("max_energy", DEFAULT_MAX_ENERGY)))
 		state["temporary_max_bonus"] = maxf(0.0, float(player_data.get("temporary_max_bonus", 0.0)))
 		state["temporary_max_duration"] = maxf(0.0, float(player_data.get("temporary_max_duration", 0.0)))
+		state["next_sleep_start_ratio"] = clampf(float(player_data.get("next_sleep_start_ratio", 1.0)), 0.0, 1.0)
 		state["current_energy"] = clampf(float(player_data.get("current_energy", state["max_energy"])), 0.0, _resolve_max_energy(state))
 		_recalculate_exhaustion(state)
 		var player_id := int(str(player_id_key))
@@ -275,6 +289,7 @@ func _default_state() -> Dictionary:
 		"temporary_max_bonus": 0.0,
 		"temporary_max_duration": 0.0,
 		"exhausted": false,
+		"next_sleep_start_ratio": 1.0,
 	}
 
 
