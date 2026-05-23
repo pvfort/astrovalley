@@ -29,6 +29,9 @@ func begin_placement(item_data: ItemData, source_slot_index: int = -1) -> bool:
 	if scene == null:
 		return false
 
+	if not _is_owned_office_room(_current_room_id()):
+		return false
+
 	_active_item = item_data
 	_source_slot_index = source_slot_index
 	_placement_active = true
@@ -215,7 +218,7 @@ func _validate_placement(world_position: Vector2) -> bool:
 		return false
 
 	var room_id := _current_room_id()
-	if not room_id.begins_with("office_"):
+	if not _is_owned_office_room(room_id):
 		return false
 
 	if not main.has_method("get_room_tilemap"):
@@ -276,6 +279,30 @@ func _current_room_id() -> String:
 	if scene != null and scene.has_method("get_current_room_id"):
 		return str(scene.get_current_room_id())
 	return ""
+
+
+func _is_owned_office_room(room_id: String) -> bool:
+	if room_id.is_empty():
+		return false
+	return room_id == _active_office_room_id()
+
+
+func _active_office_room_id() -> String:
+	if CharacterSaveManager == null:
+		return ""
+
+	var profile: CharacterProfile = CharacterSaveManager.get_active_character()
+	if profile == null:
+		return ""
+
+	var office_number := str(profile.office_number).strip_edges()
+	if office_number.is_empty():
+		return ""
+
+	if office_number.begins_with("office_"):
+		return office_number
+
+	return "office_%s" % office_number
 
 
 func _active_character_id() -> String:
