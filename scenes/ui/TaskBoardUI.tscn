@@ -1,0 +1,128 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/task_board_ui.gd" id="1_task_board_ui"]
+
+[node name="TaskBoardUI" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_task_board_ui")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -220.0
+offset_right = 300.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Task Board"
+horizontal_alignment = 1
+
+[node name="DayLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Day 1 · Next refresh day: 1"
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="TaskListColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Columns"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="TaskListLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/TaskListColumn"]
+layout_mode = 2
+text = "Available Tasks"
+
+[node name="TaskList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/Columns/TaskListColumn"]
+custom_minimum_size = Vector2(0, 230)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TaskDetailsColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="TaskTitle" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/TaskDetailsColumn"]
+layout_mode = 2
+text = "Select a task"
+
+[node name="TaskDescription" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/TaskDetailsColumn"]
+layout_mode = 2
+autowrap_mode = 3
+size_flags_vertical = 3
+text = ""
+
+[node name="TaskDuration" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/TaskDetailsColumn"]
+layout_mode = 2
+text = "Duration: --"
+
+[node name="TaskRewards" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/TaskDetailsColumn"]
+layout_mode = 2
+autowrap_mode = 3
+text = "Rewards: --"
+
+[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AcceptTaskButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Accept Task"
+
+[node name="RefreshButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Refresh"
+
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Close"
+
+[node name="HintLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Press Esc to close"
+horizontal_alignment = 1
