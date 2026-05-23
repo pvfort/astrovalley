@@ -149,6 +149,33 @@ func get_inventory_slot(index: int) -> Variant:
 	return inventory[index]
 
 
+func move_inventory_slot(from_index: int, to_index: int) -> bool:
+	if (
+		from_index < 0
+		or from_index >= inventory.size()
+		or to_index < 0
+		or to_index >= inventory.size()
+	):
+		return false
+
+	if from_index == to_index:
+		return false
+
+	if inventory[from_index] == null:
+		return false
+
+	var from_slot: Variant = inventory[from_index]
+	var to_slot: Variant = inventory[to_index]
+
+	inventory[to_index] = from_slot
+	inventory[from_index] = to_slot
+
+	inventory_changed.emit()
+	_emit_active_tool_changed()
+
+	return true
+
+
 func has_free_slot() -> bool:
 	for slot_variant in inventory:
 		if slot_variant == null:

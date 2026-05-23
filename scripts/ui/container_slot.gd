@@ -11,6 +11,8 @@ var source_type: String = ""
 var slot_index: int = -1
 var item_id: String = ""
 var count: int = 0
+var _pending_left_click: bool = false
+var _is_dragging: bool = false
 
 
 func configure_source(next_source_type: String, next_slot_index: int) -> void:
@@ -49,6 +51,9 @@ func set_slot_data(next_item_id: String, next_count: int) -> void:
 func _get_drag_data(_at_position: Vector2) -> Variant:
 	if item_id.is_empty() or count <= 0:
 		return null
+
+	_pending_left_click = false
+	_is_dragging = true
 
 	var payload: Dictionary = {
 		"source_type": source_type,
@@ -98,10 +103,20 @@ func _gui_input(event: InputEvent) -> void:
 
 	var mouse_event: InputEventMouseButton = event as InputEventMouseButton
 
-	if not mouse_event.pressed:
+	if mouse_event.button_index != MOUSE_BUTTON_LEFT:
 		return
 
-	if mouse_event.button_index != MOUSE_BUTTON_LEFT:
+	if mouse_event.pressed:
+		_pending_left_click = true
+		return
+
+	if not _pending_left_click:
+		return
+
+	_pending_left_click = false
+
+	if _is_dragging:
+		_is_dragging = false
 		return
 
 	if item_id.is_empty() or count <= 0:
@@ -110,3 +125,9 @@ func _gui_input(event: InputEvent) -> void:
 	var target_type: String = "container" if source_type == "player" else "player"
 
 	transfer_requested.emit(source_type, slot_index, target_type, -1, 1)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_END:
+		_is_dragging = false
+		_pending_left_click = false

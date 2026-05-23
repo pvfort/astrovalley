@@ -126,6 +126,8 @@ func _on_slot_transfer_requested(from_type: String, from_index: int, to_type: St
 
 	if from_type == "player" and to_type == "container":
 		moved = _active_container.transfer_from_player(from_index, to_index, amount)
+	elif from_type == "player" and to_type == "player":
+		moved = InventoryManager.move_inventory_slot(from_index, to_index)
 	elif from_type == "container" and to_type == "player":
 		moved = _active_container.transfer_to_player(from_index, amount)
 
