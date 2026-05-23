@@ -81,3 +81,8 @@ text = "Task: none"
 layout_mode = 2
 text = "Quest: none"
 autowrap_mode = 3
+
+[node name="EventLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Event: none"
+autowrap_mode = 3

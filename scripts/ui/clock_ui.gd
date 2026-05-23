@@ -6,6 +6,7 @@ extends Control
 @onready var _weather_icon: TextureRect = $PanelContainer/MarginContainer/VBoxContainer/InfoRow/WeatherIcon
 @onready var _current_task_label: Label = $PanelContainer/MarginContainer/VBoxContainer/CurrentTaskLabel
 @onready var _quest_label: Label = $PanelContainer/MarginContainer/VBoxContainer/QuestLabel
+@onready var _event_label: Label = $PanelContainer/MarginContainer/VBoxContainer/EventLabel
 
 @export var sun_icon: Texture2D = preload("res://assets/ui/time/sun_icon.png")
 @export var moon_icon: Texture2D = preload("res://assets/ui/time/moon_icon.png")
@@ -29,6 +30,8 @@ func _ready() -> void:
 			QuestManager.active_quest_changed.connect(_refresh_progression)
 		if QuestManager.has_signal("quest_progressed"):
 			QuestManager.quest_progressed.connect(_refresh_progression)
+	if EventManager != null and EventManager.has_signal("active_events_changed"):
+		EventManager.active_events_changed.connect(_on_active_events_changed)
 
 	_weather_icon.texture = weather_placeholder_icon
 	_weather_icon.modulate = Color(1.0, 1.0, 1.0, 0.35)
@@ -39,6 +42,7 @@ func _ready() -> void:
 	_on_phase_changed(WorldClock.get_phase_name())
 	if WeatherManager != null and WeatherManager.has_method("get_current_weather_data"):
 		_on_weather_changed(WeatherManager.current_weather, WeatherManager.get_current_weather_data())
+	_refresh_events()
 	_refresh_progression()
 
 func _on_day_changed(day: int) -> void:
@@ -84,6 +88,10 @@ func _on_player_task_changed(player_id: int, _task_id: String) -> void:
 	_refresh_progression()
 
 
+func _on_active_events_changed(_active_events: Array[Dictionary]) -> void:
+	_refresh_events()
+
+
 func _refresh_progression(_value = null) -> void:
 	var current_task := ""
 	if GameManager != null and GameManager.has_method("get_current_task"):
@@ -100,6 +108,24 @@ func _refresh_progression(_value = null) -> void:
 			quest_text = active_quest_title
 	_current_task_label.tooltip_text = "Current task"
 	_quest_label.text = "Quest: %s" % quest_text
+
+
+func _refresh_events() -> void:
+	_event_label.tooltip_text = "Systemic world events"
+	if EventManager == null or not EventManager.has_method("get_primary_event"):
+		_event_label.text = "Event: none"
+		return
+
+	var primary_event: Dictionary = EventManager.get_primary_event()
+	var event_name := str(primary_event.get("name", "")).strip_edges()
+	var location := str(primary_event.get("location", "")).strip_edges().replace("_", " ")
+	if event_name.is_empty():
+		_event_label.text = "Event: none"
+		return
+	if location.is_empty():
+		_event_label.text = "Event: %s" % event_name
+		return
+	_event_label.text = "Event: %s @ %s" % [event_name, location.capitalize()]
 
 
 func _resolve_local_player_id() -> int:

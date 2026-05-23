@@ -1,0 +1,74 @@
+[
+	{
+		"id": "pie_friday",
+		"name": "Pie Friday",
+		"description": "Every Friday, staff gather in the main room for pie.",
+		"weekdays": [5],
+		"start_hour": 11,
+		"end_hour": 16,
+		"location": "main_room",
+		"tags": ["social", "food", "weekly"]
+	},
+	{
+		"id": "astronomy_conference",
+		"name": "Astronomy Conference",
+		"description": "A recurring conference with talks and poster sessions.",
+		"start_day": 4,
+		"repeat_interval_days": 21,
+		"duration_days": 3,
+		"start_hour": 9,
+		"end_hour": 18,
+		"location": "lecture_hall",
+		"tags": ["conference", "science"]
+	},
+	{
+		"id": "meteor_shower_watch",
+		"name": "Meteor Shower Watch",
+		"description": "Clear nights may trigger a meteor shower viewing window.",
+		"start_day": 1,
+		"repeat_interval_days": 1,
+		"duration_days": 1,
+		"start_hour": 20,
+		"end_hour": 24,
+		"required_weather": ["clear", "cloudy"],
+		"chance": 0.3,
+		"location": "observatory",
+		"tags": ["astronomy", "night"]
+	},
+	{
+		"id": "funding_deadline",
+		"name": "Funding Deadline",
+		"description": "Submission pressure rises near recurring proposal deadlines.",
+		"start_day": 7,
+		"repeat_interval_days": 14,
+		"duration_days": 1,
+		"start_hour": 8,
+		"end_hour": 20,
+		"location": "admin_office",
+		"tags": ["administrative", "deadline"]
+	},
+	{
+		"id": "seasonal_festival",
+		"name": "Seasonal Festival",
+		"description": "A warm-weather community celebration on summer weekends.",
+		"weekdays": [6],
+		"start_hour": 10,
+		"end_hour": 22,
+		"required_season": "summer",
+		"location": "courtyard",
+		"tags": ["festival", "seasonal"]
+	},
+	{
+		"id": "visiting_scientist",
+		"name": "Visiting Scientist",
+		"description": "Guest scientists occasionally visit for a two-day residency.",
+		"start_day": 5,
+		"repeat_interval_days": 10,
+		"duration_days": 2,
+		"start_hour": 10,
+		"end_hour": 18,
+		"chance": 0.65,
+		"location": "main_room",
+		"tags": ["guest", "science", "social"]
+	}
+]

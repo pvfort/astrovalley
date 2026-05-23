@@ -39,6 +39,7 @@ SaveManager="*uid://mwnib2g8fq2o"
 WeatherManager="*uid://c7lefm5bxmlxy"
 EnergyManager="*res://scripts/managers/EnergyManager.gd"
 EventBus="*uid://k64spkb085pn"
+EventManager="*res://scripts/managers/event_manager.gd"
 
 [display]
 

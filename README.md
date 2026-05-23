@@ -77,6 +77,7 @@ These legacy room and interaction scripts are no longer part of the canonical ga
 - Add or change starter/runtime quest logic in `/scripts/objectives/quest_manager.gd`
 - Add crafting recipes under `/resources/recipes/`
 - Add new systems in `/scripts/systems/`
+- Configure systemic world events in `/data/world_events.json` (managed by `EventManager`)
 - Add new rooms in `/scenes/rooms/`
 - Managers communicate via signals for decoupling
 
