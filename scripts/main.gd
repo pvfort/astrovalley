@@ -11,6 +11,7 @@ var map_system = MapSystem.new()
 
 var current_room_id: String = "institute"
 var furniture_container: Node2D = null
+var _furniture_containers_by_room: Dictionary = {}
 
 func _ready():
 
@@ -24,7 +25,7 @@ func _ready():
 	# Spawn local player
 	spawn_player(local_id)
 
-	_ensure_furniture_container()
+	_activate_furniture_container(current_room_id)
 
 	# Build the TileMap room
 	_create_room("institute")
@@ -103,7 +104,7 @@ func _create_room(room_id: String = "institute"):
 
 	add_child(tilemap)
 	move_child(tilemap, 0)
-	_ensure_furniture_container()
+	_activate_furniture_container(current_room_id)
 
 	if SaveManager != null:
 		SaveManager.restore_room_furniture(current_room_id, furniture_container)
@@ -111,11 +112,17 @@ func _create_room(room_id: String = "institute"):
 		FurnitureSaveManager.load_room_furniture(furniture_container, current_room_id)
 
 
-func _ensure_furniture_container() -> void:
-	if furniture_container == null or not is_instance_valid(furniture_container):
+func _activate_furniture_container(room_id: String) -> void:
+	if furniture_container != null and is_instance_valid(furniture_container) and furniture_container.get_parent() == self:
+		remove_child(furniture_container)
+
+	var existing: Variant = _furniture_containers_by_room.get(room_id, null)
+	if existing is Node2D and is_instance_valid(existing):
+		furniture_container = existing as Node2D
+	else:
 		furniture_container = Node2D.new()
 		furniture_container.name = "Furniture"
-		add_child(furniture_container)
+		_furniture_containers_by_room[room_id] = furniture_container
 
 	if furniture_container.get_parent() == null:
 		add_child(furniture_container)
@@ -132,7 +139,7 @@ func get_room_tilemap() -> TileMap:
 
 
 func get_furniture_container() -> Node2D:
-	_ensure_furniture_container()
+	_activate_furniture_container(current_room_id)
 	return furniture_container
 
 func _on_door_entered(body: Node2D, dest: String):
