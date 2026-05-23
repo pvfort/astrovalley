@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://7us3ttcxobqe" path="res://scripts/ui/clock_ui.gd" id="1_clock_ui"]
 [ext_resource type="Texture2D" uid="uid://irbxvhx075oh" path="res://assets/ui/time/clock_icon.png" id="3_clock_icon"]
+[ext_resource type="Texture2D" path="res://assets/ui/daily_summary/programming_icon.png" id="4_task_icon"]
 
 [sub_resource type="Theme" id="Theme_80js3"]
 
@@ -57,6 +58,14 @@ stretch_mode = 5
 layout_mode = 2
 text = "08:00"
 
+[node name="QuestTaskButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("4_task_icon")
+flat = true
+tooltip_text = "Show active quests and tasks"
+
 [node name="InfoRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1856903186]
 layout_mode = 2
 theme_override_constants/separation = 8
@@ -86,3 +95,65 @@ autowrap_mode = 3
 layout_mode = 2
 text = "Event: none"
 autowrap_mode = 3
+
+[node name="QuestTaskPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 124.0
+offset_right = -12.0
+offset_bottom = 420.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="QuestTaskPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QuestTaskPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HeaderLabel" type="Label" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Active quests and tasks"
+
+[node name="TaskTitleLabel" type="Label" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Task: none"
+
+[node name="TaskProgressLabel" type="Label" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Progress: --"
+autowrap_mode = 3
+
+[node name="TaskRewardsLabel" type="Label" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Rewards: --"
+autowrap_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="QuestTitleLabel" type="Label" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quest: none"
+
+[node name="QuestProgressLabel" type="Label" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Progress: --"
+autowrap_mode = 3
+
+[node name="QuestRewardsLabel" type="Label" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Rewards: --"
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="QuestTaskPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Close"

@@ -94,6 +94,29 @@ func get_active_task(player_id: int) -> String:
 		return active_tasks[player_id]["task_id"]
 	return ""
 
+func get_active_task_details(player_id: int) -> Dictionary:
+	if not active_tasks.has(player_id):
+		return {}
+
+	var task_data: Dictionary = active_tasks[player_id] as Dictionary
+	var task_id := str(task_data.get("task_id", ""))
+	if task_id.is_empty() or not tasks.has(task_id):
+		return {}
+
+	var timer: Timer = task_data.get("timer", null) as Timer
+	var duration_seconds := 0.0
+	var time_left_seconds := 0.0
+	if timer != null and is_instance_valid(timer):
+		duration_seconds = max(timer.wait_time, 0.0)
+		time_left_seconds = max(timer.time_left, 0.0)
+
+	return {
+		"task_id": task_id,
+		"duration_seconds": duration_seconds,
+		"time_left_seconds": time_left_seconds,
+		"task_data": (tasks[task_id] as Dictionary).duplicate(true),
+	}
+
 func save_state() -> Dictionary:
 	var serialized_active_tasks: Dictionary = {}
 	for player_id_variant in active_tasks.keys():
