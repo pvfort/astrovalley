@@ -6,9 +6,11 @@ extends Node
 signal player_connected(id: int)
 signal player_disconnected(id: int)
 signal game_state_synced(state: Dictionary)
+signal chat_message_received(player_id: int, player_name: String, message: String)
 
 var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 var is_host: bool = false
+const CHAT_MAX_LENGTH := 200
 
 func _ready():
 	multiplayer.peer_connected.connect(_on_player_connected)
@@ -71,6 +73,64 @@ func _on_player_disconnected(id: int):
 	print("Player disconnected: ", id)
 	if multiplayer.is_server():
 		GameManager.remove_player(id)
+
+func send_chat_message(raw_message: String) -> void:
+	var message := _sanitize_chat_message(raw_message)
+	if message.is_empty():
+		return
+
+	if not multiplayer.has_multiplayer_peer():
+		var local_id := multiplayer.get_unique_id()
+		var local_name := _resolve_player_name(local_id)
+		chat_message_received.emit(local_id, local_name, message)
+		return
+
+	if multiplayer.is_server():
+		_broadcast_chat_message(multiplayer.get_unique_id(), message)
+		return
+
+	rpc_id(1, "server_submit_chat_message", message)
+
+@rpc("any_peer", "reliable")
+func server_submit_chat_message(message: String) -> void:
+	if not multiplayer.is_server():
+		return
+
+	var sanitized := _sanitize_chat_message(message)
+	if sanitized.is_empty():
+		return
+
+	var sender_id := multiplayer.get_remote_sender_id()
+	if sender_id <= 0:
+		return
+
+	_broadcast_chat_message(sender_id, sanitized)
+
+@rpc("authority", "reliable")
+func receive_chat_message(player_id: int, player_name: String, message: String) -> void:
+	chat_message_received.emit(player_id, player_name, message)
+
+func _broadcast_chat_message(player_id: int, message: String) -> void:
+	var player_name := _resolve_player_name(player_id)
+	receive_chat_message(player_id, player_name, message)
+	rpc("receive_chat_message", player_id, player_name, message)
+
+func _resolve_player_name(player_id: int) -> String:
+	if GameManager == null:
+		return "Player%s" % str(player_id)
+	if not GameManager.has_method("get_player_state"):
+		return "Player%s" % str(player_id)
+	var state: Dictionary = GameManager.get_player_state(player_id)
+	var player_name := str(state.get("name", ""))
+	if player_name.is_empty():
+		return "Player%s" % str(player_id)
+	return player_name
+
+func _sanitize_chat_message(raw_message: String) -> String:
+	var normalized := raw_message.replace("\n", " ").replace("\r", " ").strip_edges()
+	if normalized.length() > CHAT_MAX_LENGTH:
+		normalized = normalized.substr(0, CHAT_MAX_LENGTH)
+	return normalized
 
 # Server authoritative functions
 @rpc("authority")
