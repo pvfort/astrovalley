@@ -45,6 +45,12 @@ func _build_inventory() -> void:
 
 		var slot = slot_scene.instantiate()
 		slot.slot_index = i
+
+		if slot.has_signal("slot_transfer_requested"):
+			var transfer_callable := Callable(self, "_on_slot_transfer_requested")
+			if not slot.is_connected("slot_transfer_requested", transfer_callable):
+				slot.connect("slot_transfer_requested", transfer_callable)
+
 		grid.add_child(slot)
 
 
@@ -59,3 +65,10 @@ func refresh_inventory() -> void:
 			slot.set_slot_data(
 				InventoryManager.get_inventory_slot(i)
 			)
+
+
+func _on_slot_transfer_requested(from_index: int, to_index: int) -> void:
+	if InventoryManager == null:
+		return
+
+	InventoryManager.move_inventory_slot(from_index, to_index)
