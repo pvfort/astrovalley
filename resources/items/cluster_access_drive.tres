@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" uid="uid://cm2cfagb80qtu" path="res://assets/entities/furniture/computer_off.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://fmd5ydc8qhh" path="res://scripts/items/item_data.gd" id="2_item"]
+
+[resource]
+script = ExtResource("2_item")
+item_id = "cluster_access_drive"
+display_name = "Cluster Access Drive"
+description = "Secure drive with cluster credentials and high-volume data blocks."
+icon = ExtResource("1_icon")
+stack_size = 1
+tags = Array[String](["item", "data", "hard_drive", "cluster"])

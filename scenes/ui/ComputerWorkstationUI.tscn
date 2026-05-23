@@ -1,0 +1,208 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/computer_workstation_ui.gd" id="1_computer_workstation_ui"]
+
+[node name="ComputerWorkstationUI" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_computer_workstation_ui")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -230.0
+offset_right = 360.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Computer Workstation"
+horizontal_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 340)
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="EmailTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="EmailContent" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="EmailListColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="EmailListLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent/EmailListColumn"]
+layout_mode = 2
+text = "Inbox"
+
+[node name="EmailList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent/EmailListColumn"]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EmailDetailsColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="SenderLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent/EmailDetailsColumn"]
+layout_mode = 2
+text = "Sender: --"
+
+[node name="SubjectLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent/EmailDetailsColumn"]
+layout_mode = 2
+text = "Subject: --"
+
+[node name="BodyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent/EmailDetailsColumn"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+autowrap_mode = 3
+size_flags_vertical = 3
+text = ""
+
+[node name="AttachmentLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent/EmailDetailsColumn"]
+layout_mode = 2
+text = "Attachment: --"
+
+[node name="EmailButtons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DownloadButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Download Data"
+
+[node name="EmailStatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab"]
+layout_mode = 2
+autowrap_mode = 3
+text = ""
+
+[node name="CodingTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CodingContent" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="ProjectListColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="ProjectListLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectListColumn"]
+layout_mode = 2
+text = "Coding Projects"
+
+[node name="ProjectList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectListColumn"]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProjectDetailsColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="ProjectNameLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectDetailsColumn"]
+layout_mode = 2
+text = "Select a coding project"
+
+[node name="ProjectDescriptionLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectDetailsColumn"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+autowrap_mode = 3
+size_flags_vertical = 3
+text = ""
+
+[node name="ProjectRequirementsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectDetailsColumn"]
+layout_mode = 2
+autowrap_mode = 3
+text = "Requirements: --"
+
+[node name="StorageLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectDetailsColumn"]
+layout_mode = 2
+autowrap_mode = 3
+text = "PC Data: --"
+
+[node name="MountedDrivesLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectDetailsColumn"]
+layout_mode = 2
+autowrap_mode = 3
+text = "Mounted hard drives: none"
+
+[node name="CodingButtons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CodeButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Code"
+
+[node name="MountDriveOption" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MountDriveButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mount Drive"
+
+[node name="CodingStatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab"]
+layout_mode = 2
+autowrap_mode = 3
+text = ""
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Close"
