@@ -21,6 +21,7 @@ var _task_pool: Array[Dictionary] = []
 var _available_tasks: Array[Dictionary] = []
 var _selected_index: int = -1
 var _next_refresh_day: int = 1
+var _recent_npc_talks: Dictionary = {}
 
 
 func _ready() -> void:
@@ -35,6 +36,9 @@ func _ready() -> void:
 
 	if WorldClock != null and not WorldClock.day_changed.is_connected(_on_day_changed):
 		WorldClock.day_changed.connect(_on_day_changed)
+	if EventBus != null and EventBus.has_signal("npc_talked_to"):
+		if not EventBus.npc_talked_to.is_connected(_on_npc_talked_to):
+			EventBus.npc_talked_to.connect(_on_npc_talked_to)
 
 
 func open_board() -> void:
@@ -95,10 +99,16 @@ func _on_refresh_pressed() -> void:
 
 func _complete_task(task: Dictionary) -> bool:
 	var task_title := str(task.get("title", "Task"))
+	var task_id := str(task.get("id", ""))
+	var local_player_id := _resolve_local_player_id()
 	var requirements_result := _validate_task_requirements(task)
 	if not bool(requirements_result.get("ok", false)):
 		_set_status(str(requirements_result.get("message", "Requirements not met.")))
 		return false
+
+	if not task_id.is_empty() and EventBus != null:
+		if EventBus.has_signal("task_started"):
+			EventBus.task_started.emit(local_player_id, task_id)
 
 	_consume_task_requirements(task)
 	var duration_minutes :Variant= max(int(task.get("duration_minutes", 0)), 0)
@@ -145,8 +155,34 @@ func _complete_task(task: Dictionary) -> bool:
 		GameManager.grant_observation_time(_resolve_local_player_id(), observation_time_reward)
 		reward_summary.append("Observation time +%d" % observation_time_reward)
 
+	var attendance_event_id := str(task.get("register_event_attendance", "")).strip_edges()
+	if not attendance_event_id.is_empty() and EventManager != null and EventManager.has_method("register_attendance"):
+		var attendance_count := int(EventManager.register_attendance(_resolve_local_player_id(), attendance_event_id))
+		reward_summary.append("%s attendance #%d" % [attendance_event_id.replace("_", " ").capitalize(), attendance_count])
+
+	var unlock_software_variant: Variant = task.get("unlock_software_rewards", [])
+	if unlock_software_variant is Array:
+		var unlocked_labels: Array[String] = []
+		for software in unlock_software_variant:
+			var software_id := str(software).strip_edges()
+			if software_id.is_empty():
+				continue
+			_unlock_software_for_all_workstations(software_id)
+			unlocked_labels.append(software_id.replace("_", " "))
+		if not unlocked_labels.is_empty():
+			reward_summary.append("Unlocked software: %s" % ", ".join(unlocked_labels))
+
+	if bool(task.get("unlock_cluster_access", false)):
+		_unlock_cluster_for_all_workstations()
+		reward_summary.append("Cluster access unlocked")
+
 	if reward_summary.is_empty():
 		reward_summary.append("No rewards")
+
+	if not task_id.is_empty() and EventBus != null and EventBus.has_signal("task_completed"):
+		EventBus.task_completed.emit(local_player_id, task_id)
+		if WorldClock != null:
+			WorldClock.increment_daily_tasks_completed()
 
 	_set_status("Completed %s. Rewards: %s" % [task_title, ", ".join(reward_summary)])
 	return true
@@ -258,6 +294,42 @@ func _validate_task_requirements(task: Dictionary) -> Dictionary:
 				"message": "Need %d programming progress today (have %d)." % [required_programming_progress, current_programming_progress],
 			}
 
+	var required_room := str(task.get("required_room", "")).strip_edges()
+	if not required_room.is_empty():
+		var current_room := _get_current_room_id()
+		if current_room != required_room:
+			return {
+				"ok": false,
+				"message": "Need to be in %s (currently %s)." % [required_room.replace("_", " "), current_room.replace("_", " ")],
+			}
+
+	var required_event_active := str(task.get("required_event_active", "")).strip_edges()
+	if not required_event_active.is_empty():
+		if EventManager == null or not EventManager.has_method("is_event_active"):
+			return {"ok": false, "message": "Event manager unavailable."}
+		if not EventManager.is_event_active(required_event_active):
+			return {"ok": false, "message": "Event %s is not active right now." % required_event_active.replace("_", " ")}
+
+	var required_event_attendance := max(int(task.get("required_event_attendance", 0)), 0)
+	if required_event_attendance > 0:
+		var attendance_event_id := str(task.get("register_event_attendance", task.get("required_event_active", ""))).strip_edges()
+		var current_attendance := 0
+		if not attendance_event_id.is_empty() and EventManager != null and EventManager.has_method("get_attendance_count"):
+			current_attendance = int(EventManager.get_attendance_count(_resolve_local_player_id(), attendance_event_id))
+		if current_attendance < required_event_attendance:
+			return {
+				"ok": false,
+				"message": "Need %d attendances for %s (have %d)." % [required_event_attendance, attendance_event_id.replace("_", " "), current_attendance],
+			}
+
+	var required_npc_talked := str(task.get("required_npc_talked", "")).strip_edges()
+	if not required_npc_talked.is_empty():
+		if not bool(_recent_npc_talks.get(required_npc_talked, false)):
+			return {
+				"ok": false,
+				"message": "Talk to %s first." % required_npc_talked.replace("_", " "),
+			}
+
 	var required_items_variant: Variant = task.get("required_items", [])
 	if required_items_variant is Array:
 		if InventoryManager == null:
@@ -304,6 +376,14 @@ func _resolve_local_player_id() -> int:
 	return 1
 
 
+func _on_npc_talked_to(player_id: int, npc_id: String) -> void:
+	if player_id != _resolve_local_player_id():
+		return
+	if npc_id.is_empty():
+		return
+	_recent_npc_talks[npc_id] = true
+
+
 func _set_status(message: String) -> void:
 	status_label.text = message
 
@@ -320,6 +400,33 @@ func _get_current_day() -> int:
 	if WorldClock != null:
 		return max(int(WorldClock.current_day), 1)
 	return 1
+
+
+func _get_current_room_id() -> String:
+	var scene_root := get_tree().current_scene
+	if scene_root == null:
+		return ""
+	if scene_root.has_method("get_current_room_id"):
+		return str(scene_root.get_current_room_id())
+	return ""
+
+
+func _unlock_software_for_all_workstations(software_id: String) -> void:
+	var scene_root := get_tree().current_scene
+	if scene_root == null:
+		return
+	for node in scene_root.find_children("*", "ProgrammingComponent", true, false):
+		if node != null and node.has_method("unlock_software"):
+			node.unlock_software(software_id)
+
+
+func _unlock_cluster_for_all_workstations() -> void:
+	var scene_root := get_tree().current_scene
+	if scene_root == null:
+		return
+	for node in scene_root.find_children("*", "ProgrammingComponent", true, false):
+		if node != null and node.has_method("unlock_cluster_access"):
+			node.unlock_cluster_access()
 
 
 func _load_task_pool() -> void:

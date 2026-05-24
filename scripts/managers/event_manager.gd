@@ -11,6 +11,7 @@ const WEEK_LENGTH_DAYS: int = 7
 var _event_definitions: Array[Dictionary] = []
 var _active_events: Dictionary = {}
 var _last_evaluated_hour_key: String = ""
+var _attendance_counts: Dictionary = {}
 
 
 func _ready() -> void:
@@ -50,11 +51,42 @@ func save_state() -> Dictionary:
 	return {
 		"active_event_ids": _active_events.keys(),
 		"last_evaluated_hour_key": _last_evaluated_hour_key,
+		"attendance_counts": _attendance_counts.duplicate(true),
 	}
 
 
-func load_state(_data: Dictionary) -> void:
+func load_state(data: Dictionary) -> void:
+	var attendance_variant: Variant = data.get("attendance_counts", {})
+	if attendance_variant is Dictionary:
+		_attendance_counts = (attendance_variant as Dictionary).duplicate(true)
+	else:
+		_attendance_counts.clear()
 	_refresh_active_events(true)
+
+
+func register_attendance(player_id: int, event_id: String) -> int:
+	if player_id <= 0 or event_id.is_empty():
+		return 0
+
+	var player_key := str(player_id)
+	var player_counts_variant: Variant = _attendance_counts.get(player_key, {})
+	var player_counts: Dictionary = player_counts_variant as Dictionary if player_counts_variant is Dictionary else {}
+	var next_count := int(player_counts.get(event_id, 0)) + 1
+	player_counts[event_id] = next_count
+	_attendance_counts[player_key] = player_counts
+
+	if EventBus != null and EventBus.has_signal("event_attended"):
+		EventBus.event_attended.emit(player_id, event_id, next_count)
+	return next_count
+
+
+func get_attendance_count(player_id: int, event_id: String) -> int:
+	if player_id <= 0 or event_id.is_empty():
+		return 0
+	var player_counts_variant: Variant = _attendance_counts.get(str(player_id), {})
+	if not (player_counts_variant is Dictionary):
+		return 0
+	return int((player_counts_variant as Dictionary).get(event_id, 0))
 
 
 func _on_world_day_changed(_day: int) -> void:

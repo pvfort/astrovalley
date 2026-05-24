@@ -1,0 +1,30 @@
+[
+  {
+    "npc_id": "it_admin",
+    "name": "IT Coordinator",
+    "role": "it",
+    "room_id": "it_office",
+    "position": [320, 288]
+  },
+  {
+    "npc_id": "student_1",
+    "name": "Student A",
+    "role": "student",
+    "room_id": "classroom",
+    "position": [256, 256]
+  },
+  {
+    "npc_id": "student_2",
+    "name": "Student B",
+    "role": "student",
+    "room_id": "classroom",
+    "position": [384, 256]
+  },
+  {
+    "npc_id": "student_3",
+    "name": "Student C",
+    "role": "student",
+    "room_id": "classroom",
+    "position": [512, 256]
+  }
+]

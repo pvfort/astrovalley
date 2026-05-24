@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3]
+
+[ext_resource type="Script" uid="uid://cgblfbf6aa73s" path="res://scripts/crafting/recipe_data.gd" id="1_recipe"]
+[ext_resource type="Script" uid="uid://bk1caaptdndip" path="res://scripts/crafting/ingredient_data.gd" id="2_ingredient"]
+
+[sub_resource type="Resource" id="1_input_draft"]
+script = ExtResource("2_ingredient")
+item_id = "homework_draft"
+
+[sub_resource type="Resource" id="2_input_papers"]
+script = ExtResource("2_ingredient")
+item_id = "papers"
+quantity = 2
+
+[sub_resource type="Resource" id="3_output"]
+script = ExtResource("2_ingredient")
+item_id = "homework_copies"
+quantity = 6
+
+[resource]
+script = ExtResource("1_recipe")
+id = "print_homework_copies"
+display_name = "Print Homework Copies"
+ingredients = Array[ExtResource("2_ingredient")]([SubResource("1_input_draft"), SubResource("2_input_papers")])
+outputs = Array[ExtResource("2_ingredient")]([SubResource("3_output")])
+craft_time = 2.0
+required_station_tags = Array[String](["printer"])

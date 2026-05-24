@@ -1,6 +1,9 @@
 extends Node2D
 
 const MapSystem = preload("res://scripts/map_system.gd")
+const QUEST_NPC_SCENE = preload("res://scenes/resources/QuestNpcEntity.tscn")
+const PROFESSORS_DATA_PATH := "res://data/professors.json"
+const NPC_SPAWNS_DATA_PATH := "res://data/npc_spawns.json"
 var map_system = MapSystem.new()
 
 # Optional UI references
@@ -111,6 +114,9 @@ func _create_room(room_id: String = "institute"):
 	elif FurnitureSaveManager != null:
 		FurnitureSaveManager.load_room_furniture(furniture_container, current_room_id)
 
+	_populate_room_npcs(current_room_id)
+	_emit_room_entered(current_room_id)
+
 
 func _activate_furniture_container(room_id: String) -> void:
 	if furniture_container != null and is_instance_valid(furniture_container) and furniture_container.get_parent() == self:
@@ -141,6 +147,88 @@ func get_room_tilemap() -> TileMap:
 func get_furniture_container() -> Node2D:
 	_activate_furniture_container(current_room_id)
 	return furniture_container
+
+
+func _populate_room_npcs(room_id: String) -> void:
+	if furniture_container == null:
+		return
+
+	if bool(furniture_container.get_meta("npcs_initialized", false)):
+		return
+
+	var entries := _build_npc_spawn_entries()
+	for entry_variant in entries:
+		if not (entry_variant is Dictionary):
+			continue
+		var entry: Dictionary = entry_variant as Dictionary
+		if str(entry.get("room_id", "")) != room_id:
+			continue
+		_spawn_quest_npc(entry)
+
+	furniture_container.set_meta("npcs_initialized", true)
+
+
+func _spawn_quest_npc(entry: Dictionary) -> void:
+	if QUEST_NPC_SCENE == null or furniture_container == null:
+		return
+
+	var npc := QUEST_NPC_SCENE.instantiate()
+	if npc == null:
+		return
+
+	var component: Node = npc.get_node_or_null("QuestNpcComponent")
+	if component != null:
+		component.set("npc_id", str(entry.get("npc_id", "")))
+		component.set("npc_name", str(entry.get("name", "Professor")))
+		component.set("npc_role", str(entry.get("role", "professor")))
+		component.set("dialogue_line", str(entry.get("dialogue_line", "")))
+
+	var position_variant: Variant = entry.get("position", [])
+	if position_variant is Array and (position_variant as Array).size() >= 2:
+		var position_values := position_variant as Array
+		npc.position = Vector2(float(position_values[0]), float(position_values[1]))
+
+	npc.name = str(entry.get("npc_id", "QuestNpc"))
+	furniture_container.add_child(npc)
+
+
+func _build_npc_spawn_entries() -> Array:
+	var entries: Array = []
+	entries.append_array(_load_json_array(NPC_SPAWNS_DATA_PATH))
+
+	for professor_entry_variant in _load_json_array(PROFESSORS_DATA_PATH):
+		if not (professor_entry_variant is Dictionary):
+			continue
+		var professor_entry: Dictionary = professor_entry_variant as Dictionary
+		var office_number := str(professor_entry.get("office_number", "")).strip_edges()
+		var office_room := office_number if office_number.begins_with("office_") else "office_%s" % office_number
+		entries.append({
+			"npc_id": str(professor_entry.get("npc_id", "")),
+			"name": str(professor_entry.get("name", "Professor")),
+			"role": "professor",
+			"room_id": office_room,
+			"position": [320, 224],
+			"dialogue_line": "I have teaching and research tasks posted on the task board.",
+		})
+
+	return entries
+
+
+func _load_json_array(path: String) -> Array:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return []
+	var parsed: Variant = SaveSerializer.parse_save_data(file.get_as_text())
+	if parsed is Array:
+		return parsed as Array
+	return []
+
+
+func _emit_room_entered(room_id: String) -> void:
+	if EventBus == null or not EventBus.has_signal("location_entered"):
+		return
+	var player_id := multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
+	EventBus.location_entered.emit(player_id, room_id)
 
 func _on_door_entered(body: Node2D, dest: String):
 	if body is CharacterBody2D and body.is_multiplayer_authority():

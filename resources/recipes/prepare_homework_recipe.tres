@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3]
+
+[ext_resource type="Script" uid="uid://cgblfbf6aa73s" path="res://scripts/crafting/recipe_data.gd" id="1_recipe"]
+[ext_resource type="Script" uid="uid://bk1caaptdndip" path="res://scripts/crafting/ingredient_data.gd" id="2_ingredient"]
+
+[sub_resource type="Resource" id="1_input_books"]
+script = ExtResource("2_ingredient")
+item_id = "books"
+
+[sub_resource type="Resource" id="2_input_papers"]
+script = ExtResource("2_ingredient")
+item_id = "papers"
+quantity = 2
+
+[sub_resource type="Resource" id="3_output"]
+script = ExtResource("2_ingredient")
+item_id = "homework_draft"
+
+[resource]
+script = ExtResource("1_recipe")
+id = "prepare_homework_draft"
+display_name = "Prepare Homework Draft"
+ingredients = Array[ExtResource("2_ingredient")]([SubResource("1_input_books"), SubResource("2_input_papers")])
+outputs = Array[ExtResource("2_ingredient")]([SubResource("3_output")])
+craft_time = 0.0
