@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="RecipeData" format=3]
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://bqvlw2h4m5eah"]
 
 [ext_resource type="Script" uid="uid://cgblfbf6aa73s" path="res://scripts/crafting/recipe_data.gd" id="1_recipe"]
 [ext_resource type="Script" uid="uid://bk1caaptdndip" path="res://scripts/crafting/ingredient_data.gd" id="2_ingredient"]

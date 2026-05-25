@@ -310,7 +310,7 @@ func _validate_task_requirements(task: Dictionary) -> Dictionary:
 		if not EventManager.is_event_active(required_event_active):
 			return {"ok": false, "message": "Event %s is not active right now." % required_event_active.replace("_", " ")}
 
-	var required_event_attendance := max(int(task.get("required_event_attendance", 0)), 0)
+	var required_event_attendance :Variant= max(int(task.get("required_event_attendance", 0)), 0)
 	if required_event_attendance > 0:
 		var attendance_event_id := str(task.get("register_event_attendance", task.get("required_event_active", ""))).strip_edges()
 		var current_attendance := 0

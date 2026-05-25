@@ -9,11 +9,11 @@ const INVENTORY_SLOT_SCENE := preload("res://scenes/ui/InventorySlot.tscn")
 @onready var tab_container: TabContainer = $Panel/MarginContainer/VBoxContainer/TabContainer
 @onready var inventory_grid: GridContainer = $Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/InventoryScroll/InventoryGrid
 @onready var funds_label: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/FundsLabel
-@onready var skills_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/SkillsTab/VBoxContainer/SkillsList
-@onready var crafting_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/VBoxContainer/CraftingList
-@onready var craft_requirements: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/VBoxContainer/CraftingRequirements
-@onready var crafting_status: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/VBoxContainer/CraftingStatus
-@onready var craft_button: Button = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/VBoxContainer/CraftingButtons/CraftButton
+@onready var skills_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/SkillsTab/SkillsList
+@onready var crafting_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/CraftingList
+@onready var craft_requirements: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/CraftingRequirements
+@onready var crafting_status: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/CraftingStatus
+@onready var craft_button: Button = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/CraftingButtons/CraftButton
 @onready var close_button: Button = $Panel/MarginContainer/VBoxContainer/Buttons/CloseButton
 
 var _selected_recipe: RecipeData = null

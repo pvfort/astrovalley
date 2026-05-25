@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="RecipeData" format=3]
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://bowveonha612"]
 
 [ext_resource type="Script" uid="uid://cgblfbf6aa73s" path="res://scripts/crafting/recipe_data.gd" id="1_recipe"]
 [ext_resource type="Script" uid="uid://bk1caaptdndip" path="res://scripts/crafting/ingredient_data.gd" id="2_ingredient"]
@@ -22,4 +22,3 @@ id = "prepare_homework_draft"
 display_name = "Prepare Homework Draft"
 ingredients = Array[ExtResource("2_ingredient")]([SubResource("1_input_books"), SubResource("2_input_papers")])
 outputs = Array[ExtResource("2_ingredient")]([SubResource("3_output")])
-craft_time = 0.0

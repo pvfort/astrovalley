@@ -22,7 +22,6 @@ config/features=PackedStringArray("4.6")
 
 GameManager="*res://scripts/core/game_manager.gd"
 NetworkManager="*res://scripts/core/network_manager.gd"
-TradeManager="*res://scripts/core/trade_manager.gd"
 TimeManager="*res://scripts/core/time_manager.gd"
 TaskManager="*res://scripts/core/task_manager.gd"
 QuestManager="*res://scripts/objectives/quest_manager.gd"
@@ -41,6 +40,7 @@ WeatherManager="*uid://c7lefm5bxmlxy"
 EnergyManager="*res://scripts/managers/EnergyManager.gd"
 EventBus="*uid://k64spkb085pn"
 EventManager="*res://scripts/managers/event_manager.gd"
+TradeManager="*res://scripts/core/trade_manager.gd"
 
 [display]
 

@@ -445,13 +445,13 @@ func _simulate_remove(simulated_inventory: Array, item_id: String, amount: int) 
 		if _slot_item_id(slot_dict) != item_id:
 			continue
 
-		var current_count := max(int(slot_dict.get("count", 0)), 0)
+		var current_count :Variant= max(int(slot_dict.get("count", 0)), 0)
 		if current_count <= 0:
 			simulated_inventory[slot_index] = null
 			continue
 
-		var remove_count := min(current_count, remaining)
-		var next_count := current_count - remove_count
+		var remove_count :Variant= min(current_count, remaining)
+		var next_count :Variant= current_count - remove_count
 		if next_count <= 0:
 			simulated_inventory[slot_index] = null
 		else:
@@ -471,7 +471,7 @@ func _simulate_insert(simulated_inventory: Array, item_id: String, amount: int) 
 	if item == null:
 		return false
 
-	var stack_limit := max(int(item.stack_size), 1)
+	var stack_limit :Variant= max(int(item.stack_size), 1)
 	var remaining := amount
 
 	for slot_index in range(simulated_inventory.size()):
@@ -486,11 +486,11 @@ func _simulate_insert(simulated_inventory: Array, item_id: String, amount: int) 
 		if _slot_item_id(slot_dict) != item_id:
 			continue
 
-		var current_count := max(int(slot_dict.get("count", 0)), 0)
+		var current_count :Variant= max(int(slot_dict.get("count", 0)), 0)
 		if current_count >= stack_limit:
 			continue
 
-		var add_count := min(stack_limit - current_count, remaining)
+		var add_count :Variant= min(stack_limit - current_count, remaining)
 		slot_dict["count"] = current_count + add_count
 		simulated_inventory[slot_index] = slot_dict
 		remaining -= add_count
@@ -502,7 +502,7 @@ func _simulate_insert(simulated_inventory: Array, item_id: String, amount: int) 
 		if simulated_inventory[slot_index] != null:
 			continue
 
-		var add_count := min(stack_limit, remaining)
+		var add_count :Variant= min(stack_limit, remaining)
 		simulated_inventory[slot_index] = {
 			"item": item,
 			"count": add_count,
@@ -586,7 +586,7 @@ func _sanitize_offer(raw_offer: Dictionary) -> Dictionary:
 		var item_id := str(item_id_variant).strip_edges()
 		if item_id.is_empty():
 			continue
-		var count := max(int(raw_offer.get(item_id_variant, 0)), 0)
+		var count :Variant= max(int(raw_offer.get(item_id_variant, 0)), 0)
 		if count <= 0:
 			continue
 		output[item_id] = count

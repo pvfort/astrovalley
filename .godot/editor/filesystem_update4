@@ -1,12 +1,3 @@
-res://scripts/ui/chat_ui.gd
-res://scripts/ui/clock_ui.gd
-res://scripts/managers/event_manager.gd
 res://scenes/player/Player.tscn
-res://resources/ui/light_theme.tres
-res://resources/ui/dark_theme.tres
-res://resources/recipes/print_documents_recipe.tres
-res://resources/recipes/organize_documents_recipe.tres
-res://resources/recipes/archive_documents_recipe.tres
-res://resources/recipes/water_recipe.tres
-res://resources/recipes/coffee_recipe.tres
-res://resources/dialogue/store_npc_dialogue.tres
+res://scripts/core/trade_manager.gd
+res://scripts/ui/trade_ui.gd

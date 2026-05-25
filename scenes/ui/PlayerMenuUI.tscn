@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://yry1db81li72"]
 
-[ext_resource type="Script" path="res://scripts/ui/player_menu_ui.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://8t0ebmb65dtl" path="res://scripts/ui/player_menu_ui.gd" id="1_menu"]
 
-[node name="PlayerMenuUI" type="Control"]
+[node name="PlayerMenuUI" type="Control" unique_id=310885938]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=288389496]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -26,7 +26,7 @@ offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1379984583]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -35,83 +35,96 @@ offset_top = 10.0
 offset_right = -10.0
 offset_bottom = -10.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=534983854]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=477477654]
 layout_mode = 2
 size_flags_vertical = 3
+current_tab = 0
 
-[node name="InventoryTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+[node name="InventoryTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" unique_id=273759492]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab" unique_id=1272859739]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab"]
-layout_mode = 2
-
-[node name="FundsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer"]
+[node name="FundsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer" unique_id=666987351]
 layout_mode = 2
 text = "Funds: $0"
 
-[node name="InventoryScroll" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer"]
+[node name="InventoryScroll" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer" unique_id=492907259]
 custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="InventoryGrid" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/InventoryScroll"]
+[node name="InventoryGrid" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/InventoryScroll" unique_id=697766156]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 6
 
-[node name="SkillsTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+[node name="SkillsTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" unique_id=757762544]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
-[node name="SkillsList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/SkillsTab"]
+[node name="SkillsList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/SkillsTab" unique_id=650069909]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MapTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+[node name="MapTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" unique_id=1957853008]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
-[node name="MapTitle" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/MapTab"]
+[node name="MapTitle" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/MapTab" unique_id=363947486]
 layout_mode = 2
 text = "Static Campus Map"
 
-[node name="MapLegend" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/TabContainer/MapTab"]
+[node name="MapLegend" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/TabContainer/MapTab" unique_id=1562522686]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-text = "[b]Institute[/b]: offices, IT office\n[b]Classroom[/b]: tutor classes\n[b]Colloquium Room[/b]: colloquium tasks\n[b]Library[/b]: Python Friday\n[b]Coffee Shop[/b]: social area\n[b]Observatory Annex[/b]: observation support"
+text = "[b]Institute[/b]: offices, IT office
+[b]Classroom[/b]: tutor classes
+[b]Colloquium Room[/b]: colloquium tasks
+[b]Library[/b]: Python Friday
+[b]Coffee Shop[/b]: social area
+[b]Observatory Annex[/b]: observation support"
 
-[node name="CraftingTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+[node name="CraftingTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" unique_id=468024678]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 3
 
-[node name="CraftingList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+[node name="CraftingList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab" unique_id=1963370167]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 
-[node name="CraftingRequirements" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+[node name="CraftingRequirements" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab" unique_id=351436788]
 layout_mode = 2
-autowrap_mode = 3
 text = "Requirements"
+autowrap_mode = 3
 
-[node name="CraftingStatus" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+[node name="CraftingStatus" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab" unique_id=532341439]
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="CraftingButtons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+[node name="CraftingButtons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab" unique_id=105768229]
 layout_mode = 2
 
-[node name="CraftButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/CraftingButtons"]
+[node name="CraftButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/CraftingButtons" unique_id=834373924]
 layout_mode = 2
 text = "Craft"
 
-[node name="Buttons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="Buttons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1077519614]
 layout_mode = 2
 
-[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons" unique_id=120028542]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Close"

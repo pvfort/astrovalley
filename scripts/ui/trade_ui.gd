@@ -119,8 +119,8 @@ func _on_add_offer_pressed() -> void:
 
 	var next_offer := TradeManager.get_local_offer()
 	var current_offered := int(next_offer.get(item_id, 0))
-	var add_amount := max(int(amount_spinbox.value), 1)
-	var max_total := max(available_count, 0)
+	var add_amount :Variant= max(int(amount_spinbox.value), 1)
+	var max_total :Variant= max(available_count, 0)
 	if current_offered >= max_total:
 		_set_status("You are already offering all of this item.")
 		return
@@ -148,10 +148,10 @@ func _on_remove_offer_pressed() -> void:
 	if item_id.is_empty():
 		return
 
-	var remove_amount := max(int(amount_spinbox.value), 1)
+	var remove_amount :Variant= max(int(amount_spinbox.value), 1)
 	var next_offer := TradeManager.get_local_offer()
 	var current := int(next_offer.get(item_id, 0))
-	var next_count := current - remove_amount
+	var next_count :Variant= current - remove_amount
 	if next_count <= 0:
 		next_offer.erase(item_id)
 	else:
@@ -218,7 +218,7 @@ func _refresh_inventory() -> void:
 		var item_id := item.item_id
 		if item_id.is_empty():
 			continue
-		var count := max(int(slot_dict.get("count", 0)), 0)
+		var count :Variant= max(int(slot_dict.get("count", 0)), 0)
 		if count <= 0:
 			continue
 		aggregated[item_id] = int(aggregated.get(item_id, 0)) + count
