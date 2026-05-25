@@ -311,7 +311,14 @@ func change_room(dest: String):
 	# Center players slightly
 	for player in players_node.get_children():
 		if player is CharacterBody2D:
-			player.position = Vector2(100 + player.player_id * 50, 100)
+			var spawn_position := Vector2(100 + player.player_id * 50, 100)
+			player.position = spawn_position
+			if "target_position" in player:
+				player.target_position = spawn_position
+			if "is_moving" in player:
+				player.is_moving = false
+			if "velocity" in player:
+				player.velocity = Vector2.ZERO
 
 
 func spawn_player(id: int):
