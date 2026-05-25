@@ -4,9 +4,10 @@ extends Control
 const STATIONLESS_RECIPES: Array[RecipeData] = [
 	preload("res://resources/recipes/prepare_homework_recipe.tres"),
 ]
+const INVENTORY_SLOT_SCENE := preload("res://scenes/ui/InventorySlot.tscn")
 
 @onready var tab_container: TabContainer = $Panel/MarginContainer/VBoxContainer/TabContainer
-@onready var inventory_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/InventoryList
+@onready var inventory_grid: GridContainer = $Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/InventoryScroll/InventoryGrid
 @onready var funds_label: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/FundsLabel
 @onready var skills_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/SkillsTab/VBoxContainer/SkillsList
 @onready var crafting_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/VBoxContainer/CraftingList
@@ -28,6 +29,7 @@ func _ready() -> void:
 	if SkillManager != null:
 		SkillManager.skill_xp_changed.connect(_refresh_skills_tab)
 		SkillManager.skill_level_changed.connect(_refresh_skills_tab)
+	_build_inventory_grid()
 	_populate_crafting_list()
 	_refresh_all_tabs()
 
@@ -63,25 +65,41 @@ func _refresh_all_tabs() -> void:
 
 
 func _refresh_inventory_tab() -> void:
-	inventory_list.clear()
 	if InventoryManager == null:
 		funds_label.text = "Funds: --"
 		return
 
+	_build_inventory_grid()
 	funds_label.text = "Funds: $%d" % int(InventoryManager.funds)
+	for slot_index in range(inventory_grid.get_child_count()):
+		var slot_node: Node = inventory_grid.get_child(slot_index)
+		if slot_node.has_method("set_slot_data"):
+			slot_node.call("set_slot_data", InventoryManager.get_inventory_slot(slot_index))
+
+
+func _build_inventory_grid() -> void:
+	if InventoryManager == null:
+		return
+	if inventory_grid.get_child_count() == InventoryManager.get_inventory_size():
+		return
+
+	for child in inventory_grid.get_children():
+		child.queue_free()
+
 	for slot_index in range(InventoryManager.get_inventory_size()):
-		var slot_variant: Variant = InventoryManager.get_inventory_slot(slot_index)
-		if not (slot_variant is Dictionary):
-			continue
-		var slot_dict: Dictionary = slot_variant as Dictionary
-		var item_variant: Variant = slot_dict.get("item", null)
-		if item_variant == null:
-			continue
-		var item_name := ""
-		if "display_name" in item_variant:
-			item_name = str(item_variant.display_name)
-		var count := int(slot_dict.get("count", 0))
-		inventory_list.add_item("%s x%d" % [item_name, count])
+		var slot_node: Node = INVENTORY_SLOT_SCENE.instantiate()
+		slot_node.set("slot_index", slot_index)
+		if slot_node.has_signal("slot_transfer_requested"):
+			var transfer_callable := Callable(self, "_on_inventory_slot_transfer_requested")
+			if not slot_node.is_connected("slot_transfer_requested", transfer_callable):
+				slot_node.connect("slot_transfer_requested", transfer_callable)
+		inventory_grid.add_child(slot_node)
+
+
+func _on_inventory_slot_transfer_requested(from_index: int, to_index: int) -> void:
+	if InventoryManager == null:
+		return
+	InventoryManager.move_inventory_slot(from_index, to_index)
 
 
 func _refresh_skills_tab(_a = null, _b = null) -> void:
