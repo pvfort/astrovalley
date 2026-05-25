@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Telescope",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/TelescopeEntity.tscn",
+    "position": [400, 300]
+  },
+  {
+    "name": "ComputerEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/ComputerEntity.tscn",
+    "position": [500, 300]
+  },
+  {
+    "name": "BedEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/BedEntity.tscn",
+    "position": [620, 300]
+  },
+  {
+    "name": "StoreNpcEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/StoreNpcEntity.tscn",
+    "position": [360, 300]
+  },
+  {
+    "name": "CoffeeMachineEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/CoffeeMachine.tscn",
+    "position": [285, 300]
+  },
+  {
+    "name": "OfficeDeskEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/furniture/OfficeDeskEntity.tscn",
+    "position": [760, 330]
+  },
+  {
+    "name": "PrinterStationEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/PrinterStationEntity.tscn",
+    "position": [825, 305]
+  },
+  {
+    "name": "WaterDispenserEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/WaterDispenserEntity.tscn",
+    "position": [220, 300]
+  },
+  {
+    "name": "PlantEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/PlantEntity.tscn",
+    "position": [220, 356]
+  },
+  {
+    "name": "BookshelfEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/BookshelfEntity.tscn",
+    "position": [900, 336]
+  },
+  {
+    "name": "ChairEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/ChairEntity.tscn",
+    "position": [530, 330]
+  },
+  {
+    "name": "SmallTableEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/SmallTableEntity.tscn",
+    "position": [560, 335]
+  },
+  {
+    "name": "CoffeeEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/CoffeeEntity.tscn",
+    "position": [256, 352]
+  },
+  {
+    "name": "TaskBoardEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/TaskBoardEntity.tscn",
+    "position": [675, 338]
+  },
+  {
+    "name": "DeskStorageEntity",
+    "room_id": "institute",
+    "scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+    "position": [440, 501]
+  },
+  {
+    "name": "QuestMug",
+    "room_id": "institute",
+    "scene_path": "res://scenes/resources/MugEntity.tscn",
+    "position": [280, 360]
+  }
+]
