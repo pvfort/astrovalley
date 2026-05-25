@@ -34,11 +34,17 @@ func _ready() -> void:
 	add_to_group("player")
 
 	if is_multiplayer_authority():
-		if camera:
-			camera.make_current()
-		if InventoryManager != null:
-			InventoryManager.inventory_changed.connect(_on_inventory_changed)
-		_update_equipped_item()
+		activate_local_authority()
+
+
+func activate_local_authority() -> void:
+	if not is_multiplayer_authority():
+		return
+	if camera:
+		camera.make_current()
+	if InventoryManager != null and not InventoryManager.inventory_changed.is_connected(_on_inventory_changed):
+		InventoryManager.inventory_changed.connect(_on_inventory_changed)
+	_update_equipped_item()
 
 
 func _unhandled_input(event: InputEvent) -> void:
