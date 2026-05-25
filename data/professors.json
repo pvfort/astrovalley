@@ -1,0 +1,22 @@
+[
+  {
+    "npc_id": "professor_alvarez",
+    "name": "Prof. Alvarez",
+    "office_number": "101"
+  },
+  {
+    "npc_id": "professor_chen",
+    "name": "Prof. Chen",
+    "office_number": "104"
+  },
+  {
+    "npc_id": "professor_khan",
+    "name": "Prof. Khan",
+    "office_number": "107"
+  },
+  {
+    "npc_id": "professor_singh",
+    "name": "Prof. Singh",
+    "office_number": "110"
+  }
+]

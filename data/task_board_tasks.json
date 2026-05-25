@@ -101,5 +101,68 @@
     "money_reward": 25,
     "observation_time_reward": 2,
     "item_rewards": []
+  },
+  {
+    "id": "tutor_class_session",
+    "title": "Tutor Class Session",
+    "description": "Go to the classroom and run a tutor class for undergraduate students.",
+    "duration_minutes": 60,
+    "required_room": "classroom",
+    "required_items": [
+      { "item_id": "homework_copies", "count": 3 }
+    ],
+    "skill_id": "teaching",
+    "xp_reward": 34,
+    "money_reward": 20
+  },
+  {
+    "id": "colloquium_attendance",
+    "title": "Attend Colloquium",
+    "description": "Attend the scheduled colloquium in the colloquium room.",
+    "duration_minutes": 75,
+    "required_room": "colloquium_room",
+    "skill_id": "teaching",
+    "xp_reward": 28,
+    "money_reward": 12
+  },
+  {
+    "id": "python_friday_attendance_1",
+    "title": "Python Friday (Toolkit Unlock)",
+    "description": "Attend Python Friday to unlock the Python toolkit software.",
+    "duration_minutes": 60,
+    "required_room": "library",
+    "required_event_active": "python_friday",
+    "required_event_attendance": 0,
+    "register_event_attendance": "python_friday",
+    "unlock_software_rewards": ["python_toolkit"],
+    "skill_id": "teaching",
+    "xp_reward": 20,
+    "money_reward": 0
+  },
+  {
+    "id": "python_friday_attendance_2",
+    "title": "Python Friday (Analysis Suite Unlock)",
+    "description": "Attend Python Friday repeatedly to unlock the analysis suite.",
+    "duration_minutes": 60,
+    "required_room": "library",
+    "required_event_active": "python_friday",
+    "required_event_attendance": 2,
+    "register_event_attendance": "python_friday",
+    "unlock_software_rewards": ["analysis_suite"],
+    "skill_id": "teaching",
+    "xp_reward": 24,
+    "money_reward": 0
+  },
+  {
+    "id": "it_cluster_onboarding",
+    "title": "IT Cluster Onboarding",
+    "description": "Meet IT in their office and finish onboarding to unlock cluster access.",
+    "duration_minutes": 90,
+    "required_room": "it_office",
+    "required_npc_talked": "it_admin",
+    "unlock_cluster_access": true,
+    "skill_id": "programming",
+    "xp_reward": 26,
+    "money_reward": 25
   }
 ]

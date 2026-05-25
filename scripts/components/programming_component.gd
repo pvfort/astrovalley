@@ -104,6 +104,21 @@ const PROJECT_DEFINITIONS: Array[Dictionary] = [
 		"progress_gain": 120,
 		"energy_cost": 18.0,
 	},
+	{
+		"id": "cluster_simulation_marathon",
+		"display_name": "Cluster simulation marathon",
+		"description": "Run long batch simulations on the university cluster for publication-ready artifacts.",
+		"required_data": {
+			"big_data": 6,
+			"special_data": 1,
+		},
+		"script_type": "cluster",
+		"required_software": ["python_toolkit", "analysis_suite"],
+		"xp_gain": 120,
+		"time_minutes": 180,
+		"progress_gain": 220,
+		"energy_cost": 24.0,
+	},
 ]
 
 @export var station_id: String = "computer_station"

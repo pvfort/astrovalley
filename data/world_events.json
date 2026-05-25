@@ -1,5 +1,15 @@
 [
 	{
+		"id": "python_friday",
+		"name": "Python Friday",
+		"description": "Weekly coding meet-up focused on Python tools and workflows.",
+		"weekdays": [5],
+		"start_hour": 14,
+		"end_hour": 19,
+		"location": "library",
+		"tags": ["coding", "teaching", "weekly"]
+	},
+	{
 		"id": "pie_friday",
 		"name": "Pie Friday",
 		"description": "Every Friday, staff gather in the main room for pie.",

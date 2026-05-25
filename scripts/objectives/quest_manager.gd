@@ -5,6 +5,13 @@ signal quest_progressed(quest: Quest)
 signal quest_completed(quest: Quest)
 
 const STARTER_QUEST_ID := "morning_routine"
+const QUEST_SEQUENCE: Array[String] = [
+	"morning_routine",
+	"meet_professor",
+	"teaching_cycle",
+	"python_friday_path",
+	"it_cluster_access",
+]
 
 var _quests: Dictionary = {}
 var _active_quest_id := ""
@@ -56,7 +63,7 @@ func load_state(data: Dictionary) -> void:
 	_player_id = _resolve_local_player_id()
 	_initialize_default_quests()
 
-	var saved_quests :Variant= data.get("quests", {})
+	var saved_quests: Variant = data.get("quests", {})
 	if saved_quests is Dictionary:
 		for quest_id_variant in (saved_quests as Dictionary).keys():
 			var quest_variant: Variant = _quests.get(str(quest_id_variant), null)
@@ -65,6 +72,8 @@ func load_state(data: Dictionary) -> void:
 				(quest_variant as Quest).load_state(quest_state_variant as Dictionary)
 
 	_active_quest_id = str(data.get("active_quest_id", STARTER_QUEST_ID))
+	if not _quests.has(_active_quest_id):
+		_active_quest_id = _find_first_available_quest_id()
 	_activate_current_quest()
 
 
@@ -74,19 +83,20 @@ func _initialize_default_quests() -> void:
 			_disconnect_quest(quest_variant as Quest)
 	_quests.clear()
 
-	var quest := Quest.new()
-	quest.id = STARTER_QUEST_ID
-	quest.title = "Observatory Routine"
-	quest.objectives = [
-		_create_collect_mug_objective(),
-		_create_use_station_objective(),
-		_create_complete_observe_objective(),
-	]
-
-	_quests[quest.id] = quest
+	_register_quest(_build_observatory_routine())
+	_register_quest(_build_meet_professor_quest())
+	_register_quest(_build_teaching_cycle_quest())
+	_register_quest(_build_python_friday_quest())
+	_register_quest(_build_it_cluster_quest())
 
 	if _active_quest_id.is_empty():
-		_active_quest_id = quest.id
+		_active_quest_id = STARTER_QUEST_ID
+
+
+func _register_quest(quest: Quest) -> void:
+	if quest == null or quest.id.is_empty():
+		return
+	_quests[quest.id] = quest
 
 
 func _activate_current_quest() -> void:
@@ -126,11 +136,111 @@ func _on_quest_completed() -> void:
 		quest_completed.emit(quest)
 		quest_progressed.emit(quest)
 
+	var next_quest_id := _find_next_quest_id(_active_quest_id)
+	if next_quest_id.is_empty():
+		return
+	_active_quest_id = next_quest_id
+	_activate_current_quest()
+
 
 func _resolve_local_player_id() -> int:
 	if multiplayer.has_multiplayer_peer():
 		return multiplayer.get_unique_id()
 	return 1
+
+
+func _find_next_quest_id(current_quest_id: String) -> String:
+	var index := QUEST_SEQUENCE.find(current_quest_id)
+	if index == -1:
+		return ""
+	for i in range(index + 1, QUEST_SEQUENCE.size()):
+		var candidate := QUEST_SEQUENCE[i]
+		var quest_variant: Variant = _quests.get(candidate, null)
+		if quest_variant is Quest:
+			var quest := quest_variant as Quest
+			if not quest.is_completed():
+				return candidate
+	return ""
+
+
+func _find_first_available_quest_id() -> String:
+	for quest_id in QUEST_SEQUENCE:
+		var quest_variant: Variant = _quests.get(quest_id, null)
+		if not (quest_variant is Quest):
+			continue
+		var quest := quest_variant as Quest
+		if not quest.is_completed():
+			return quest_id
+	return STARTER_QUEST_ID
+
+
+func _build_observatory_routine() -> Quest:
+	var quest := Quest.new()
+	quest.id = STARTER_QUEST_ID
+	quest.title = "Observatory Routine"
+	quest.objectives = [
+		_create_collect_mug_objective(),
+		_create_use_station_objective(),
+		_create_complete_observe_objective(),
+	]
+	return quest
+
+
+func _build_meet_professor_quest() -> Quest:
+	var quest := Quest.new()
+	quest.id = "meet_professor"
+	quest.title = "Meet Your Professor"
+	var talk := TalkToNpcObjective.new()
+	talk.target_npc_id = "professor_alvarez"
+	talk.description = "Visit Prof. Alvarez in office 101"
+	var enter_office := EnterLocationObjective.new()
+	enter_office.target_location_id = "office_101"
+	enter_office.description = "Enter office 101"
+	quest.objectives = [enter_office, talk]
+	return quest
+
+
+func _build_teaching_cycle_quest() -> Quest:
+	var quest := Quest.new()
+	quest.id = "teaching_cycle"
+	quest.title = "Teaching Cycle"
+	var tutor_task := TaskCompleteObjective.new()
+	tutor_task.target_task = "tutor_class_session"
+	tutor_task.description = "Complete a tutor class in the classroom"
+	var deliver := DeliverHomeworkObjective.new()
+	deliver.description = "Hand out homework copies to students"
+	deliver.required_deliveries = 2
+	var colloquium_task := TaskCompleteObjective.new()
+	colloquium_task.target_task = "colloquium_attendance"
+	colloquium_task.description = "Attend one colloquium session"
+	quest.objectives = [tutor_task, deliver, colloquium_task]
+	return quest
+
+
+func _build_python_friday_quest() -> Quest:
+	var quest := Quest.new()
+	quest.id = "python_friday_path"
+	quest.title = "Python Friday Track"
+	var attendance := EventAttendanceObjective.new()
+	attendance.target_event_id = "python_friday"
+	attendance.required_attendances = 3
+	attendance.description = "Attend Python Friday three times"
+	quest.objectives = [attendance]
+	return quest
+
+
+func _build_it_cluster_quest() -> Quest:
+	var quest := Quest.new()
+	quest.id = "it_cluster_access"
+	quest.title = "IT Cluster Access"
+	var talk_it := TalkToNpcObjective.new()
+	talk_it.target_npc_id = "it_admin"
+	talk_it.description = "Speak with the IT coordinator"
+	var onboarding := TaskCompleteObjective.new()
+	onboarding.target_task = "it_cluster_onboarding"
+	onboarding.description = "Complete IT cluster onboarding task"
+	quest.objectives = [talk_it, onboarding]
+	return quest
 
 
 func _create_collect_mug_objective() -> CollectItemObjective:

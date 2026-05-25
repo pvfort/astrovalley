@@ -1,0 +1,109 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/player_menu_ui.gd" id="1_menu"]
+
+[node name="PlayerMenuUI" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -220.0
+offset_right = 340.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InventoryTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+
+[node name="FundsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab"]
+layout_mode = 2
+text = "Funds: $0"
+
+[node name="InventoryList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab"]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SkillsTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+
+[node name="SkillsList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/SkillsTab"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MapTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+
+[node name="MapTitle" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/MapTab"]
+layout_mode = 2
+text = "Static Campus Map"
+
+[node name="MapLegend" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/TabContainer/MapTab"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[b]Institute[/b]: offices, IT office\n[b]Classroom[/b]: tutor classes\n[b]Colloquium Room[/b]: colloquium tasks\n[b]Library[/b]: Python Friday\n[b]Coffee Shop[/b]: social area\n[b]Observatory Annex[/b]: observation support"
+
+[node name="CraftingTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+
+[node name="CraftingList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+
+[node name="CraftingRequirements" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+layout_mode = 2
+autowrap_mode = 3
+text = "Requirements"
+
+[node name="CraftingStatus" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="CraftingButtons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab"]
+layout_mode = 2
+
+[node name="CraftButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/TabContainer/CraftingTab/CraftingButtons"]
+layout_mode = 2
+text = "Craft"
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Close"

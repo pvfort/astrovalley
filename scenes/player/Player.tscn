@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/TaskBoardUI.tscn" id="12_task_board_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ComputerWorkstationUI.tscn" id="13_computer_workstation_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ChatUI.tscn" id="14_chat_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PlayerMenuUI.tscn" id="15_player_menu_ui"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 
@@ -185,6 +186,9 @@ layer = 2
 [node name="HotbarUI" parent="CanvasLayer" unique_id=564545377 instance=ExtResource("5_npwbq")]
 
 [node name="InventoryUi" parent="CanvasLayer" unique_id=1835366274 instance=ExtResource("2_inventory_ui")]
+open_with_inventory_toggle = false
+
+[node name="PlayerMenuUI" parent="CanvasLayer" instance=ExtResource("15_player_menu_ui")]
 
 [node name="StoreUI" parent="CanvasLayer" unique_id=1921761177 instance=ExtResource("11_rn7t0")]
 

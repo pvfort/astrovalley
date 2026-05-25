@@ -16,6 +16,12 @@ const OFFICE_WIDTH := 10
 const OFFICE_HEIGHT := 8
 const INSTITUTE_DOOR_X_OFFSET := 3
 const INSTITUTE_DOOR_X_SPACING := 2
+const CLASSROOM_ROOM_ID := "classroom"
+const COLLOQUIUM_ROOM_ID := "colloquium_room"
+const IT_OFFICE_ROOM_ID := "it_office"
+const LIBRARY_ROOM_ID := "library"
+const CAFE_ROOM_ID := "coffee_shop"
+const OBSERVATORY_ROOM_ID := "observatory_annex"
 
 func _init() -> void:
 	_build_room_defs()
@@ -57,6 +63,22 @@ func _build_room_defs() -> void:
 			}]
 		}
 
+	institute_doors.append_array([
+		{"pos": Vector2i(1, 0), "dest": CLASSROOM_ROOM_ID},
+		{"pos": Vector2i(22, 0), "dest": COLLOQUIUM_ROOM_ID},
+		{"pos": Vector2i(21, 0), "dest": CAFE_ROOM_ID},
+		{"pos": Vector2i(1, institute_height - 1), "dest": IT_OFFICE_ROOM_ID},
+		{"pos": Vector2i(22, institute_height - 1), "dest": LIBRARY_ROOM_ID},
+		{"pos": Vector2i(21, institute_height - 1), "dest": OBSERVATORY_ROOM_ID},
+	])
+
+	room_defs[CLASSROOM_ROOM_ID] = _room_with_return_door(16, 12, true, Vector2i(8, 11))
+	room_defs[COLLOQUIUM_ROOM_ID] = _room_with_return_door(20, 14, false, Vector2i(10, 13))
+	room_defs[IT_OFFICE_ROOM_ID] = _room_with_return_door(12, 10, true, Vector2i(6, 9))
+	room_defs[LIBRARY_ROOM_ID] = _room_with_return_door(18, 12, true, Vector2i(9, 11))
+	room_defs[CAFE_ROOM_ID] = _room_with_return_door(14, 10, true, Vector2i(7, 9))
+	room_defs[OBSERVATORY_ROOM_ID] = _room_with_return_door(16, 12, false, Vector2i(8, 11))
+
 	room_defs[INSTITUTE_ROOM_ID] = {
 		"width": institute_width,
 		"height": institute_height,
@@ -66,3 +88,15 @@ func _build_room_defs() -> void:
 
 func load_room(room_id_str):
 	return room_defs.get(room_id_str, room_defs[INSTITUTE_ROOM_ID])
+
+
+func _room_with_return_door(width: int, height: int, wood_floor: bool, door_pos: Vector2i) -> Dictionary:
+	return {
+		"width": width,
+		"height": height,
+		"wood_floor": wood_floor,
+		"doors": [{
+			"pos": door_pos,
+			"dest": INSTITUTE_ROOM_ID
+		}]
+	}

@@ -21,6 +21,7 @@ var equipped_item: ItemData = null
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_area: Area2D = $InteractionArea
 @onready var camera: Camera2D = $FollowCamera
+@onready var player_menu_ui: Node = $CanvasLayer/PlayerMenuUI
 
 enum InteractionMode {
 	PRIMARY,
@@ -84,7 +85,9 @@ func _physics_process(_delta: float) -> void:
 
 		
 	if Input.is_action_just_pressed("inventory_toggle"):
-		if InventoryManager != null:
+		if player_menu_ui != null and player_menu_ui.has_method("toggle_menu"):
+			player_menu_ui.toggle_menu()
+		elif InventoryManager != null:
 			InventoryManager.toggle_inventory()
 
 	_update_interaction_target()

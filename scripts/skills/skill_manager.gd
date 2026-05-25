@@ -13,9 +13,13 @@ func _ready():
 	var observation = preload(
 		"res://resources/skills/observation_skill.tres"
 	)
+	var teaching = preload(
+		"res://resources/skills/teaching_skill.tres"
+	)
 
 	register_skill(programming)
 	register_skill(observation)
+	register_skill(teaching)
 
 
 func register_skill(skill: SkillData) -> void:

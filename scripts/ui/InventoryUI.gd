@@ -3,6 +3,7 @@ extends Control
 @export var slot_scene: PackedScene = preload(
 	"res://scenes/ui/InventorySlot.tscn"
 )
+@export var open_with_inventory_toggle: bool = true
 
 @onready var grid: GridContainer = (
 	$Panel/MarginContainer/VBoxContainer/GridContainer
@@ -31,6 +32,8 @@ func _ready() -> void:
 
 
 func _on_inventory_toggled(open_state: bool) -> void:
+	if not open_with_inventory_toggle:
+		return
 	is_open = open_state
 
 	visible = is_open
