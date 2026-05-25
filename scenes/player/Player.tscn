@@ -18,6 +18,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/ComputerWorkstationUI.tscn" id="13_computer_workstation_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ChatUI.tscn" id="14_chat_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/PlayerMenuUI.tscn" id="15_player_menu_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/TradeUI.tscn" id="16_trade_ui"]
+[ext_resource type="Script" path="res://scripts/components/player_trade_component.gd" id="17_player_trade_component"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 
@@ -155,6 +157,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
 radius = 26.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_trade"]
+radius = 20.0
+
 [node name="Player" type="CharacterBody2D" unique_id=559979378]
 script = ExtResource("1_player_script")
 
@@ -171,6 +176,17 @@ collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=810727089]
 shape = SubResource("CircleShape2D_interaction")
+
+[node name="TradeInteractArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TradeInteractArea"]
+shape = SubResource("CircleShape2D_trade")
+
+[node name="PlayerTradeComponent" type="Node" parent="TradeInteractArea"]
+script = ExtResource("17_player_trade_component")
+metadata/_custom_type_script = "res://scripts/components/player_trade_component.gd"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=912800116]
 layer = 2
@@ -201,6 +217,8 @@ open_with_inventory_toggle = false
 [node name="ChatUI" parent="CanvasLayer" unique_id=1618178186 instance=ExtResource("14_chat_ui")]
 offset_top = -72.0
 offset_right = -1040.0
+
+[node name="TradeUI" parent="CanvasLayer" instance=ExtResource("16_trade_ui")]
 
 [node name="ClockUI" parent="CanvasLayer" unique_id=47210436 instance=ExtResource("6_7oing")]
 

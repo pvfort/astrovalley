@@ -1,0 +1,139 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/trade_ui.gd" id="1_trade_ui"]
+
+[node name="TradeUI" type="Control"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -220.0
+offset_right = 300.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_trade_ui")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TradeTitle" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Trade"
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="InventoryColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/InventoryColumn"]
+layout_mode = 2
+text = "Your Inventory"
+horizontal_alignment = 1
+
+[node name="InventoryList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/Columns/InventoryColumn"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OfferColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/OfferColumn"]
+layout_mode = 2
+text = "Your Offer"
+horizontal_alignment = 1
+
+[node name="OfferList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/Columns/OfferColumn"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PartnerColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Panel/MarginContainer/VBoxContainer/Columns/PartnerColumn"]
+layout_mode = 2
+text = "Partner Offer"
+horizontal_alignment = 1
+
+[node name="PartnerOfferList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/Columns/PartnerColumn"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ControlsRow" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AmountLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ControlsRow"]
+layout_mode = 2
+text = "Amount"
+
+[node name="AmountSpinBox" type="SpinBox" parent="Panel/MarginContainer/VBoxContainer/ControlsRow"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 999.0
+value = 1.0
+
+[node name="AddOfferButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlsRow"]
+layout_mode = 2
+text = "Add to Offer"
+
+[node name="RemoveOfferButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlsRow"]
+layout_mode = 2
+text = "Remove from Offer"
+
+[node name="ActionRow" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+theme_override_constants/separation = 8
+
+[node name="AcceptButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ActionRow"]
+layout_mode = 2
+text = "Accept"
+
+[node name="CancelButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ActionRow"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select items and both players must accept."
+horizontal_alignment = 1
+autowrap_mode = 3
