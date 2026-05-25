@@ -372,6 +372,9 @@ func _apply_trade_exchange(give_offer: Dictionary, receive_offer: Dictionary) ->
 	var give := _sanitize_offer(give_offer)
 	var receive := _sanitize_offer(receive_offer)
 
+	if not _can_apply_trade_exchange(give, receive):
+		return false
+
 	for item_id_variant in give.keys():
 		var item_id := str(item_id_variant)
 		var required_count := int(give.get(item_id, 0))
@@ -397,6 +400,140 @@ func _apply_trade_exchange(give_offer: Dictionary, receive_offer: Dictionary) ->
 			return false
 
 	return true
+
+
+func _can_apply_trade_exchange(give: Dictionary, receive: Dictionary) -> bool:
+	var working_inventory_variant: Variant = InventoryManager.get("inventory")
+	if not (working_inventory_variant is Array):
+		return true
+
+	var simulated_inventory: Array = (working_inventory_variant as Array).duplicate(true)
+
+	for item_id_variant in give.keys():
+		var item_id := str(item_id_variant)
+		var remove_count := int(give.get(item_id, 0))
+		if remove_count <= 0:
+			continue
+		if not _simulate_remove(simulated_inventory, item_id, remove_count):
+			return false
+
+	for item_id_variant in receive.keys():
+		var item_id := str(item_id_variant)
+		var add_count := int(receive.get(item_id, 0))
+		if add_count <= 0:
+			continue
+		if not _simulate_insert(simulated_inventory, item_id, add_count):
+			return false
+
+	return true
+
+
+func _simulate_remove(simulated_inventory: Array, item_id: String, amount: int) -> bool:
+	if amount <= 0:
+		return true
+
+	var remaining := amount
+	for slot_index in range(simulated_inventory.size()):
+		if remaining <= 0:
+			break
+
+		var slot_variant: Variant = simulated_inventory[slot_index]
+		if not (slot_variant is Dictionary):
+			continue
+
+		var slot_dict: Dictionary = slot_variant as Dictionary
+		if _slot_item_id(slot_dict) != item_id:
+			continue
+
+		var current_count := max(int(slot_dict.get("count", 0)), 0)
+		if current_count <= 0:
+			simulated_inventory[slot_index] = null
+			continue
+
+		var remove_count := min(current_count, remaining)
+		var next_count := current_count - remove_count
+		if next_count <= 0:
+			simulated_inventory[slot_index] = null
+		else:
+			slot_dict["count"] = next_count
+			simulated_inventory[slot_index] = slot_dict
+
+		remaining -= remove_count
+
+	return remaining <= 0
+
+
+func _simulate_insert(simulated_inventory: Array, item_id: String, amount: int) -> bool:
+	if amount <= 0:
+		return true
+
+	var item := _resolve_item_data(item_id)
+	if item == null:
+		return false
+
+	var stack_limit := max(int(item.stack_size), 1)
+	var remaining := amount
+
+	for slot_index in range(simulated_inventory.size()):
+		if remaining <= 0:
+			break
+
+		var slot_variant: Variant = simulated_inventory[slot_index]
+		if not (slot_variant is Dictionary):
+			continue
+
+		var slot_dict: Dictionary = slot_variant as Dictionary
+		if _slot_item_id(slot_dict) != item_id:
+			continue
+
+		var current_count := max(int(slot_dict.get("count", 0)), 0)
+		if current_count >= stack_limit:
+			continue
+
+		var add_count := min(stack_limit - current_count, remaining)
+		slot_dict["count"] = current_count + add_count
+		simulated_inventory[slot_index] = slot_dict
+		remaining -= add_count
+
+	for slot_index in range(simulated_inventory.size()):
+		if remaining <= 0:
+			break
+
+		if simulated_inventory[slot_index] != null:
+			continue
+
+		var add_count := min(stack_limit, remaining)
+		simulated_inventory[slot_index] = {
+			"item": item,
+			"count": add_count,
+		}
+		remaining -= add_count
+
+	return remaining <= 0
+
+
+func _resolve_item_data(item_id: String) -> ItemData:
+	if item_id.is_empty() or InventoryManager == null:
+		return null
+
+	if InventoryManager.has_method("_item_by_id"):
+		var loaded: Variant = InventoryManager.call("_item_by_id", item_id)
+		if loaded is ItemData:
+			return loaded as ItemData
+
+	return null
+
+
+func _slot_item_id(slot_variant: Variant) -> String:
+	if not (slot_variant is Dictionary):
+		return ""
+
+	var slot_dict: Dictionary = slot_variant as Dictionary
+	var item_variant: Variant = slot_dict.get("item", null)
+	if item_variant is ItemData:
+		var item: ItemData = item_variant as ItemData
+		return item.item_id
+	return ""
 
 
 func _clear_local_trade(reason: String) -> void:
