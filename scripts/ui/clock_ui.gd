@@ -228,16 +228,16 @@ func _format_rewards_from_data(task_data_variant: Variant) -> String:
 	var task_data: Dictionary = task_data_variant as Dictionary
 	var reward_parts: Array[String] = []
 
-	var money_reward := max(int(task_data.get("money_reward", 0)), 0)
+	var money_reward :Variant= max(int(task_data.get("money_reward", 0)), 0)
 	if money_reward > 0:
 		reward_parts.append("$%d" % money_reward)
 
 	var skill_id := str(task_data.get("skill_id", ""))
-	var xp_reward := max(int(task_data.get("xp_reward", 0)), 0)
+	var xp_reward :Variant= max(int(task_data.get("xp_reward", 0)), 0)
 	if not skill_id.is_empty() and xp_reward > 0:
 		reward_parts.append("%d XP (%s)" % [xp_reward, skill_id.capitalize()])
 
-	var observation_time_reward := max(int(task_data.get("observation_time_reward", 0)), 0)
+	var observation_time_reward :Variant= max(int(task_data.get("observation_time_reward", 0)), 0)
 	if observation_time_reward > 0:
 		reward_parts.append("Observation time +%d" % observation_time_reward)
 
@@ -248,7 +248,7 @@ func _format_rewards_from_data(task_data_variant: Variant) -> String:
 				continue
 			var item_reward: Dictionary = item_reward_variant as Dictionary
 			var item_id := str(item_reward.get("item_id", "")).replace("_", " ")
-			var item_count := max(int(item_reward.get("count", 0)), 0)
+			var item_count :Variant= max(int(item_reward.get("count", 0)), 0)
 			if item_id.is_empty() or item_count <= 0:
 				continue
 			reward_parts.append("%s x%d" % [item_id, item_count])

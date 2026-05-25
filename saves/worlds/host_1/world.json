@@ -1,14 +1,905 @@
 {
-	"day": 44,
-	"entities": [],
-	"machine_states": [],
-	"placed_furniture": [],
-	"room_states": [],
+	"day": 59,
+	"entities": [
+		{
+			"category": "room_states",
+			"node_path": "/root/Main",
+			"parent_path": "/root",
+			"scene_path": "res://scenes/main.tscn",
+			"state": {
+				"current_room_id": "institute"
+			},
+			"transform": {
+				"position": {
+					"x": 0.0,
+					"y": 0.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "main_world_state"
+		},
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/ComputerEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/ComputerEntity.tscn",
+			"state": {
+				"ProgrammingComponent": {
+					"cluster_access_unlocked": false,
+					"email_messages": [
+						{
+							"attachment": {
+								"amount": 4.0,
+								"data_type": "small_data",
+								"quality": "small"
+							},
+							"body": "Pushing a calibrated subset from last week. Should be enough for local scripts.",
+							"downloaded": true,
+							"id": "email_prof_vega_1",
+							"sender": "Prof. Vega",
+							"subject": "Transit catalog subset"
+						},
+						{
+							"attachment": {
+								"amount": 1.0,
+								"data_type": "special_data",
+								"quality": "special"
+							},
+							"body": "Observation package is ready. Includes reduced light curves for proposal work.",
+							"downloaded": true,
+							"id": "email_obs_north_1",
+							"sender": "North Observatory",
+							"subject": "Night block observations"
+						},
+						{
+							"attachment": {
+								"amount": 3.0,
+								"data_type": "small_data",
+								"quality": "small"
+							},
+							"body": "Use this benchmark set to validate your local processing scripts.",
+							"downloaded": true,
+							"id": "email_prof_lin_1",
+							"sender": "Prof. Lin",
+							"subject": "Sanity-check benchmark set"
+						}
+					],
+					"is_interacting": false,
+					"mounted_hard_drives": [],
+					"pc_data_storage": {
+						"big_data": 0.0,
+						"small_data": 1,
+						"special_data": 1
+					},
+					"unlocked_script_modes": [
+						"local"
+					],
+					"unlocked_software": [
+						"text_editor"
+					]
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 500.0,
+					"y": 300.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "computer_entity_main"
+		},
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/OfficeDeskEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/OfficeDeskEntity.tscn",
+			"state": {
+				"container_state": {
+					"container": {
+						"container_id": "office_desk_main",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 760.0,
+					"y": 330.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "office_desk_main"
+		},
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/PlantEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/PlantEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 220.0,
+					"y": 356.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "plant_entity::/root/Main/PlantEntity"
+		},
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/BookshelfEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/BookshelfEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 900.0,
+					"y": 336.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "bookshelf_entity::/root/Main/BookshelfEntity"
+		},
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/ChairEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/ChairEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 530.0,
+					"y": 330.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "chair_entity::/root/Main/ChairEntity"
+		},
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/SmallTableEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/SmallTableEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 560.0,
+					"y": 335.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "small_table_entity::/root/Main/SmallTableEntity"
+		},
+		{
+			"category": "dropped_items",
+			"node_path": "/root/Main/CoffeeEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/CoffeeEntity.tscn",
+			"state": {
+				"StatusEffectComponent": {
+					"active_effects": {
+
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 256.0,
+					"y": 352.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "coffee_entity::/root/Main/CoffeeEntity"
+		},
+		{
+			"category": "entities",
+			"node_path": "/root/Main/DeskStorageEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+			"state": {
+				"ContainerComponent": {
+					"container": {
+						"container_id": "desk_storage",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 5,
+								"item_id": "mug"
+							},
+							{
+								"count": 8,
+								"item_id": "coffee"
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 440.0,
+					"y": 501.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "desk_storage_entity::/root/Main/DeskStorageEntity"
+		},
+		{
+			"category": "dropped_items",
+			"node_path": "/root/Main/QuestMug",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/MugEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 280.0,
+					"y": 360.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "quest_mug::/root/Main/QuestMug"
+		},
+		{
+			"category": "players",
+			"node_path": "/root/Main/Players/Player1",
+			"parent_path": "/root/Main/Players",
+			"scene_path": "res://scenes/player/Player.tscn",
+			"state": {
+				"current_level": 0,
+				"player_id": 1,
+				"position": {
+					"x": 854.0,
+					"y": 196.0
+				},
+				"selected_hotbar_slot": 2,
+				"status_effects": {
+					"active_effects": {
+
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 854.0,
+					"y": 196.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "player_1"
+		},
+		{
+			"category": "dropped_items",
+			"node_path": "/root/Main/@Area2D@83",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/CoffeeEntity.tscn",
+			"state": {
+				"StatusEffectComponent": {
+					"active_effects": {
+
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 256.0,
+					"y": 352.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "coffee_entity::/root/@Node2D@214/CoffeeEntity"
+		},
+		{
+			"category": "entities",
+			"node_path": "/root/Main/@Area2D@84",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/DeskStorageEntity.tscn",
+			"state": {
+				"ContainerComponent": {
+					"container": {
+						"container_id": "desk_storage",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 440.0,
+					"y": 501.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "desk_storage_entity::/root/@Node2D@214/DeskStorageEntity"
+		},
+		{
+			"category": "dropped_items",
+			"node_path": "/root/Main/MugEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/MugEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 280.0,
+					"y": 360.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "quest_mug::/root/@Node2D@214/QuestMug"
+		}
+	],
+	"machine_states": [
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/ComputerEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/ComputerEntity.tscn",
+			"state": {
+				"ProgrammingComponent": {
+					"cluster_access_unlocked": false,
+					"email_messages": [
+						{
+							"attachment": {
+								"amount": 4.0,
+								"data_type": "small_data",
+								"quality": "small"
+							},
+							"body": "Pushing a calibrated subset from last week. Should be enough for local scripts.",
+							"downloaded": true,
+							"id": "email_prof_vega_1",
+							"sender": "Prof. Vega",
+							"subject": "Transit catalog subset"
+						},
+						{
+							"attachment": {
+								"amount": 1.0,
+								"data_type": "special_data",
+								"quality": "special"
+							},
+							"body": "Observation package is ready. Includes reduced light curves for proposal work.",
+							"downloaded": true,
+							"id": "email_obs_north_1",
+							"sender": "North Observatory",
+							"subject": "Night block observations"
+						},
+						{
+							"attachment": {
+								"amount": 3.0,
+								"data_type": "small_data",
+								"quality": "small"
+							},
+							"body": "Use this benchmark set to validate your local processing scripts.",
+							"downloaded": true,
+							"id": "email_prof_lin_1",
+							"sender": "Prof. Lin",
+							"subject": "Sanity-check benchmark set"
+						}
+					],
+					"is_interacting": false,
+					"mounted_hard_drives": [],
+					"pc_data_storage": {
+						"big_data": 0.0,
+						"small_data": 1,
+						"special_data": 1
+					},
+					"unlocked_script_modes": [
+						"local"
+					],
+					"unlocked_software": [
+						"text_editor"
+					]
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 500.0,
+					"y": 300.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "computer_entity_main"
+		},
+		{
+			"category": "machine_states",
+			"node_path": "/root/Main/OfficeDeskEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/furniture/OfficeDeskEntity.tscn",
+			"state": {
+				"container_state": {
+					"container": {
+						"container_id": "office_desk_main",
+						"slot_count": 16,
+						"slots": [
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							},
+							{
+								"count": 0,
+								"item_id": ""
+							}
+						]
+					}
+				}
+			},
+			"transform": {
+				"position": {
+					"x": 760.0,
+					"y": 330.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "office_desk_main"
+		}
+	],
+	"placed_furniture": [
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/PlantEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/PlantEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 220.0,
+					"y": 356.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "plant_entity::/root/Main/PlantEntity"
+		},
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/BookshelfEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/BookshelfEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 900.0,
+					"y": 336.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "bookshelf_entity::/root/Main/BookshelfEntity"
+		},
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/ChairEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/ChairEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 530.0,
+					"y": 330.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "chair_entity::/root/Main/ChairEntity"
+		},
+		{
+			"category": "placed_furniture",
+			"node_path": "/root/Main/SmallTableEntity",
+			"parent_path": "/root/Main",
+			"scene_path": "res://scenes/resources/SmallTableEntity.tscn",
+			"state": {
+
+			},
+			"transform": {
+				"position": {
+					"x": 560.0,
+					"y": 335.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "small_table_entity::/root/Main/SmallTableEntity"
+		}
+	],
+	"room_states": [
+		{
+			"category": "room_states",
+			"node_path": "/root/Main",
+			"parent_path": "/root",
+			"scene_path": "res://scenes/main.tscn",
+			"state": {
+				"current_room_id": "institute"
+			},
+			"transform": {
+				"position": {
+					"x": 0.0,
+					"y": 0.0
+				},
+				"rotation": 0.0,
+				"scale": {
+					"x": 1.0,
+					"y": 1.0
+				},
+				"type": "node2d"
+			},
+			"unique_id": "main_world_state"
+		}
+	],
 	"save_version": 1,
-	"saved_at": "2026-05-23T18:12:13",
+	"saved_at": "2026-05-24T10:36:52",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
+		"energy": {
+			"players": {
+				"1": {
+					"current_energy": 100.0,
+					"exhausted": false,
+					"max_energy": 100.0,
+					"next_sleep_start_ratio": 1.0,
+					"temporary_max_bonus": 0.0,
+					"temporary_max_duration": 0.0
+				}
+			}
+		},
+		"events": {
+			"active_event_ids": [],
+			"last_evaluated_hour_key": "59:9"
+		},
 		"game_manager": {
 			"players": {
 				"1": {
@@ -33,31 +924,31 @@
 				"head": "",
 				"tool": ""
 			},
-			"funds": 61,
+			"funds": 23,
 			"inventory": [
 				{
-					"count": 1,
-					"item_id": "mug"
+					"count": 4,
+					"item_id": "archive_folders"
 				},
 				{
 					"count": 1,
-					"item_id": "coffee"
+					"item_id": "printer_station"
 				},
 				{
 					"count": 1,
 					"item_id": "programming_laptop"
 				},
 				{
-					"count": 1,
-					"item_id": "coffee"
+					"count": 5,
+					"item_id": "papers"
 				},
 				{
-					"count": 1,
+					"count": 4,
 					"item_id": "folders"
 				},
 				{
 					"count": 1,
-					"item_id": "coffee"
+					"item_id": "water_dispenser"
 				},
 				{
 					"count": 1,
@@ -65,31 +956,25 @@
 				},
 				{
 					"count": 1,
-					"item_id": "coffee"
+					"item_id": "bookshelf"
+				},
+				{
+					"count": 3,
+					"item_id": "books"
+				},
+				{
+
 				},
 				{
 					"count": 1,
-					"item_id": "coffee"
-				},
-				{
-					"count": 1,
-					"item_id": "coffee"
-				},
-				{
-					"count": 1,
-					"item_id": "coffee"
+					"item_id": "mug"
 				},
 				{
 					"count": 1,
 					"item_id": "office_sofa"
 				},
 				{
-					"count": 2,
-					"item_id": "papers"
-				},
-				{
-					"count": 2,
-					"item_id": "archive_folders"
+
 				},
 				{
 
@@ -111,11 +996,15 @@
 
 				},
 				{
+
+				},
+				{
 					"count": 1,
 					"item_id": "plant_decor"
 				},
 				{
-
+					"count": 1,
+					"item_id": "programming_laptop"
 				},
 				{
 
@@ -166,8 +1055,8 @@
 					"xp": 0
 				},
 				"programming": {
-					"level": 5,
-					"xp": 1888
+					"level": 6,
+					"xp": 2174
 				}
 			}
 		},
@@ -175,6 +1064,14 @@
 			"active_tasks": {
 
 			}
+		},
+		"weather": {
+			"humidity": 0.3,
+			"last_rolled_day": 59,
+			"season": "spring",
+			"seeing": 1.0,
+			"turbulence": 0.1,
+			"weather": "clear"
 		},
 		"world_clock": {
 			"daily_stats": {
@@ -186,9 +1083,9 @@
 
 				}
 			},
-			"day": 44,
-			"hour": 8,
-			"minute": 58,
+			"day": 59,
+			"hour": 9,
+			"minute": 7,
 			"phase": "Morning"
 		}
 	},

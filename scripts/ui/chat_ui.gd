@@ -63,7 +63,7 @@ func _on_chat_message_received(_player_id: int, player_name: String, message: St
 
 func _refresh_messages() -> void:
 	messages_label.text = "\n".join(_messages)
-	var last_line := max(messages_label.get_line_count() - 1, 0)
+	var last_line :Variant= max(messages_label.get_line_count() - 1, 0)
 	messages_label.scroll_to_line(last_line)
 
 

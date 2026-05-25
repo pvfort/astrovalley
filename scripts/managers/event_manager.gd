@@ -142,7 +142,7 @@ func _is_day_window_active(event_definition: Dictionary, day: int) -> bool:
 	var start_day := maxi(1, int(event_definition.get("start_day", 1)))
 	var repeat_interval_days := int(event_definition.get("repeat_interval_days", 0))
 
-	var weekdays_variant := event_definition.get("weekdays", [])
+	var weekdays_variant :Variant= event_definition.get("weekdays", [])
 	if weekdays_variant is Array:
 		var weekdays := weekdays_variant as Array
 		if not weekdays.is_empty():
@@ -179,7 +179,7 @@ func _meets_conditions(event_definition: Dictionary, day: int, cycle_anchor_day:
 		if current_season != required_season:
 			return false
 
-	var required_weather_variant := event_definition.get("required_weather", [])
+	var required_weather_variant :Variant= event_definition.get("required_weather", [])
 	if required_weather_variant is Array:
 		var required_weather := required_weather_variant as Array
 		if not required_weather.is_empty():
@@ -200,14 +200,14 @@ func _meets_conditions(event_definition: Dictionary, day: int, cycle_anchor_day:
 	if chance >= 1.0:
 		return true
 	var chance_key := "%s:%d" % [str(event_definition.get("id", "")), cycle_anchor_day]
-	var roll := abs(int(hash(chance_key)) % 10000) / 10000.0
+	var roll :int= abs(int(hash(chance_key)) % 10000) / 10000.0
 	return roll < chance
 
 
 func _resolve_cycle_anchor_day(event_definition: Dictionary, day: int) -> int:
 	if day <= 0:
 		return -1
-	var weekdays_variant := event_definition.get("weekdays", [])
+	var weekdays_variant :Variant= event_definition.get("weekdays", [])
 	if weekdays_variant is Array and not (weekdays_variant as Array).is_empty():
 		return day
 
