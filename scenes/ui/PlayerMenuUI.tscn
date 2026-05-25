@@ -46,14 +46,22 @@ size_flags_vertical = 3
 [node name="InventoryTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
 layout_mode = 2
 
-[node name="FundsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab"]
+layout_mode = 2
+
+[node name="FundsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer"]
 layout_mode = 2
 text = "Funds: $0"
 
-[node name="InventoryList" type="ItemList" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab"]
+[node name="InventoryScroll" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer"]
 custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="InventoryGrid" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/InventoryTab/VBoxContainer/InventoryScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 6
 
 [node name="SkillsTab" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer"]
 layout_mode = 2
