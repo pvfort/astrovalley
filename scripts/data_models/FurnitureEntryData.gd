@@ -8,6 +8,7 @@ var room_id: String = ""
 var persistent_id: String = ""
 var owner_character_id: String = ""
 var creation_timestamp: String = ""
+var updated_timestamp: String = ""
 
 
 func to_dictionary() -> Dictionary:
@@ -19,6 +20,7 @@ func to_dictionary() -> Dictionary:
 		"persistent_id": persistent_id,
 		"owner_character_id": owner_character_id,
 		"creation_timestamp": creation_timestamp,
+		"updated_timestamp": updated_timestamp,
 	}
 
 
@@ -35,6 +37,7 @@ static func from_variant(value: Variant) -> FurnitureEntryData:
 	entry_data.persistent_id = str(entry.get("persistent_id", ""))
 	entry_data.owner_character_id = str(entry.get("owner_character_id", ""))
 	entry_data.creation_timestamp = str(entry.get("creation_timestamp", ""))
+	entry_data.updated_timestamp = str(entry.get("updated_timestamp", ""))
 	return entry_data
 
 

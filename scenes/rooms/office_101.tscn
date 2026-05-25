@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ckvgxjiwoxh87"]
 
-[ext_resource type="Script" uid="uid://c7goljwjxd1v4" path="res://scripts/room.gd" id="1_4ps8b"]
+[ext_resource type="Script" uid="uid://c7goljwjxd1v4" path="res://scripts/legacy/room.gd" id="1_4ps8b"]
 [ext_resource type="TileSet" uid="uid://beuny3wkdn2oc" path="res://assets/tilesets/wall.tres" id="2_v7120"]
 
 [node name="Office101" type="Node2D" unique_id=1059137619]

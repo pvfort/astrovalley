@@ -1,0 +1,27 @@
+{
+  "default": {
+    "max_players": 5,
+    "zones": [
+      {
+        "zone_id": "zone_1",
+        "rects": [[1, 1, 2, 6]]
+      },
+      {
+        "zone_id": "zone_2",
+        "rects": [[3, 1, 2, 6]]
+      },
+      {
+        "zone_id": "zone_3",
+        "rects": [[5, 1, 2, 6]]
+      },
+      {
+        "zone_id": "zone_4",
+        "rects": [[7, 1, 1, 6]]
+      },
+      {
+        "zone_id": "zone_5",
+        "rects": [[8, 1, 1, 6]]
+      }
+    ]
+  }
+}
