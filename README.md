@@ -32,8 +32,8 @@ A modular multiplayer framework for 2D pixel-art games using Godot 4.x.
 
 ## Deprecated / Legacy Paths
 
-- `scripts/main_room.gd`
-- `scripts/room.gd`
+- `scripts/legacy/main_room.gd`
+- `scripts/legacy/room.gd`
 - `scripts/world/interactable.gd`
 
 These legacy room and interaction scripts are no longer part of the canonical gameplay runtime.

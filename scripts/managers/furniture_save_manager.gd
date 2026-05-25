@@ -22,6 +22,7 @@ func serialize_furniture(
 	entry.persistent_id = persistent_id
 	entry.owner_character_id = owner_character_id
 	entry.creation_timestamp = creation_timestamp
+	entry.updated_timestamp = Time.get_datetime_string_from_system(true)
 	return entry.to_dictionary()
 
 
@@ -37,7 +38,7 @@ func add_furniture(
 	if scene_path.is_empty():
 		return
 
-	var entries: Array[FurnitureEntryData] = load_furniture_entries()
+	var entries: Array[FurnitureEntryData] = load_active_furniture_entries()
 
 	var entry: FurnitureEntryData = FurnitureEntryData.new()
 	entry.scene_path = scene_path
@@ -47,6 +48,7 @@ func add_furniture(
 	entry.persistent_id = persistent_id
 	entry.owner_character_id = owner_character_id
 	entry.creation_timestamp = creation_timestamp
+	entry.updated_timestamp = Time.get_datetime_string_from_system(true)
 
 	entries.append(entry)
 	save_furniture_entries(entries)
@@ -58,7 +60,7 @@ func remove_furniture(
 	room_id: String = "",
 	persistent_id: String = ""
 ) -> void:
-	var entries: Array[FurnitureEntryData] = load_furniture_entries()
+	var entries: Array[FurnitureEntryData] = load_active_furniture_entries()
 
 	if not persistent_id.is_empty():
 		for i in range(entries.size() - 1, -1, -1):
@@ -88,12 +90,13 @@ func update_furniture_transform(
 	persistent_id: String,
 	position: Vector2,
 	rotation: float,
-	room_id: String = ""
+	room_id: String = "",
+	owner_character_id: String = ""
 ) -> bool:
 	if persistent_id.is_empty():
 		return false
 
-	var entries: Array[FurnitureEntryData] = load_furniture_entries()
+	var entries: Array[FurnitureEntryData] = load_furniture_entries_for_character(owner_character_id)
 
 	for i in range(entries.size()):
 		var entry: FurnitureEntryData = entries[i]
@@ -103,12 +106,13 @@ func update_furniture_transform(
 
 		entry.position = position
 		entry.rotation = rotation
+		entry.updated_timestamp = Time.get_datetime_string_from_system(true)
 
 		if not room_id.is_empty():
 			entry.room_id = room_id
 
 		entries[i] = entry
-		save_furniture_entries(entries)
+		save_furniture_entries_for_character(entries, owner_character_id)
 		return true
 
 	return false
@@ -121,8 +125,7 @@ func load_room_furniture(parent: Node, room_id: String) -> void:
 	for child in parent.get_children():
 		child.queue_free()
 
-	var entries: Array[FurnitureEntryData] = load_furniture_entries()
-	var needs_backfill_save: bool = false
+	var entries: Array[FurnitureEntryData] = load_merged_furniture_entries()
 
 	for index in range(entries.size()):
 		var entry: FurnitureEntryData = entries[index]
@@ -150,8 +153,6 @@ func load_room_furniture(parent: Node, room_id: String) -> void:
 			entry.persistent_id = PersistenceRegistry.create_runtime_id(owner_character_id)
 			entry.owner_character_id = owner_character_id
 			entry.creation_timestamp = creation_timestamp
-			entries[index] = entry
-			needs_backfill_save = true
 
 		var persistent_component: PersistentObject = _ensure_persistent_component(instance)
 		persistent_component.persistent_id = entry.persistent_id
@@ -166,12 +167,49 @@ func load_room_furniture(parent: Node, room_id: String) -> void:
 
 		parent.add_child(instance)
 
-	if needs_backfill_save:
-		save_furniture_entries(entries)
-
-
 func load_furniture_entries() -> Array[FurnitureEntryData]:
-	var save_path: String = _save_path()
+	return load_active_furniture_entries()
+
+
+func load_active_furniture_entries() -> Array[FurnitureEntryData]:
+	return load_furniture_entries_for_character("")
+
+
+func load_furniture_entries_for_character(character_id: String = "") -> Array[FurnitureEntryData]:
+	var save_path: String = _save_path_for_character(character_id)
+	return _load_entries_from_path(save_path)
+
+
+func load_merged_furniture_entries() -> Array[FurnitureEntryData]:
+	var merged_by_id: Dictionary = {}
+	var ordered_entries: Array[FurnitureEntryData] = []
+	var all_paths: Array[String] = _all_furniture_save_paths()
+
+	for path in all_paths:
+		var entries: Array[FurnitureEntryData] = _load_entries_from_path(path)
+		for entry in entries:
+			if entry.persistent_id.is_empty():
+				ordered_entries.append(entry)
+				continue
+
+			var existing_variant: Variant = merged_by_id.get(entry.persistent_id, null)
+			if existing_variant is FurnitureEntryData:
+				var existing: FurnitureEntryData = existing_variant as FurnitureEntryData
+				if _is_entry_newer(entry, existing):
+					merged_by_id[entry.persistent_id] = entry
+				continue
+
+			merged_by_id[entry.persistent_id] = entry
+
+	for persistent_id in merged_by_id.keys():
+		var merged_entry: Variant = merged_by_id.get(persistent_id, null)
+		if merged_entry is FurnitureEntryData:
+			ordered_entries.append(merged_entry as FurnitureEntryData)
+
+	return ordered_entries
+
+
+func _load_entries_from_path(save_path: String) -> Array[FurnitureEntryData]:
 	if save_path.is_empty():
 		return []
 	if not FileAccess.file_exists(save_path):
@@ -206,16 +244,24 @@ func load_furniture_state() -> Array:
 
 
 func save_furniture_entries(entries: Array[FurnitureEntryData]) -> void:
+	save_furniture_entries_for_character(entries, "")
+
+
+func save_furniture_entries_for_character(entries: Array[FurnitureEntryData], character_id: String = "") -> void:
 	var serialized: Array[Dictionary] = []
 
 	for entry in entries:
 		serialized.append(entry.to_dictionary())
 
-	save_furniture_state(serialized)
+	save_furniture_state_for_character(serialized, character_id)
 
 
 func save_furniture_state(entries: Array) -> void:
-	var save_path: String = _save_path()
+	save_furniture_state_for_character(entries, "")
+
+
+func save_furniture_state_for_character(entries: Array, character_id: String = "") -> void:
+	var save_path: String = _save_path_for_character(character_id)
 	if save_path.is_empty():
 		return
 
@@ -239,13 +285,50 @@ func _active_character_id() -> String:
 
 
 func _save_path() -> String:
-	var character_id: String = _active_character_id()
-	if character_id.is_empty():
+	return _save_path_for_character("")
+
+
+func _save_path_for_character(character_id: String = "") -> String:
+	var resolved_character_id: String = character_id.strip_edges()
+	if resolved_character_id.is_empty():
+		resolved_character_id = _active_character_id()
+	var character_id_to_use: String = resolved_character_id
+	if character_id_to_use.is_empty():
 		return ""
 
-	var character_dir: String = "%s/%s" % [CHARACTERS_ROOT, character_id]
+	var character_dir: String = "%s/%s" % [CHARACTERS_ROOT, character_id_to_use]
 	DirAccess.make_dir_recursive_absolute(character_dir)
 	return "%s/%s" % [character_dir, SAVE_FILE_NAME]
+
+
+func _all_furniture_save_paths() -> Array[String]:
+	var output: Array[String] = []
+	var root_dir := DirAccess.open(CHARACTERS_ROOT)
+	if root_dir == null:
+		return output
+
+	for folder_name in root_dir.get_directories():
+		if folder_name.begins_with("."):
+			continue
+		var path: String = _save_path_for_character(folder_name)
+		if FileAccess.file_exists(path):
+			output.append(path)
+
+	return output
+
+
+func _is_entry_newer(incoming: FurnitureEntryData, current: FurnitureEntryData) -> bool:
+	var incoming_stamp: String = _entry_timestamp(incoming)
+	var current_stamp: String = _entry_timestamp(current)
+	return incoming_stamp > current_stamp
+
+
+func _entry_timestamp(entry: FurnitureEntryData) -> String:
+	if not entry.updated_timestamp.is_empty():
+		return entry.updated_timestamp
+	if not entry.creation_timestamp.is_empty():
+		return entry.creation_timestamp
+	return ""
 
 
 func _ensure_persistent_component(instance: Node) -> PersistentObject:

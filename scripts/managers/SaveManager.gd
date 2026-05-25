@@ -367,13 +367,6 @@ func _save_file_path() -> String:
 
 
 func _is_world_authority() -> bool:
-	var tree: SceneTree = get_tree()
-	if tree == null:
-		return true
-
-	if _tree_has_network_peer(tree):
-		return multiplayer.is_server()
-
 	return true
 
 
