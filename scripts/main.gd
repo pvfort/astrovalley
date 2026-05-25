@@ -2,6 +2,7 @@ extends Node2D
 
 const MapSystem = preload("res://scripts/map_system.gd")
 const QUEST_NPC_SCENE = preload("res://scenes/resources/QuestNpcEntity.tscn")
+const PLAYER_SCENE = preload("res://scenes/player/Player.tscn")
 const PROFESSORS_DATA_PATH := "res://data/professors.json"
 const NPC_SPAWNS_DATA_PATH := "res://data/npc_spawns.json"
 const ROOM_ENTITIES_DATA_PATH := "res://data/room_entities.json"
@@ -25,15 +26,23 @@ func _ready():
 	NetworkManager.game_state_synced.connect(_on_game_state_synced)
 
 
-	var local_id = multiplayer.get_unique_id()
-
-	# Spawn local player
-	spawn_player(local_id)
+	var local_id := multiplayer.get_unique_id()
+	if _should_spawn_local_player_on_ready(local_id):
+		spawn_player(local_id, "ready_local", true)
+	else:
+		print("[Main] Deferring local player spawn. local_id=", local_id, ", has_peer=", multiplayer.has_multiplayer_peer(), ", is_server=", multiplayer.is_server())
 
 	_activate_furniture_container(current_room_id)
 
 	# Build the TileMap room
 	_create_room("institute")
+
+func _should_spawn_local_player_on_ready(local_id: int) -> bool:
+	if local_id <= 0:
+		return false
+	if not multiplayer.has_multiplayer_peer():
+		return true
+	return multiplayer.is_server()
 
 func _create_room(room_id: String = "institute"):
 	current_room_id = room_id
@@ -321,15 +330,35 @@ func change_room(dest: String):
 				player.velocity = Vector2.ZERO
 
 
-func spawn_player(id: int):
+func spawn_player(id: int, source: String = "unknown", is_local_spawn_request: bool = false):
+	if id <= 0:
+		print("[Main] Rejecting spawn for invalid id=", id, " source=", source)
+		return
 
-	var player_scene = preload(
-		"res://scenes/player/Player.tscn"
-	)
+	var node_name := "Player" + str(id)
+	if players_node.has_node(node_name):
+		print("[Main] Skipping duplicate spawn for id=", id, " source=", source)
+		var existing_player: Node = players_node.get_node_or_null(node_name)
+		if existing_player != null and is_local_spawn_request and existing_player.has_method("activate_local_authority"):
+			existing_player.call_deferred("activate_local_authority")
+		return
 
-	var player = player_scene.instantiate()
+	var has_peer := multiplayer.has_multiplayer_peer()
+	var is_client := has_peer and not multiplayer.is_server()
+	var local_id := multiplayer.get_unique_id()
+	if is_local_spawn_request and has_peer:
+		if local_id <= 0:
+			print("[Main] Rejecting local spawn with invalid local_id source=", source)
+			return
+		if is_client and id == 1:
+			print("[Main] Rejecting host-id local spawn on client. source=", source, " local_id=", local_id)
+			return
+		if id != local_id:
+			print("[Main] Rejecting local spawn mismatch. requested=", id, " local_id=", local_id, " source=", source)
+			return
 
-	player.name = "Player" + str(id)
+	var player = PLAYER_SCENE.instantiate()
+	player.name = node_name
 
 	player.player_id = id
 
@@ -344,20 +373,44 @@ func spawn_player(id: int):
 		GameManager.add_player(id, "Player" + str(id))
 
 	players_node.add_child(player)
+	print("[Main] Spawned player id=", id, " authority=", player.get_multiplayer_authority(), " local_id=", local_id, " source=", source)
+	if id == local_id and player.has_method("activate_local_authority"):
+		player.call_deferred("activate_local_authority")
 
 func _on_player_connected(id: int):
-	spawn_player(id)
+	var local_id := multiplayer.get_unique_id()
+	var is_local_event := id == local_id
+	print("[Main] player_connected id=", id, " local_id=", local_id, " is_server=", multiplayer.is_server())
+	if is_local_event and not multiplayer.is_server():
+		print("[Main] Ignoring local peer_connected spawn; waiting for synced local player id")
+		return
+	spawn_player(id, "peer_connected", is_local_event)
 
 func _on_player_disconnected(id: int):
+	print("[Main] player_disconnected id=", id)
 	var player = players_node.get_node_or_null("Player" + str(id))
 	if player:
 		player.queue_free()
 
 func _on_game_state_synced(state: Dictionary):
+	var local_player_id := int(state.get("local_player_id", -1))
+	print("[Main] game_state_synced local_player_id=", local_player_id, " players=", state.get("players", []))
 	# Spawn already-connected players sent by the server on late join
-	for id in state["players"]:
-		if not players_node.has_node("Player" + str(id)):
-			spawn_player(id)
+	var state_players: Variant = state.get("players", [])
+	if state_players is Array:
+		for id_variant in state_players:
+			var id := int(id_variant)
+			spawn_player(id, "game_state_synced_existing")
+
+	if local_player_id > 0:
+		spawn_player(local_player_id, "game_state_synced_local", true)
+		return
+
+	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
+		var fallback_local_id := multiplayer.get_unique_id()
+		if fallback_local_id > 1:
+			print("[Main] Missing local_player_id in sync payload; using fallback local_id=", fallback_local_id)
+			spawn_player(fallback_local_id, "game_state_synced_fallback_local", true)
 
 
 func spawn_room_entities(room_id: String):

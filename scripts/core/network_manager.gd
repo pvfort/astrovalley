@@ -65,7 +65,9 @@ func _on_player_connected(id: int):
 		var state := {
 			"phase": TimeManager.current_phase,
 			"players": existing_players,
+			"local_player_id": id,
 		}
+		print("[NetworkManager] Syncing state to peer ", id, " existing_players=", existing_players, " local_player_id=", id)
 		rpc_id(id, "sync_game_state", state)
 
 func _on_player_disconnected(id: int):
