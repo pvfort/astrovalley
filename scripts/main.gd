@@ -4,17 +4,19 @@ const MapSystem = preload("res://scripts/map_system.gd")
 const QUEST_NPC_SCENE = preload("res://scenes/resources/QuestNpcEntity.tscn")
 const PROFESSORS_DATA_PATH := "res://data/professors.json"
 const NPC_SPAWNS_DATA_PATH := "res://data/npc_spawns.json"
+const ROOM_ENTITIES_DATA_PATH := "res://data/room_entities.json"
 var map_system = MapSystem.new()
 
 # Optional UI references
 
 
 @onready var players_node: Node = $Players
-@onready var telescope: Area2D = $Telescope
 
 var current_room_id: String = "institute"
 var furniture_container: Node2D = null
 var _furniture_containers_by_room: Dictionary = {}
+var room_entities_container: Node2D = null
+var _room_entities_containers_by_room: Dictionary = {}
 
 func _ready():
 
@@ -108,12 +110,14 @@ func _create_room(room_id: String = "institute"):
 	add_child(tilemap)
 	move_child(tilemap, 0)
 	_activate_furniture_container(current_room_id)
+	_activate_room_entities_container(current_room_id)
 
 	if SaveManager != null:
 		SaveManager.restore_room_furniture(current_room_id, furniture_container)
 	elif FurnitureSaveManager != null:
 		FurnitureSaveManager.load_room_furniture(furniture_container, current_room_id)
 
+	_populate_room_entities(current_room_id)
 	_populate_room_npcs(current_room_id)
 	_emit_room_entered(current_room_id)
 
@@ -134,6 +138,27 @@ func _activate_furniture_container(room_id: String) -> void:
 		add_child(furniture_container)
 
 	move_child(furniture_container, get_child_count() - 1)
+
+
+func _activate_room_entities_container(room_id: String) -> void:
+	if room_entities_container != null and is_instance_valid(room_entities_container) and room_entities_container.get_parent() == self:
+		remove_child(room_entities_container)
+
+	var existing: Variant = _room_entities_containers_by_room.get(room_id, null)
+	if existing is Node2D and is_instance_valid(existing):
+		room_entities_container = existing as Node2D
+	else:
+		room_entities_container = Node2D.new()
+		room_entities_container.name = "RoomEntities"
+		_room_entities_containers_by_room[room_id] = room_entities_container
+
+	if room_entities_container.get_parent() == null:
+		add_child(room_entities_container)
+
+	if players_node != null and players_node.get_parent() == self:
+		move_child(room_entities_container, players_node.get_index())
+	else:
+		move_child(room_entities_container, get_child_count() - 1)
 
 
 func get_current_room_id() -> String:
@@ -166,6 +191,52 @@ func _populate_room_npcs(room_id: String) -> void:
 		_spawn_quest_npc(entry)
 
 	furniture_container.set_meta("npcs_initialized", true)
+
+
+func _populate_room_entities(room_id: String) -> void:
+	if room_entities_container == null:
+		return
+
+	if bool(room_entities_container.get_meta("entities_initialized", false)):
+		return
+
+	for entry_variant in _load_json_array(ROOM_ENTITIES_DATA_PATH):
+		if not (entry_variant is Dictionary):
+			continue
+		var entry: Dictionary = entry_variant as Dictionary
+		if str(entry.get("room_id", "")) != room_id:
+			continue
+		_spawn_room_entity(entry)
+
+	room_entities_container.set_meta("entities_initialized", true)
+
+
+func _spawn_room_entity(entry: Dictionary) -> void:
+	if room_entities_container == null:
+		return
+
+	var scene_path := str(entry.get("scene_path", ""))
+	if scene_path.is_empty():
+		return
+
+	var packed := load(scene_path)
+	if not (packed is PackedScene):
+		return
+
+	var instance: Node = (packed as PackedScene).instantiate()
+	if instance == null:
+		return
+
+	var entry_name := str(entry.get("name", "")).strip_edges()
+	if not entry_name.is_empty():
+		instance.name = entry_name
+
+	var position_variant: Variant = entry.get("position", [])
+	if instance is Node2D and position_variant is Array and (position_variant as Array).size() >= 2:
+		var position_values := position_variant as Array
+		(instance as Node2D).position = Vector2(float(position_values[0]), float(position_values[1]))
+
+	room_entities_container.add_child(instance)
 
 
 func _spawn_quest_npc(entry: Dictionary) -> void:
@@ -283,17 +354,8 @@ func _on_game_state_synced(state: Dictionary):
 
 
 func spawn_room_entities(room_id: String):
-	var room_data = {
-	"entities": [
-		{"scene": "coffee_machine", "pos": Vector2(400, 200)},
-		{"scene": "fridge", "pos": Vector2(500, 200)}
-		]
-	}
-	for e in room_data["entities"]:
-		var scene = load("res://scenes/entities/" + e["scene"] + ".tscn")
-		var instance = scene.instantiate()
-		instance.global_position = e["pos"]
-		add_child(instance)
+	_activate_room_entities_container(room_id)
+	_populate_room_entities(room_id)
 
 func spawn_item(item_data: ItemData, position: Vector2):
 	var scene = load("res://scenes/items/ItemEntity.tscn")
