@@ -73,6 +73,19 @@
     ]
   },
   {
+    "id": "stationery_restock",
+    "title": "Stationery Restock",
+    "description": "Collect spare writing supplies from storage before the next workshop session.",
+    "duration_minutes": 30,
+    "skill_id": "research",
+    "xp_reward": 10,
+    "money_reward": 12,
+    "item_rewards": [
+      { "item_id": "pens", "count": 2 },
+      { "item_id": "papers", "count": 2 }
+    ]
+  },
+  {
     "id": "proposal_draft_alpha",
     "title": "Observation Proposal Draft",
     "description": "Prepare an observation proposal by processing station data and validating citations from books.",
@@ -138,6 +151,26 @@
     "skill_id": "teaching",
     "xp_reward": 20,
     "money_reward": 0
+  },
+  {
+    "id": "writing_workshop_session",
+    "title": "Writing Workshop Session",
+    "description": "Attend the weekly writing workshop in the library and turn your notes into a thesis draft.",
+    "duration_minutes": 90,
+    "required_room": "library",
+    "required_event_active": "writing_workshop",
+    "register_event_attendance": "writing_workshop",
+    "required_items": [
+      { "item_id": "papers", "count": 2 },
+      { "item_id": "books", "count": 1 },
+      { "item_id": "pens", "count": 1 }
+    ],
+    "skill_id": "research",
+    "xp_reward": 32,
+    "money_reward": 0,
+    "item_rewards": [
+      { "item_id": "thesis_draft", "count": 1 }
+    ]
   },
   {
     "id": "python_friday_attendance_2",
