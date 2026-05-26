@@ -206,5 +206,61 @@
     "xp_reward": 38,
     "money_reward": 30,
     "salary_increase_reward": 12
+  },
+  {
+    "id": "visualization_workshop",
+    "title": "Visualization Workshop",
+    "description": "Attend a data visualization workshop to unlock the visualization suite for plot generation.",
+    "duration_minutes": 90,
+    "required_room": "library",
+    "required_programming_progress": 100,
+    "register_event_attendance": "visualization_workshop",
+    "unlock_software_rewards": ["visualization_suite"],
+    "skill_id": "programming",
+    "xp_reward": 30,
+    "money_reward": 0
+  },
+  {
+    "id": "submit_research_plots_draft",
+    "title": "Submit Draft Research Plots",
+    "description": "Print and submit your first batch of research plots to your supervisor for initial feedback.",
+    "duration_minutes": 60,
+    "required_items": [
+      { "item_id": "printed_research_plot", "count": 1 }
+    ],
+    "skill_id": "programming",
+    "xp_reward": 45,
+    "money_reward": 20,
+    "thesis_progress_reward": 80
+  },
+  {
+    "id": "submit_research_plots_chapter",
+    "title": "Submit Chapter Figures",
+    "description": "Compile and submit a full set of printed research plots as thesis chapter figures.",
+    "duration_minutes": 90,
+    "required_programming_progress": 150,
+    "required_items": [
+      { "item_id": "printed_research_plot", "count": 3 },
+      { "item_id": "papers", "count": 1 }
+    ],
+    "skill_id": "programming",
+    "xp_reward": 80,
+    "money_reward": 30,
+    "thesis_progress_reward": 180
+  },
+  {
+    "id": "submit_research_plots_milestone",
+    "title": "Thesis Milestone Review",
+    "description": "Present a comprehensive set of publication-quality printed plots at your thesis milestone review.",
+    "duration_minutes": 120,
+    "required_programming_progress": 300,
+    "required_items": [
+      { "item_id": "printed_research_plot", "count": 5 },
+      { "item_id": "books", "count": 1 }
+    ],
+    "skill_id": "programming",
+    "xp_reward": 140,
+    "money_reward": 50,
+    "thesis_progress_reward": 350
   }
 ]

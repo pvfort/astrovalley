@@ -113,6 +113,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Download Data"
 
+[node name="SendPlotsSection" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PlotDataLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection"]
+layout_mode = 2
+text = "Plot Data on PC: 0"
+
+[node name="SendPlotsRow" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SendToLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection/SendPlotsRow"]
+layout_mode = 2
+text = "Send to:"
+vertical_alignment = 1
+
+[node name="SendToOption" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection/SendPlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SendPlotsButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection/SendPlotsRow"]
+layout_mode = 2
+text = "Send Plots"
+
 [node name="EmailStatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab"]
 layout_mode = 2
 autowrap_mode = 3
