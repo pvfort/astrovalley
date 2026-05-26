@@ -16,10 +16,22 @@ func _ready():
 	var teaching = preload(
 		"res://resources/skills/teaching_skill.tres"
 	)
+	var research = preload(
+		"res://resources/skills/research_skill.tres"
+	)
+	var tomfoolery = preload(
+		"res://resources/skills/tomfoolery_skill.tres"
+	)
+	var engineering = preload(
+		"res://resources/skills/engineering_skill.tres"
+	)
 
 	register_skill(programming)
 	register_skill(observation)
 	register_skill(teaching)
+	register_skill(research)
+	register_skill(tomfoolery)
+	register_skill(engineering)
 
 
 func register_skill(skill: SkillData) -> void:
