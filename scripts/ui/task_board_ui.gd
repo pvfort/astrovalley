@@ -125,6 +125,11 @@ func _complete_task(task: Dictionary) -> bool:
 		if WorldClock != null:
 			WorldClock.add_daily_money(money_reward)
 
+	var salary_increase_reward :Variant= max(int(task.get("salary_increase_reward", 0)), 0)
+	if salary_increase_reward > 0 and InventoryManager != null and InventoryManager.has_method("increase_daily_salary"):
+		InventoryManager.increase_daily_salary(salary_increase_reward)
+		reward_summary.append("Daily salary +$%d" % salary_increase_reward)
+
 	var skill_id := str(task.get("skill_id", ""))
 	var xp_reward :Variant= max(int(task.get("xp_reward", 0)), 0)
 	if not skill_id.is_empty() and xp_reward > 0 and SkillManager != null:
@@ -254,6 +259,10 @@ func _format_rewards(task: Dictionary) -> String:
 	var money_reward :Variant= max(int(task.get("money_reward", 0)), 0)
 	if money_reward > 0:
 		rewards.append("$%d" % money_reward)
+
+	var salary_increase_reward :Variant= max(int(task.get("salary_increase_reward", 0)), 0)
+	if salary_increase_reward > 0:
+		rewards.append("Daily salary +$%d" % salary_increase_reward)
 
 	var skill_id := str(task.get("skill_id", ""))
 	var xp_reward :Variant= max(int(task.get("xp_reward", 0)), 0)
