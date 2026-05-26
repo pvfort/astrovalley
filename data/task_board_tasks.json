@@ -164,5 +164,47 @@
     "skill_id": "programming",
     "xp_reward": 26,
     "money_reward": 25
+  },
+  {
+    "id": "grant_letter_of_intent",
+    "title": "Grant Letter of Intent",
+    "description": "Draft and submit a letter of intent to secure extra institute funding.",
+    "duration_minutes": 80,
+    "required_programming_progress": 45,
+    "required_items": [
+      { "item_id": "papers", "count": 2 }
+    ],
+    "skill_id": "programming",
+    "xp_reward": 24,
+    "money_reward": 18,
+    "salary_increase_reward": 5
+  },
+  {
+    "id": "budget_justification_memo",
+    "title": "Budget Justification Memo",
+    "description": "Compile usage data and write a strong budget memo for the department.",
+    "duration_minutes": 95,
+    "required_programming_progress": 75,
+    "required_items": [
+      { "item_id": "archive_folders", "count": 1 },
+      { "item_id": "books", "count": 1 }
+    ],
+    "skill_id": "programming",
+    "xp_reward": 34,
+    "money_reward": 22,
+    "salary_increase_reward": 8
+  },
+  {
+    "id": "followup_funding_interview",
+    "title": "Funding Follow-up Interview",
+    "description": "Present outcomes from prior funding requests in a follow-up interview.",
+    "duration_minutes": 110,
+    "required_programming_progress": 95,
+    "required_room": "office_101",
+    "required_npc_talked": "professor_alvarez",
+    "skill_id": "teaching",
+    "xp_reward": 38,
+    "money_reward": 30,
+    "salary_increase_reward": 12
   }
 ]

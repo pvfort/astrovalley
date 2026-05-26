@@ -3,6 +3,7 @@ extends Node
 const HOTBAR_SIZE: int = 8
 const DEFAULT_INVENTORY_SIZE: int = 27
 const MAX_INVENTORY_SIZE: int = 72
+const DEFAULT_DAILY_SALARY: int = 40
 
 const ITEM_RESOURCES_ROOT: String = "res://resources/items"
 
@@ -23,6 +24,10 @@ var equipped: Dictionary = {
 # PLAYER ECONOMY / PROGRESSION
 # --------------------------------------------------
 var funds: int = 250
+var daily_salary_base: int = DEFAULT_DAILY_SALARY
+var daily_salary_bonus: int = 0
+var _last_salary_paid_day: int = 1
+var _salary_tracking_ready: bool = true
 
 # --------------------------------------------------
 # SIGNALS
@@ -48,6 +53,10 @@ var _item_cache_built: bool = false
 func _ready() -> void:
 	_resize_inventory_array(inventory_size)
 	_rebuild_item_cache()
+	if WorldClock != null and WorldClock.has_signal("day_changed"):
+		_last_salary_paid_day = max(int(WorldClock.current_day), 1)
+		if not WorldClock.day_changed.is_connected(_on_day_changed):
+			WorldClock.day_changed.connect(_on_day_changed)
 
 
 # ==================================================
@@ -127,6 +136,40 @@ func purchase_item(item: ItemData, cost: int) -> bool:
 		EventBus.item_purchased.emit(player_id, item.item_id, 1, final_cost)
 
 	return true
+
+
+func get_daily_salary() -> int:
+	return max(daily_salary_base + daily_salary_bonus, 0)
+
+
+func increase_daily_salary(amount: int) -> bool:
+	var safe_amount := max(amount, 0)
+	if safe_amount <= 0:
+		return false
+
+	daily_salary_bonus += safe_amount
+	inventory_changed.emit()
+	return true
+
+
+func _on_day_changed(day: int) -> void:
+	if not _salary_tracking_ready:
+		_last_salary_paid_day = max(day, 1)
+		_salary_tracking_ready = true
+		return
+
+	if day <= _last_salary_paid_day:
+		return
+
+	_last_salary_paid_day = day
+	var payout := get_daily_salary()
+	if payout <= 0:
+		return
+
+	funds += payout
+	if WorldClock != null and WorldClock.has_method("add_daily_money"):
+		WorldClock.add_daily_money(payout)
+	inventory_changed.emit()
 
 
 # ==================================================
@@ -506,6 +549,9 @@ func save_state() -> Dictionary:
 		"inventory_size": inventory_size,
 		"equipped": equipped_state,
 		"funds": funds,
+		"daily_salary_base": daily_salary_base,
+		"daily_salary_bonus": daily_salary_bonus,
+		"last_salary_paid_day": _last_salary_paid_day,
 		"selected_hotbar_index": selected_hotbar_index,
 	}
 
@@ -575,6 +621,13 @@ func load_state(data: Dictionary) -> void:
 			equipped[key] = _item_by_id(item_id)
 
 	funds = int(data.get("funds", funds))
+	daily_salary_base = max(int(data.get("daily_salary_base", daily_salary_base)), 0)
+	daily_salary_bonus = max(int(data.get("daily_salary_bonus", daily_salary_bonus)), 0)
+	if data.has("last_salary_paid_day"):
+		_last_salary_paid_day = max(int(data.get("last_salary_paid_day", _last_salary_paid_day)), 1)
+		_salary_tracking_ready = true
+	else:
+		_salary_tracking_ready = false
 
 	selected_hotbar_index = clampi(
 		int(
