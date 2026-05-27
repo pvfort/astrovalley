@@ -9,6 +9,9 @@ extends Control
 @onready var email_attachment_label: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailContent/EmailDetailsColumn/AttachmentLabel
 @onready var download_button: Button = $Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailButtons/DownloadButton
 @onready var email_status_label: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/EmailStatusLabel
+@onready var plot_data_label: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection/PlotDataLabel
+@onready var send_to_option: OptionButton = $Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection/SendPlotsRow/SendToOption
+@onready var send_plots_button: Button = $Panel/MarginContainer/VBoxContainer/TabContainer/EmailTab/SendPlotsSection/SendPlotsRow/SendPlotsButton
 @onready var mounted_drives_label: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectDetailsColumn/MountedDrivesLabel
 @onready var project_list: ItemList = $Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectListColumn/ProjectList
 @onready var project_name_label: Label = $Panel/MarginContainer/VBoxContainer/TabContainer/CodingTab/CodingContent/ProjectDetailsColumn/ProjectNameLabel
@@ -35,6 +38,13 @@ func _ready() -> void:
 	code_button.pressed.connect(_on_code_pressed)
 	mount_drive_button.pressed.connect(_on_mount_drive_pressed)
 	close_button.pressed.connect(close_ui)
+	send_plots_button.pressed.connect(_on_send_plots_pressed)
+
+	send_to_option.clear()
+	send_to_option.add_item("Printer")
+	send_to_option.add_item("Self (Inventory)")
+	send_to_option.set_item_metadata(0, "printer")
+	send_to_option.set_item_metadata(1, "self")
 
 
 func open_for_station(target_station: ProgrammingComponent, target_player: PlayerCharacter) -> void:
@@ -83,6 +93,7 @@ func _refresh_all() -> void:
 	_refresh_mount_drive_options()
 	_refresh_storage_summary()
 	_refresh_mounted_drives()
+	_refresh_plot_data_label()
 
 
 func _refresh_email_list() -> void:
@@ -194,7 +205,8 @@ func _refresh_storage_summary() -> void:
 	var small_data := int(data_store.get("small_data", 0))
 	var big_data := int(data_store.get("big_data", 0))
 	var special_data := int(data_store.get("special_data", 0))
-	storage_label.text = "PC Data · Small: %d · Big: %d · Special: %d" % [small_data, big_data, special_data]
+	var plot_data := int(data_store.get("plot_data", 0))
+	storage_label.text = "PC Data · Small: %d · Big: %d · Special: %d · Plots: %d" % [small_data, big_data, special_data, plot_data]
 
 
 func _refresh_mounted_drives() -> void:
@@ -258,6 +270,44 @@ func _on_code_pressed() -> void:
 	coding_status_label.text = str(result.get("message", ""))
 	_refresh_storage_summary()
 	_refresh_project_details()
+	_refresh_plot_data_label()
+
+
+func _refresh_plot_data_label() -> void:
+	if station == null:
+		plot_data_label.text = "Plot Data on PC: 0"
+		send_plots_button.disabled = true
+		return
+
+	var data_store := station.get_pc_data()
+	var plot_count := int(data_store.get("plot_data", 0))
+	plot_data_label.text = "Plot Data on PC: %d" % plot_count
+	send_plots_button.disabled = plot_count <= 0
+
+
+func _on_send_plots_pressed() -> void:
+	if station == null:
+		return
+
+	var data_store := station.get_pc_data()
+	var plot_count := int(data_store.get("plot_data", 0))
+	if plot_count <= 0:
+		email_status_label.text = "No plot data to send."
+		return
+
+	var selected := send_to_option.selected
+	if selected < 0:
+		selected = 0
+	var receiver_variant: Variant = send_to_option.get_item_metadata(selected)
+	var receiver := str(receiver_variant)
+
+	if receiver == "printer" or receiver == "self":
+		var result := station.send_plots_to_printer(plot_count)
+		email_status_label.text = str(result.get("message", ""))
+		_refresh_storage_summary()
+		_refresh_plot_data_label()
+	else:
+		email_status_label.text = "Unknown receiver."
 
 
 func _on_mount_drive_pressed() -> void:
