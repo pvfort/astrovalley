@@ -137,8 +137,8 @@ func _begin_minigame() -> void:
 	progress_bar.value = 0.0
 
 	var half_size := game_field.size * 0.5
-	object_marker.position = _clamp_to_field(half_size)
-	aim_marker.position = _clamp_to_field(half_size + Vector2(25.0, 0.0))
+	object_marker.position = _clamp_to_field(half_size, object_marker.size)
+	aim_marker.position = _clamp_to_field(half_size + Vector2(25.0, 0.0), aim_marker.size)
 	_randomize_object_velocity()
 	observation_status_label.text = "Use arrow keys to keep the telescope aligned."
 	start_button.disabled = true
@@ -167,7 +167,7 @@ func _update_aim(delta: float) -> void:
 	)
 	if input_vector.length_squared() > 1.0:
 		input_vector = input_vector.normalized()
-	aim_marker.position = _clamp_to_field(aim_marker.position + input_vector * AIM_SPEED * delta)
+	aim_marker.position = _clamp_to_field(aim_marker.position + input_vector * AIM_SPEED * delta, aim_marker.size)
 
 
 func _update_object(delta: float) -> void:
@@ -175,7 +175,7 @@ func _update_object(delta: float) -> void:
 	if _object_direction_timer <= 0.0:
 		_randomize_object_velocity()
 
-	object_marker.position = _clamp_to_field(object_marker.position + _object_velocity * delta)
+	object_marker.position = _clamp_to_field(object_marker.position + _object_velocity * delta, object_marker.size)
 
 
 func _update_alignment(delta: float) -> void:
@@ -204,9 +204,9 @@ func _randomize_object_velocity() -> void:
 	_object_velocity = direction * maxf(speed, 50.0)
 
 
-func _clamp_to_field(position: Vector2) -> Vector2:
-	var max_x := maxf(game_field.size.x - object_marker.size.x, 0.0)
-	var max_y := maxf(game_field.size.y - object_marker.size.y, 0.0)
+func _clamp_to_field(position: Vector2, marker_size: Vector2) -> Vector2:
+	var max_x := maxf(game_field.size.x - marker_size.x, 0.0)
+	var max_y := maxf(game_field.size.y - marker_size.y, 0.0)
 	return Vector2(
 		clampf(position.x, 0.0, max_x),
 		clampf(position.y, 0.0, max_y)

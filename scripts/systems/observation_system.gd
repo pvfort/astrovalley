@@ -58,7 +58,7 @@ func submit_observation(player_id: int, tracking_ratio: float) -> Dictionary:
 
 
 func quality_label_for_ratio(ratio: float) -> String:
-	var clamped := maxf(ratio, 0.0)
+	var clamped := clampf(ratio, 0.0, 1.0)
 	if clamped >= 0.85:
 		return "Excellent"
 	if clamped >= 0.6:
