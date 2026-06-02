@@ -115,6 +115,9 @@ func _complete_task(task: Dictionary) -> bool:
 	if WorldClock != null and duration_minutes > 0:
 		WorldClock.add_minutes(duration_minutes)
 
+	var attendance_event_id := str(task.get("register_event_attendance", task.get("required_event_active", ""))).strip_edges()
+	_apply_stress_effects_for_task(task, local_player_id, attendance_event_id)
+
 	var reward_summary: Array[String] = []
 
 	var money_reward :Variant= max(int(task.get("money_reward", 0)), 0)
@@ -160,7 +163,6 @@ func _complete_task(task: Dictionary) -> bool:
 		GameManager.grant_observation_time(_resolve_local_player_id(), observation_time_reward)
 		reward_summary.append("Observation time +%d" % observation_time_reward)
 
-	var attendance_event_id := str(task.get("register_event_attendance", "")).strip_edges()
 	if not attendance_event_id.is_empty() and EventManager != null and EventManager.has_method("register_attendance"):
 		var attendance_count := int(EventManager.register_attendance(_resolve_local_player_id(), attendance_event_id))
 		reward_summary.append("%s attendance #%d" % [attendance_event_id.replace("_", " ").capitalize(), attendance_count])
@@ -436,6 +438,57 @@ func _unlock_cluster_for_all_workstations() -> void:
 	for node in scene_root.find_children("*", "ProgrammingComponent", true, false):
 		if node != null and node.has_method("unlock_cluster_access"):
 			node.unlock_cluster_access()
+
+
+func _apply_stress_effects_for_task(task: Dictionary, player_id: int, attendance_event_id: String) -> void:
+	if StressManager == null:
+		return
+	if not StressManager.has_method("consume_for_action") or not StressManager.has_method("recover_for_activity"):
+		return
+
+	var skill_id := str(task.get("skill_id", "")).strip_edges().to_lower()
+	if _is_writing_task(task):
+		StressManager.consume_for_action(player_id, "writing")
+	elif skill_id == "programming":
+		StressManager.consume_for_action(player_id, "coding")
+
+	if skill_id == "observation":
+		StressManager.consume_for_action(player_id, "observing")
+	elif skill_id == "teaching":
+		StressManager.consume_for_action(player_id, "teaching")
+	elif skill_id == "tomfoolery":
+		StressManager.recover_for_activity(player_id, "tomfoolery")
+
+	if attendance_event_id.is_empty():
+		return
+	if attendance_event_id == "pie_friday":
+		StressManager.recover_for_activity(player_id, "pie_friday")
+		return
+	if EventManager != null and EventManager.has_method("event_has_tag"):
+		if EventManager.event_has_tag(attendance_event_id, "social"):
+			StressManager.recover_for_activity(player_id, "social")
+
+
+func _is_writing_task(task: Dictionary) -> bool:
+	var writing_keywords := [
+		"write",
+		"writing",
+		"draft",
+		"memo",
+		"proposal",
+		"letter",
+		"notes",
+	]
+	var haystacks := [
+		str(task.get("id", "")).to_lower(),
+		str(task.get("title", "")).to_lower(),
+		str(task.get("description", "")).to_lower(),
+	]
+	for haystack in haystacks:
+		for keyword in writing_keywords:
+			if haystack.contains(keyword):
+				return true
+	return false
 
 
 func _load_task_pool() -> void:

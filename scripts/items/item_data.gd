@@ -17,6 +17,7 @@ extends Resource
 @export var energy_restore: float = 0.0
 @export var energy_temp_max_bonus: float = 0.0
 @export var energy_temp_max_duration: float = 0.0
+@export var stress_restore: float = 0.0
 
 @export var replacement_item: ItemData
 

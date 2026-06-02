@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://b72h8x1qpewky" path="res://scripts/save/SaveableComponent.gd" id="5_saveable"]
 [ext_resource type="PackedScene" uid="uid://ddu1cthhi7q31" path="res://scenes/ui/ClockUI.tscn" id="6_7oing"]
 [ext_resource type="PackedScene" uid="uid://btb2nw3da1mqc" path="res://scenes/ui/EnergyBarUI.tscn" id="6_energybar"]
+[ext_resource type="PackedScene" path="res://scenes/ui/StressBarUI.tscn" id="6_stressbar"]
 [ext_resource type="PackedScene" uid="uid://cyhh2ycv2yklo" path="res://scenes/ui/DailySummaryUI.tscn" id="7_5stf6"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DialogueUI.tscn" id="8_180ig"]
 [ext_resource type="PackedScene" uid="uid://dmfth7fumvx1f" path="res://scenes/ui/EquipmentSlot.tscn" id="8_ov1oi"]
@@ -196,6 +197,8 @@ layer = 2
 [node name="DialogueUI" parent="CanvasLayer" unique_id=767865453 instance=ExtResource("8_180ig")]
 
 [node name="EnergyBarUI" parent="CanvasLayer" unique_id=1315078221 instance=ExtResource("6_energybar")]
+
+[node name="StressBarUI" parent="CanvasLayer" instance=ExtResource("6_stressbar")]
 
 [node name="EquipmentSlot" parent="CanvasLayer" unique_id=1274055804 instance=ExtResource("8_ov1oi")]
 

@@ -495,10 +495,36 @@ func use_item(index: int, player: PlayerCharacter) -> void:
 			item.energy_restore
 		)
 
+	if StressManager != null and StressManager.has_method("recover_stress"):
+		var stress_pid := (
+			player.player_id
+			if player.player_id >= 0
+			else int(multiplayer.get_unique_id())
+		)
+		var stress_restore := maxf(item.stress_restore, 0.0)
+		if stress_restore <= 0.0 and _item_has_any_tag(item, ["sweet", "sweets", "dessert", "pie"]):
+			if StressManager.has_method("get_recovery_value"):
+				stress_restore = float(StressManager.get_recovery_value("sweets"))
+		if stress_restore > 0.0:
+			StressManager.recover_stress(stress_pid, stress_restore)
+
 	var removed: InventorySlotData = take_from_slot(index, 1)
 
 	if removed.count > 0 and item.replacement_item != null:
 		add_item(item.replacement_item)
+
+
+func _item_has_any_tag(item: ItemData, tags: Array[String]) -> bool:
+	if item == null or tags.is_empty():
+		return false
+	for item_tag_variant in item.tags:
+		var item_tag := str(item_tag_variant).strip_edges().to_lower()
+		if item_tag.is_empty():
+			continue
+		for requested_tag in tags:
+			if item_tag == str(requested_tag).strip_edges().to_lower():
+				return true
+	return false
 
 
 # ==================================================

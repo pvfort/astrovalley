@@ -46,3 +46,5 @@ func _on_task_completed(player_id: int, task_id: String) -> void:
 		SkillManager.add_xp(OBSERVATION_SKILL_ID, OBSERVATION_XP_REWARD)
 	if EnergyManager != null and EnergyManager.has_method("apply_next_sleep_start_ratio"):
 		EnergyManager.apply_next_sleep_start_ratio(player_id, NEXT_DAY_ENERGY_RATIO_AFTER_OBSERVING)
+	if StressManager != null and StressManager.has_method("consume_for_action"):
+		StressManager.consume_for_action(player_id, "observing")

@@ -40,6 +40,36 @@ func is_event_active(event_id: String) -> bool:
 	return _active_events.has(event_id)
 
 
+func get_event_definition(event_id: String) -> Dictionary:
+	if event_id.is_empty():
+		return {}
+	if _active_events.has(event_id):
+		var active_event := _active_events.get(event_id, {})
+		if active_event is Dictionary:
+			return (active_event as Dictionary).duplicate(true)
+	for event_definition in _event_definitions:
+		var candidate_id := str(event_definition.get("id", ""))
+		if candidate_id == event_id:
+			return event_definition.duplicate(true)
+	return {}
+
+
+func event_has_tag(event_id: String, tag: String) -> bool:
+	var normalized_tag := tag.strip_edges().to_lower()
+	if normalized_tag.is_empty():
+		return false
+	var event_data := get_event_definition(event_id)
+	if event_data.is_empty():
+		return false
+	var tags_variant: Variant = event_data.get("tags", [])
+	if not (tags_variant is Array):
+		return false
+	for tag_variant in (tags_variant as Array):
+		if str(tag_variant).strip_edges().to_lower() == normalized_tag:
+			return true
+	return false
+
+
 func get_primary_event() -> Dictionary:
 	var active := get_active_events()
 	if active.is_empty():
