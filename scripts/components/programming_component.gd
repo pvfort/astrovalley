@@ -581,6 +581,10 @@ func _attempt_energy_spend(player: PlayerCharacter, amount: float) -> void:
 	if not consume_energy or amount <= 0.0 or player == null:
 		return
 
+	var resolved_player_id := _resolve_player_id(player)
+	if StressManager != null and StressManager.has_method("consume_for_action") and resolved_player_id >= 0:
+		StressManager.consume_for_action(resolved_player_id, "coding")
+
 	if player.has_method("consume_energy"):
 		player.consume_energy(amount)
 		return

@@ -115,6 +115,9 @@ func _complete_task(task: Dictionary) -> bool:
 	if WorldClock != null and duration_minutes > 0:
 		WorldClock.add_minutes(duration_minutes)
 
+	var attendance_event_id := _resolve_task_attendance_event_id(task)
+	_apply_stress_effects_for_task(task, local_player_id, attendance_event_id)
+
 	var reward_summary: Array[String] = []
 
 	var money_reward :Variant= max(int(task.get("money_reward", 0)), 0)
@@ -160,7 +163,6 @@ func _complete_task(task: Dictionary) -> bool:
 		GameManager.grant_observation_time(_resolve_local_player_id(), observation_time_reward)
 		reward_summary.append("Observation time +%d" % observation_time_reward)
 
-	var attendance_event_id := str(task.get("register_event_attendance", "")).strip_edges()
 	if not attendance_event_id.is_empty() and EventManager != null and EventManager.has_method("register_attendance"):
 		var attendance_count := int(EventManager.register_attendance(_resolve_local_player_id(), attendance_event_id))
 		reward_summary.append("%s attendance #%d" % [attendance_event_id.replace("_", " ").capitalize(), attendance_count])
@@ -445,6 +447,88 @@ func _unlock_cluster_for_all_workstations() -> void:
 	for node in scene_root.find_children("*", "ProgrammingComponent", true, false):
 		if node != null and node.has_method("unlock_cluster_access"):
 			node.unlock_cluster_access()
+
+
+func _apply_stress_effects_for_task(task: Dictionary, player_id: int, attendance_event_id: String) -> void:
+	if StressManager == null:
+		return
+	if not StressManager.has_method("consume_for_action") or not StressManager.has_method("recover_for_activity"):
+		return
+
+	var stress_action := _resolve_task_stress_action(task)
+	if not stress_action.is_empty():
+		_apply_resolved_stress_action(player_id, stress_action)
+	else:
+		var skill_id := str(task.get("skill_id", "")).strip_edges().to_lower()
+		if skill_id == "tomfoolery":
+			StressManager.recover_for_activity(player_id, "tomfoolery")
+		elif _is_writing_task(task):
+			StressManager.consume_for_action(player_id, "writing")
+		elif skill_id == "programming":
+			StressManager.consume_for_action(player_id, "coding")
+		elif skill_id == "observation":
+			StressManager.consume_for_action(player_id, "observing")
+		elif skill_id == "teaching":
+			StressManager.consume_for_action(player_id, "teaching")
+
+	if attendance_event_id.is_empty():
+		return
+	if attendance_event_id == "pie_friday":
+		StressManager.recover_for_activity(player_id, "pie_friday")
+		return
+	if EventManager != null and EventManager.has_method("event_has_tag"):
+		if EventManager.event_has_tag(attendance_event_id, "social"):
+			StressManager.recover_for_activity(player_id, "social")
+
+
+func _resolve_task_stress_action(task: Dictionary) -> String:
+	var explicit_action := str(task.get("stress_action", "")).strip_edges().to_lower()
+	if not explicit_action.is_empty():
+		return explicit_action
+	return ""
+
+
+func _apply_resolved_stress_action(player_id: int, stress_action: String) -> void:
+	if stress_action.begins_with("recover:"):
+		var activity := stress_action.trim_prefix("recover:")
+		if not activity.is_empty():
+			StressManager.recover_for_activity(player_id, activity)
+		return
+	if stress_action.begins_with("consume:"):
+		var action := stress_action.trim_prefix("consume:")
+		if not action.is_empty():
+			StressManager.consume_for_action(player_id, action)
+		return
+	StressManager.consume_for_action(player_id, stress_action)
+
+
+func _is_writing_task(task: Dictionary) -> bool:
+	var writing_keywords := [
+		"write",
+		"writing",
+		"draft",
+		"memo",
+		"proposal",
+		"letter",
+		"notes",
+	]
+	var haystacks := [
+		str(task.get("id", "")).to_lower(),
+		str(task.get("title", "")).to_lower(),
+		str(task.get("description", "")).to_lower(),
+	]
+	for haystack in haystacks:
+		for keyword in writing_keywords:
+			if haystack.contains(keyword):
+				return true
+	return false
+
+
+func _resolve_task_attendance_event_id(task: Dictionary) -> String:
+	var register_event := str(task.get("register_event_attendance", "")).strip_edges()
+	if not register_event.is_empty():
+		return register_event
+	return str(task.get("required_event_active", "")).strip_edges()
 
 
 func _load_task_pool() -> void:

@@ -48,6 +48,8 @@ func _perform_sleep(player: PlayerCharacter) -> void:
 
 	if EnergyManager != null:
 		EnergyManager.recover_from_sleep(player.player_id)
+	if StressManager != null and StressManager.has_method("recover_from_sleep"):
+		StressManager.recover_from_sleep(player.player_id)
 
 	var summary_data: Dictionary = WorldClock.get_daily_summary_data()
 	WorldClock.daily_summary_requested.emit(summary_data)

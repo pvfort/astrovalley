@@ -206,6 +206,8 @@ func _collect_system_states() -> Dictionary:
 		states["events"] = _dictionary(EventManager.save_state())
 	if EnergyManager != null and EnergyManager.has_method("save_state"):
 		states["energy"] = _dictionary(EnergyManager.save_state())
+	if StressManager != null and StressManager.has_method("save_state"):
+		states["stress"] = _dictionary(StressManager.save_state())
 
 	return states
 
@@ -223,6 +225,8 @@ func _apply_system_states(states: Dictionary) -> void:
 		EventManager.load_state(_dictionary(states.get("events", {})))
 	if EnergyManager != null and EnergyManager.has_method("load_state"):
 		EnergyManager.load_state(_dictionary(states.get("energy", {})))
+	if StressManager != null and StressManager.has_method("load_state"):
+		StressManager.load_state(_dictionary(states.get("stress", {})))
 	if GameManager != null and GameManager.has_method("load_state"):
 		GameManager.load_state(_dictionary(states.get("game_manager", {})))
 	if TaskManager != null and TaskManager.has_method("load_state"):

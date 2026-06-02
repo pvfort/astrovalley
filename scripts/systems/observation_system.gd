@@ -42,6 +42,8 @@ func submit_observation(player_id: int, tracking_ratio: float) -> Dictionary:
 		SkillManager.add_xp(OBSERVATION_SKILL_ID, xp_reward)
 	if EnergyManager != null and EnergyManager.has_method("apply_next_sleep_start_ratio"):
 		EnergyManager.apply_next_sleep_start_ratio(player_id, NEXT_DAY_ENERGY_RATIO_AFTER_OBSERVING)
+	if StressManager != null and StressManager.has_method("consume_for_action"):
+		StressManager.consume_for_action(player_id, "observing")
 
 	if SaveManager != null and SaveManager.has_method("request_autosave"):
 		SaveManager.request_autosave()
