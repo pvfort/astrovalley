@@ -115,7 +115,7 @@ func _complete_task(task: Dictionary) -> bool:
 	if WorldClock != null and duration_minutes > 0:
 		WorldClock.add_minutes(duration_minutes)
 
-	var attendance_event_id := str(task.get("register_event_attendance", task.get("required_event_active", ""))).strip_edges()
+	var attendance_event_id := _resolve_task_attendance_event_id(task)
 	_apply_stress_effects_for_task(task, local_player_id, attendance_event_id)
 
 	var reward_summary: Array[String] = []
@@ -447,17 +447,16 @@ func _apply_stress_effects_for_task(task: Dictionary, player_id: int, attendance
 		return
 
 	var skill_id := str(task.get("skill_id", "")).strip_edges().to_lower()
-	if _is_writing_task(task):
+	if skill_id == "tomfoolery":
+		StressManager.recover_for_activity(player_id, "tomfoolery")
+	elif _is_writing_task(task):
 		StressManager.consume_for_action(player_id, "writing")
 	elif skill_id == "programming":
 		StressManager.consume_for_action(player_id, "coding")
-
-	if skill_id == "observation":
+	elif skill_id == "observation":
 		StressManager.consume_for_action(player_id, "observing")
 	elif skill_id == "teaching":
 		StressManager.consume_for_action(player_id, "teaching")
-	elif skill_id == "tomfoolery":
-		StressManager.recover_for_activity(player_id, "tomfoolery")
 
 	if attendance_event_id.is_empty():
 		return
@@ -467,6 +466,13 @@ func _apply_stress_effects_for_task(task: Dictionary, player_id: int, attendance
 	if EventManager != null and EventManager.has_method("event_has_tag"):
 		if EventManager.event_has_tag(attendance_event_id, "social"):
 			StressManager.recover_for_activity(player_id, "social")
+
+
+func _resolve_task_attendance_event_id(task: Dictionary) -> String:
+	var register_event := str(task.get("register_event_attendance", "")).strip_edges()
+	if not register_event.is_empty():
+		return register_event
+	return str(task.get("required_event_active", "")).strip_edges()
 
 
 func _is_writing_task(task: Dictionary) -> bool:
