@@ -26,6 +26,7 @@ func add_player(id: int, name: String):
 		"tasks_completed": int(existing.get("tasks_completed", 0)),
 		"observation_total": int(existing.get("observation_total", 0)),
 		"observation_time_granted": max(int(existing.get("observation_time_granted", 0)), 0),
+		"telescope_calibrated": bool(existing.get("telescope_calibrated", false)),
 	}
 
 func remove_player(id: int):
@@ -93,6 +94,15 @@ func consume_observation_time(player_id: int, amount: int = 1) -> bool:
 	_emit_player_state(player_id)
 	return true
 
+func set_telescope_calibrated(player_id: int, calibrated: bool) -> void:
+	var player_state := _ensure_player_state(player_id)
+	player_state["telescope_calibrated"] = calibrated
+	_emit_player_state(player_id)
+
+func is_telescope_calibrated(player_id: int) -> bool:
+	var player_state := _ensure_player_state(player_id)
+	return bool(player_state.get("telescope_calibrated", false))
+
 func save_state() -> Dictionary:
 	var serialized_players: Dictionary = {}
 	for player_id_variant in players.keys():
@@ -121,6 +131,7 @@ func load_state(data: Dictionary) -> void:
 				"tasks_completed": int(player_state.get("tasks_completed", 0)),
 				"observation_total": int(player_state.get("observation_total", 0)),
 				"observation_time_granted": max(int(player_state.get("observation_time_granted", 0)), 0),
+				"telescope_calibrated": bool(player_state.get("telescope_calibrated", false)),
 			}
 
 	var saved_resources :Variant= data.get("resources", {})

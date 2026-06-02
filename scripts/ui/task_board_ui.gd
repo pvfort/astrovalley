@@ -183,6 +183,11 @@ func _complete_task(task: Dictionary) -> bool:
 		_unlock_cluster_for_all_workstations()
 		reward_summary.append("Cluster access unlocked")
 
+	var thesis_progress_reward :Variant= max(int(task.get("thesis_progress_reward", 0)), 0)
+	if thesis_progress_reward > 0 and WorldClock != null:
+		WorldClock.add_programming_progress(thesis_progress_reward)
+		reward_summary.append("Thesis progress +%d" % thesis_progress_reward)
+
 	if reward_summary.is_empty():
 		reward_summary.append("No rewards")
 
@@ -286,6 +291,10 @@ func _format_rewards(task: Dictionary) -> String:
 	var observation_time_reward :Variant= max(int(task.get("observation_time_reward", 0)), 0)
 	if observation_time_reward > 0:
 		rewards.append("Observation time +%d" % observation_time_reward)
+
+	var thesis_progress_reward :Variant= max(int(task.get("thesis_progress_reward", 0)), 0)
+	if thesis_progress_reward > 0:
+		rewards.append("Thesis progress +%d" % thesis_progress_reward)
 
 	if rewards.is_empty():
 		return "Rewards: --"

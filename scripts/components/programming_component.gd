@@ -119,6 +119,41 @@ const PROJECT_DEFINITIONS: Array[Dictionary] = [
 		"progress_gain": 220,
 		"energy_cost": 24.0,
 	},
+	{
+		"id": "observation_plot_pipeline",
+		"display_name": "Observation plot pipeline",
+		"description": "Process special observation data through the visualization suite to generate high-quality research plots for printing.",
+		"required_data": {
+			"special_data": 2,
+		},
+		"script_type": "cluster",
+		"required_software": ["python_toolkit", "analysis_suite", "visualization_suite"],
+		"xp_gain": 90,
+		"time_minutes": 120,
+		"progress_gain": 100,
+		"plot_outputs": {
+			"plot_data": 2,
+		},
+		"energy_cost": 20.0,
+	},
+	{
+		"id": "full_thesis_figure_set",
+		"display_name": "Full thesis figure set",
+		"description": "Run the complete figure generation pipeline using all available data sources. Produces a comprehensive set of publication-ready research plots.",
+		"required_data": {
+			"special_data": 3,
+			"big_data": 4,
+		},
+		"script_type": "cluster",
+		"required_software": ["python_toolkit", "analysis_suite", "visualization_suite"],
+		"xp_gain": 160,
+		"time_minutes": 240,
+		"progress_gain": 200,
+		"plot_outputs": {
+			"plot_data": 4,
+		},
+		"energy_cost": 30.0,
+	},
 ]
 
 @export var station_id: String = "computer_station"
@@ -139,6 +174,7 @@ var _pc_data_storage: Dictionary = {
 	"small_data": 0,
 	"big_data": 0,
 	"special_data": 0,
+	"plot_data": 0,
 }
 var _email_messages: Array[Dictionary] = []
 var _mounted_hard_drives: Array[String] = []
@@ -220,7 +256,18 @@ func format_project_requirements(project: Dictionary) -> String:
 	var data_text := "Data: %s" % (", ".join(req_parts) if not req_parts.is_empty() else "none")
 	var scripts_text := "Scripts: %s" % script_type
 	var software_text := "Software: %s" % (", ".join(software_needed) if not software_needed.is_empty() else "none")
-	return "%s\n%s\n%s" % [data_text, scripts_text, software_text]
+
+	var plot_outputs_variant: Variant = project.get("plot_outputs", {})
+	var plot_outputs: Dictionary = plot_outputs_variant as Dictionary if plot_outputs_variant is Dictionary else {}
+	var output_text := ""
+	if not plot_outputs.is_empty():
+		var out_parts: Array[String] = []
+		for key_variant in plot_outputs.keys():
+			var key := str(key_variant)
+			out_parts.append("%s x%d" % [key.replace("_", " "), int(plot_outputs.get(key_variant, 0))])
+		output_text = "\nOutputs: %s" % ", ".join(out_parts)
+
+	return "%s\n%s\n%s%s" % [data_text, scripts_text, software_text, output_text]
 
 
 func can_code_project(project_id: String) -> Dictionary:
@@ -291,6 +338,8 @@ func code_project(project_id: String, player: PlayerCharacter) -> Dictionary:
 
 	_attempt_energy_spend(player, action_energy_cost)
 
+	var plot_count := _store_plot_outputs(project)
+
 	programming_completed.emit(pid)
 	_is_coding = false
 	if not _is_ui_open:
@@ -298,9 +347,10 @@ func code_project(project_id: String, player: PlayerCharacter) -> Dictionary:
 	_request_autosave()
 
 	var project_name := str(project.get("display_name", project_id)).replace("_", " ")
+	var plot_text := " +%d plot data." % plot_count if plot_count > 0 else ""
 	return {
 		"ok": true,
-		"message": "Completed %s. +%d XP, +%d thesis progress." % [project_name, xp_gain, progress_gain],
+		"message": "Completed %s. +%d XP, +%d thesis progress.%s" % [project_name, xp_gain, progress_gain, plot_text],
 	}
 
 
@@ -328,6 +378,38 @@ func download_email_attachment(message_index: int) -> Dictionary:
 		"ok": true,
 		"message": "Downloaded %s x%d to PC storage." % [data_type.replace("_", " "), amount],
 	}
+
+
+func send_plots_to_printer(amount: int) -> Dictionary:
+	if amount <= 0:
+		return {"ok": false, "message": "Specify an amount to send."}
+	var available := int(_pc_data_storage.get("plot_data", 0))
+	if available <= 0:
+		return {"ok": false, "message": "No plot data on PC to send."}
+
+	var to_send := mini(amount, available)
+	_pc_data_storage["plot_data"] = available - to_send
+
+	if InventoryManager != null:
+		var remaining := InventoryManager.try_insert_item_id("research_plot", to_send)
+		var delivered := to_send - remaining
+		_request_autosave()
+		if delivered <= 0:
+			_pc_data_storage["plot_data"] = available
+			return {"ok": false, "message": "Inventory full. Could not queue plots for printing."}
+		if remaining > 0:
+			_pc_data_storage["plot_data"] = remaining
+			return {
+				"ok": true,
+				"message": "Queued %d research plot(s) for printing. %d could not fit in inventory." % [delivered, remaining],
+			}
+		return {
+			"ok": true,
+			"message": "Sent %d research plot(s) to the printer queue. Go to the printer to print them." % delivered,
+		}
+
+	_request_autosave()
+	return {"ok": true, "message": "Queued %d research plot(s) for printing." % to_send}
 
 
 func get_mountable_drive_item_ids() -> Array[String]:
@@ -455,6 +537,20 @@ func load_state(data: Dictionary) -> void:
 
 	_is_ui_open = false
 	_set_computer_visual(_is_coding)
+
+
+func _store_plot_outputs(project: Dictionary) -> int:
+	var plot_outputs_variant: Variant = project.get("plot_outputs", {})
+	if not (plot_outputs_variant is Dictionary):
+		return 0
+	var plot_outputs: Dictionary = plot_outputs_variant as Dictionary
+	var total := 0
+	for key_variant in plot_outputs.keys():
+		var key := str(key_variant)
+		var amount :Variant= max(int(plot_outputs.get(key_variant, 0)), 0)
+		_pc_data_storage[key] = int(_pc_data_storage.get(key, 0)) + amount
+		total += amount
+	return total
 
 
 func _consume_required_data(project: Dictionary) -> void:

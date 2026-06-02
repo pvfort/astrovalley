@@ -1,9 +1,9 @@
 [
   {
     "name": "Telescope",
-    "room_id": "institute",
+    "room_id": "observatory_annex",
     "scene_path": "res://scenes/resources/TelescopeEntity.tscn",
-    "position": [400, 300]
+    "position": [512, 320]
   },
   {
     "name": "ComputerEntity",

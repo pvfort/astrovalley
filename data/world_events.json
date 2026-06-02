@@ -10,6 +10,16 @@
 		"tags": ["coding", "teaching", "weekly"]
 	},
 	{
+		"id": "writing_workshop",
+		"name": "Writing Workshop",
+		"description": "A weekly workshop for developing thesis drafts with peer feedback and research notes.",
+		"weekdays": [3],
+		"start_hour": 13,
+		"end_hour": 18,
+		"location": "library",
+		"tags": ["writing", "research", "weekly"]
+	},
+	{
 		"id": "pie_friday",
 		"name": "Pie Friday",
 		"description": "Every Friday, staff gather in the main room for pie.",

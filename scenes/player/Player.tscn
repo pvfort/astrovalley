@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/PlayerMenuUI.tscn" id="15_player_menu_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/TradeUI.tscn" id="16_trade_ui"]
 [ext_resource type="Script" path="res://scripts/components/player_trade_component.gd" id="17_player_trade_component"]
+[ext_resource type="PackedScene" path="res://scenes/ui/TelescopeUI.tscn" id="18_telescope_ui"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 
@@ -222,6 +223,8 @@ offset_top = -72.0
 offset_right = -1040.0
 
 [node name="TradeUI" parent="CanvasLayer" instance=ExtResource("16_trade_ui")]
+
+[node name="TelescopeUI" parent="CanvasLayer" instance=ExtResource("18_telescope_ui")]
 
 [node name="ClockUI" parent="CanvasLayer" unique_id=47210436 instance=ExtResource("6_7oing")]
 
