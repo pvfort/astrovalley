@@ -446,17 +446,21 @@ func _apply_stress_effects_for_task(task: Dictionary, player_id: int, attendance
 	if not StressManager.has_method("consume_for_action") or not StressManager.has_method("recover_for_activity"):
 		return
 
-	var skill_id := str(task.get("skill_id", "")).strip_edges().to_lower()
-	if skill_id == "tomfoolery":
-		StressManager.recover_for_activity(player_id, "tomfoolery")
-	elif _is_writing_task(task):
-		StressManager.consume_for_action(player_id, "writing")
-	elif skill_id == "programming":
-		StressManager.consume_for_action(player_id, "coding")
-	elif skill_id == "observation":
-		StressManager.consume_for_action(player_id, "observing")
-	elif skill_id == "teaching":
-		StressManager.consume_for_action(player_id, "teaching")
+	var stress_action := _resolve_task_stress_action(task)
+	if not stress_action.is_empty():
+		_apply_resolved_stress_action(player_id, stress_action)
+	else:
+		var skill_id := str(task.get("skill_id", "")).strip_edges().to_lower()
+		if skill_id == "tomfoolery":
+			StressManager.recover_for_activity(player_id, "tomfoolery")
+		elif _is_writing_task(task):
+			StressManager.consume_for_action(player_id, "writing")
+		elif skill_id == "programming":
+			StressManager.consume_for_action(player_id, "coding")
+		elif skill_id == "observation":
+			StressManager.consume_for_action(player_id, "observing")
+		elif skill_id == "teaching":
+			StressManager.consume_for_action(player_id, "teaching")
 
 	if attendance_event_id.is_empty():
 		return
@@ -468,11 +472,25 @@ func _apply_stress_effects_for_task(task: Dictionary, player_id: int, attendance
 			StressManager.recover_for_activity(player_id, "social")
 
 
-func _resolve_task_attendance_event_id(task: Dictionary) -> String:
-	var register_event := str(task.get("register_event_attendance", "")).strip_edges()
-	if not register_event.is_empty():
-		return register_event
-	return str(task.get("required_event_active", "")).strip_edges()
+func _resolve_task_stress_action(task: Dictionary) -> String:
+	var explicit_action := str(task.get("stress_action", "")).strip_edges().to_lower()
+	if not explicit_action.is_empty():
+		return explicit_action
+	return ""
+
+
+func _apply_resolved_stress_action(player_id: int, stress_action: String) -> void:
+	if stress_action.begins_with("recover:"):
+		var activity := stress_action.trim_prefix("recover:")
+		if not activity.is_empty():
+			StressManager.recover_for_activity(player_id, activity)
+		return
+	if stress_action.begins_with("consume:"):
+		var action := stress_action.trim_prefix("consume:")
+		if not action.is_empty():
+			StressManager.consume_for_action(player_id, action)
+		return
+	StressManager.consume_for_action(player_id, stress_action)
 
 
 func _is_writing_task(task: Dictionary) -> bool:
@@ -495,6 +513,13 @@ func _is_writing_task(task: Dictionary) -> bool:
 			if haystack.contains(keyword):
 				return true
 	return false
+
+
+func _resolve_task_attendance_event_id(task: Dictionary) -> String:
+	var register_event := str(task.get("register_event_attendance", "")).strip_edges()
+	if not register_event.is_empty():
+		return register_event
+	return str(task.get("required_event_active", "")).strip_edges()
 
 
 func _load_task_pool() -> void:

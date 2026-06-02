@@ -502,6 +502,7 @@ func use_item(index: int, player: PlayerCharacter) -> void:
 			else int(multiplayer.get_unique_id())
 		)
 		var stress_restore := maxf(item.stress_restore, 0.0)
+		# Sweet-tag fallback supports content packs where explicit stress_restore is omitted.
 		if stress_restore <= 0.0 and _item_has_any_tag(item, ["sweet", "sweets", "dessert", "pie"]):
 			if StressManager.has_method("get_recovery_value"):
 				stress_restore = float(StressManager.get_recovery_value("sweets"))
