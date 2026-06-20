@@ -1,11 +1,11 @@
 {
-	"day": 69,
+	"day": 72,
 	"entities": [],
 	"machine_states": [],
 	"placed_furniture": [],
 	"room_states": [],
 	"save_version": 1,
-	"saved_at": "2026-05-25T16:44:58",
+	"saved_at": "2026-05-31T16:37:04",
 	"season": "spring",
 	"seed": 0,
 	"systems": {
@@ -21,6 +21,13 @@
 				"362628210": {
 					"current_task": "",
 					"name": "Player362628210",
+					"observation_time_granted": 0,
+					"observation_total": 0,
+					"tasks_completed": 0
+				},
+				"952787403": {
+					"current_task": "",
+					"name": "Player952787403",
 					"observation_time_granted": 0,
 					"observation_total": 0,
 					"tasks_completed": 0
@@ -253,9 +260,9 @@
 
 				}
 			},
-			"day": 69,
-			"hour": 10,
-			"minute": 1,
+			"day": 72,
+			"hour": 9,
+			"minute": 32,
 			"phase": "Morning"
 		}
 	},

@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1779738567
+::res://::1780259589
 README.md::TextFile::-1::1779720523::0::1::::<><><>0<>0<><>::
 ::res://assets/::1778866076
 ::res://assets/entities/::1778781390
@@ -196,7 +196,7 @@ VT323-Regular.ttf::FontFile::7593492892707741477::1778901367::1778901367::1::::<
 ::res://saves/::1778905272
 ::res://saves/worlds/::1778905696
 ::res://saves/worlds/host_1/::1779725854
-world.json::JSON::-1::1779734900::0::1::::<><><>0<>0<><>::
+world.json::JSON::-1::1779807324::0::1::::<><><>0<>0<><>::
 ::res://scenes/::1779725017
 Inventory.tscn::PackedScene::8009023537212336387::1779465849::0::1::::<><><>0<>0<><>::
 main.tscn::PackedScene::5897947022369669123::1779725017::0::1::::<><><>0<>0<><>::uid://6qh4ao33le5u::::res://scripts/main.gd<>uid://b72h8x1qpewky::::res://scripts/save/SaveableComponent.gd<>uid://cigl8op6wxe3c::::res://scripts/time/day_night_controller.gd
@@ -205,8 +205,8 @@ player.tscn::PackedScene::2779882679608376069::1778537443::0::1::::<><><>0<>0<><
 ::res://scenes/furniture/::1779408754
 DeskStorageEntity.tscn::PackedScene::1857452903299631822::1779408754::0::1::::<><><>0<>0<><>::uid://dbgft8esm2gml::::res://assets/furniture/desk.png<>uid://dby6nd5yaj3b::::res://scripts/components/ContainerComponent.gd<>uid://b72h8x1qpewky::::res://scripts/save/SaveableComponent.gd<>uid://b826ef35wfi07::::res://scripts/persistence/PersistentObject.gd
 OfficeDeskEntity.tscn::PackedScene::-1::1778904261::0::1::::<><><>0<>0<><>::res://assets/furniture/desk.png
-::res://scenes/player/::1779725854
-Player.tscn::PackedScene::3618712429538224362::1779725854::0::1::::<><><>0<>0<><>::uid://bwcev4lthdsds::::res://scripts/player/player.gd<>uid://blctf1qsa3ufe::::res://scenes/ui/InventoryUI.tscn<>uid://4ebyvrqf3enf::::res://assets/entities/characters/character.png<>uid://n4n0xajbx5o6::::res://scenes/ui/ContainerUI.tscn<>uid://dg30w6inkjpo3::::res://scripts/components/status_effect_component.gd<>uid://bauwxsdha3o8g::::res://scenes/ui/HotbarUI.tscn<>uid://b72h8x1qpewky::::res://scripts/save/SaveableComponent.gd<>uid://ddu1cthhi7q31::::res://scenes/ui/ClockUI.tscn<>uid://btb2nw3da1mqc::::res://scenes/ui/EnergyBarUI.tscn<>uid://cyhh2ycv2yklo::::res://scenes/ui/DailySummaryUI.tscn<>res://scenes/ui/DialogueUI.tscn<>uid://dmfth7fumvx1f::::res://scenes/ui/EquipmentSlot.tscn<>uid://c8hfhndb1dsd0::::res://scenes/ui/CraftingUI.tscn<>uid://crlbhu3l4xnbk::::res://scenes/ui/StoreUI.tscn<>res://scenes/ui/TaskBoardUI.tscn<>res://scenes/ui/ComputerWorkstationUI.tscn<>res://scenes/ui/ChatUI.tscn<>res://scenes/ui/PlayerMenuUI.tscn
+::res://scenes/player/::1779741573
+Player.tscn::PackedScene::3618712429538224362::1779741573::0::1::::<><><>0<>0<><>::uid://bwcev4lthdsds::::res://scripts/player/player.gd<>uid://blctf1qsa3ufe::::res://scenes/ui/InventoryUI.tscn<>uid://4ebyvrqf3enf::::res://assets/entities/characters/character.png<>uid://n4n0xajbx5o6::::res://scenes/ui/ContainerUI.tscn<>uid://dg30w6inkjpo3::::res://scripts/components/status_effect_component.gd<>uid://bauwxsdha3o8g::::res://scenes/ui/HotbarUI.tscn<>uid://b72h8x1qpewky::::res://scripts/save/SaveableComponent.gd<>uid://ddu1cthhi7q31::::res://scenes/ui/ClockUI.tscn<>uid://btb2nw3da1mqc::::res://scenes/ui/EnergyBarUI.tscn<>uid://cyhh2ycv2yklo::::res://scenes/ui/DailySummaryUI.tscn<>res://scenes/ui/DialogueUI.tscn<>uid://dmfth7fumvx1f::::res://scenes/ui/EquipmentSlot.tscn<>uid://c8hfhndb1dsd0::::res://scenes/ui/CraftingUI.tscn<>uid://crlbhu3l4xnbk::::res://scenes/ui/StoreUI.tscn<>res://scenes/ui/TaskBoardUI.tscn<>res://scenes/ui/ComputerWorkstationUI.tscn<>res://scenes/ui/ChatUI.tscn<>res://scenes/ui/PlayerMenuUI.tscn<>res://scenes/ui/TradeUI.tscn<>res://scripts/components/player_trade_component.gd
 ::res://scenes/resources/::1779725017
 BedEntity.tscn::PackedScene::-1::1778901367::0::1::::<><><>0<>0<><>::res://assets/entities/furniture/bed.png<>res://scripts/components/sleep_component.gd
 BookshelfEntity.tscn::PackedScene::-1::1779487432::0::1::::<><><>0<>0<><>::res://assets/entities/furniture/Bookshelf.png<>uid://b826ef35wfi07::::res://scripts/persistence/PersistentObject.gd<>uid://b72h8x1qpewky::::res://scripts/save/SaveableComponent.gd
@@ -253,7 +253,7 @@ office_117.json::JSON::-1::1778474549::0::1::::<><><>0<>0<><>::
 office_118.json::JSON::-1::1777838560::0::1::::<><><>0<>0<><>::
 office_118.tscn::PackedScene::2102485176569512479::1779720523::0::1::::<><><>0<>0<><>::uid://c7goljwjxd1v4::::res://scripts/legacy/room.gd<>uid://beuny3wkdn2oc::::res://assets/tilesets/wall.tres
 stairs.gd::GDScript::5235165563733882771::1777666788::0::1::::<>Node2D<><>0<>0<><>::
-::res://scenes/ui/::1779726001
+::res://scenes/ui/::1779741573
 ChatUI.tscn::PackedScene::-1::1779632629::0::1::::<><><>0<>0<><>::res://scripts/ui/chat_ui.gd
 ClockUI.tscn::PackedScene::7412699359561633202::1779632629::0::1::::<><><>0<>0<><>::uid://7us3ttcxobqe::::res://scripts/ui/clock_ui.gd<>uid://irbxvhx075oh::::res://assets/ui/time/clock_icon.png<>res://assets/ui/daily_summary/programming_icon.png
 ComputerWorkstationUI.tscn::PackedScene::-1::1779572729::0::1::::<><><>0<>0<><>::res://scripts/ui/computer_workstation_ui.gd
@@ -272,13 +272,14 @@ PlayerMenuUI.tscn::PackedScene::1721130468249127123::1779726001::0::1::::<><><>0
 StoreUI.tscn::PackedScene::5988834176338499912::1779487432::0::1::::<><><>0<>0<><>::uid://d1y7e1ck6722w::::res://scripts/ui/store_ui.gd
 TaskBoardUI.tscn::PackedScene::-1::1779572729::0::1::::<><><>0<>0<><>::res://scripts/ui/task_board_ui.gd
 Test.tscn::PackedScene::2193582309193525582::1779123340::0::1::::<><><>0<>0<><>::uid://c1spoiqvrysm1::::res://resources/ui/dark_theme.tres
+TradeUI.tscn::PackedScene::-1::1779741573::0::1::::<><><>0<>0<><>::res://scripts/ui/trade_ui.gd
 ::res://scenes/world/::1778438607
 DoorInteractable.tscn::PackedScene::-1::1778438607::0::1::::<><><>0<>0<><>::res://scripts/world/door.gd
-::res://scripts/::1779725828
-main.gd::GDScript::2209361026753876664::1779725828::0::1::::<>Node2D<><>0<>0<><>::
+::res://scripts/::1779742720
+main.gd::GDScript::2209361026753876664::1779742720::0::1::::<>Node2D<><>0<>0<><>::
 main_menu.gd::GDScript::4491547287857930978::1778904261::0::1::::<>Control<><>0<>0<><>::
 map_system.gd::GDScript::2670355466505023464::1779674935::0::1::::<>Node<><>0<>0<><>::
-::res://scripts/components/::1779734801
+::res://scripts/components/::1779741576
 consumable_component.gd::GDScript::4131030382207296569::1778546648::0::1::::ConsumableComponent<>Node<><>0<>0<><>::
 ContainerComponent.gd::GDScript::214144164938715101::1779486324::0::1::::ContainerComponent<>InteractableComponent<><>0<>0<><>::
 crafting_station_component.gd::GDScript::1866703589738055132::1779486324::0::1::::CraftingStationComponent<>InteractableComponent<><>0<>0<><>::
@@ -287,6 +288,7 @@ door_component.gd::GDScript::8359283464804698553::1778544849::0::1::::DoorCompon
 interactable_component.gd::GDScript::8557336156807829155::1779319910::0::1::::InteractableComponent<>Node<><>0<>0<><>::
 observation_component.gd::GDScript::4262809478868034462::1779572729::0::1::::ObservationComponent<>InteractableComponent<><>0<>0<><>::
 pickup_component.gd::GDScript::9193279139349223919::1779486324::0::1::::PickupComponent<>Node<><>0<>0<><>::
+player_trade_component.gd::GDScript::1582688946114996895::1779741573::0::1::::PlayerTradeComponent<>InteractableComponent<><>0<>0<><>::
 producer_component.gd::GDScript::6477039143113104377::1778775486::0::1::::ProducerComponent<>Node<><>0<>0<><>::
 programming_component.gd::GDScript::895800001261569477::1779674935::0::1::::ProgrammingComponent<>InteractableComponent<><>0<>0<><>::
 quest_npc_component.gd::GDScript::1424312964322916786::1779674935::0::1::::QuestNpcComponent<>DialogueComponent<><>0<>0<><>::
@@ -294,12 +296,13 @@ sleep_component.gd::GDScript::5501937321570716697::1779208016::0::1::::SleepComp
 status_effect_component.gd::GDScript::7639756543492925756::1778904261::0::1::::StatusEffectComponent<>Node<><>0<>0<><>::
 store_npc_component.gd::GDScript::1321543252243303626::1779208016::0::1::::StoreNpcComponent<>DialogueComponent<><>0<>0<><>::
 task_board_component.gd::GDScript::584333058666451843::1779572729::0::1::::TaskBoardComponent<>InteractableComponent<><>0<>0<><>::
-::res://scripts/core/::1779674935
+::res://scripts/core/::1779742720
 event_bus.gd::GDScript::767677887215164859::1779674935::0::1::::<>Node<><>0<>0<><>::
 game_manager.gd::GDScript::8881561369879150218::1779572897::0::1::::<>Node<><>0<>0<><>::
-network_manager.gd::GDScript::5287057317251769539::1779632629::0::1::::<>Node<><>0<>0<><>::
+network_manager.gd::GDScript::5287057317251769539::1779742720::0::1::::<>Node<><>0<>0<><>::
 task_manager.gd::GDScript::7062394397568980945::1779632629::0::1::::<>Node<><>0<>0<><>::
 time_manager.gd::GDScript::2411562282948551430::1778866150::0::1::::<>Node<><>0<>0<><>::
+trade_manager.gd::GDScript::5207751819198592297::1779741675::0::1::::<>Node<><>0<>0<><>::
 ::res://scripts/crafting/::1779486324
 crafting_job.gd::GDScript::3303938401954867999::1779466910::0::1::::CraftingJob<>RefCounted<><>0<>0<><>::
 crafting_manager.gd::GDScript::7771230841816462440::1779486324::0::1::::CraftingManager<>Node<><>0<>0<><>::
@@ -355,9 +358,9 @@ task_complete_objective.gd::GDScript::4382153114252883277::1779486324::0::1::::T
 PersistenceRegistry.gd::GDScript::1666760715914581837::1778904261::0::1::::<>Node<><>0<>0<><>::
 PersistentObject.gd::GDScript::4760280400323106778::1778901367::0::1::::PersistentObject<>Node<><>0<>0<><>::
 save_serializer.gd::GDScript::4802959218275291865::1778904261::0::1::::SaveSerializer<>RefCounted<><>0<>0<><>::
-::res://scripts/player/::1779674935
+::res://scripts/player/::1779742720
 character_profile.gd::GDScript::8733813534497930112::1778861557::0::1::::CharacterProfile<>Resource<><>0<>0<><>::
-player.gd::GDScript::3934985909923770728::1779674935::0::1::::PlayerCharacter<>CharacterBody2D<><>0<>0<><>::
+player.gd::GDScript::3934985909923770728::1779742720::0::1::::PlayerCharacter<>CharacterBody2D<><>0<>0<><>::
 ::res://scripts/save/::1778904261
 SaveableComponent.gd::GDScript::4688687078567141076::1778904261::0::1::::SaveableComponent<>Node<><>0<>0<><>::
 WorldSaveData.gd::GDScript::793248929257601858::1778904261::0::1::::WorldSaveData<>RefCounted<><>0<>0<><>::
@@ -372,7 +375,7 @@ world_clock.gd::GDScript::964368641797946714::1778904270::0::1::::<>Node<><>0<>0
 ::res://scripts/tools/::1779208016
 ToolComponent.gd::GDScript::2890679516980799827::1779208016::0::1::::ToolComponent<>Node<><>0<>0<><>::
 ToolData.gd::GDScript::660585915806384448::1779142972::0::1::::ToolData<>Resource<><>0<>0<><>::
-::res://scripts/ui/::1779726001
+::res://scripts/ui/::1779741675
 chat_ui.gd::GDScript::5078962800475808656::1779632739::0::1::::<>Control<><>0<>0<><>::
 clock_ui.gd::GDScript::2288474487014460424::1779632739::0::1::::<>Control<><>0<>0<><>::
 computer_workstation_ui.gd::GDScript::4976294783324580410::1779572897::0::1::::ComputerWorkstationUI<>Control<><>0<>0<><>::
@@ -392,6 +395,7 @@ player_menu_ui.gd::GDScript::2356980156526033821::1779726001::0::1::::PlayerMenu
 store_ui.gd::GDScript::9035668507903509320::1779487432::0::1::::<>Control<><>0<>0<><>::
 task_board_ui.gd::GDScript::8026258176788648703::1779725881::0::1::::TaskBoardUI<>Control<><>0<>0<><>::
 ThemeManager.gd::GDScript::7573922409933425445::1778901367::0::1::::<>Node<><>0<>0<><>::
+trade_ui.gd::GDScript::8101543462351654491::1779741675::0::1::::<>Control<><>0<>0<><>::
 ::res://scripts/world/::1779143486
 door.gd::GDScript::4748054622233826251::1779143486::0::1::::DoorInteractable<>Interactable<><>0<>0<><>::
 interactable.gd::GDScript::5194157564532254681::1779143448::0::1::::Interactable<>Area2D<><>0<>0<><>::
